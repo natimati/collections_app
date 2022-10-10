@@ -17,7 +17,7 @@ const Collection = sequelize.define('Collection', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  edited: {
+  updated: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },

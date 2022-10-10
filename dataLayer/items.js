@@ -16,7 +16,7 @@ const Item = sequelize.define('Item', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  edited: {
+  updated: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
