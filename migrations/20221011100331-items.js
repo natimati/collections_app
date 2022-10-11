@@ -3,25 +3,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('items', {
       id: {
         type: Sequelize.DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.DataTypes.UUIDV4
       },
-      username: Sequelize.DataTypes.STRING,
-      email: Sequelize.DataTypes.STRING,
-      password: Sequelize.DataTypes.STRING,
-      salt: Sequelize.DataTypes.STRING,
-      is_admin: {
-        type: Sequelize.DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      registration_time: {
+      collection_id: Sequelize.DataTypes.STRING,
+      author: Sequelize.DataTypes.STRING,
+      name: Sequelize.DataTypes.STRING,
+      image_url: Sequelize.DataTypes.STRING,
+      created_at: {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.DataTypes.NOW
       },
-      last_login_time: {
+      updated: {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.DataTypes.NOW
       },
@@ -29,6 +25,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('items');
   }
 };
