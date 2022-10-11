@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 
 export const Background = styled.div`
   background-image: url('assets/background-light.png');
@@ -27,11 +27,6 @@ export const FormContainer = styled.form`
   justify-content: center;
   gap: 25px;
   align-items: flex-start;
-`;
-
-export const Input = styled(TextField)`
-  border: none;
-  border: solid 2px red;
 `;
 
 export const StyledButton = styled(Button)`

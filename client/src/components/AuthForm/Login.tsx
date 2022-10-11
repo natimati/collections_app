@@ -1,6 +1,6 @@
-import { Link as MaterialLink } from '@mui/material';
+import { Link as MaterialLink, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { FormContainer, Input, StyledButton, Text } from './style';
+import { FormContainer, StyledButton, Text } from './style';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from '../../api';
 
@@ -47,7 +47,7 @@ function Login() {
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit, onSubmitError)}>
-      <Input
+      <TextField
         type="text"
         {...register("email", {
           required: true,
@@ -62,7 +62,7 @@ function Login() {
         error={!!errors.email}
         helperText={getEmailError()}
       />
-      <Input
+      <TextField
         {...register("password", { required: true })}
         type="password"
         id="standard-required"

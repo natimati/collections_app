@@ -1,6 +1,6 @@
-import { Link as MaterialLink } from '@mui/material';
+import { Link as MaterialLink, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom'
-import { FormContainer, Input, StyledButton, Text } from './style'
+import { FormContainer, StyledButton, Text } from './style'
 import { SubmitHandler, useForm } from "react-hook-form";
 import { register as registerNewUser } from "../../api";
 
@@ -77,7 +77,7 @@ function Register() {
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit, onSubmitError)}>
-      <Input
+      <TextField
         type="text"
         {...register("username", { required: true, minLength: 2, maxLength: 20 })}
         id="username"
@@ -86,7 +86,7 @@ function Register() {
         error={!!errors.username}
         helperText={getUsernameError()}
       />
-      <Input
+      <TextField
         type="text"
         {...register("email", {
           required: true,
@@ -103,7 +103,7 @@ function Register() {
         error={!!errors.email}
         helperText={getEmailError()}
       />
-      <Input
+      <TextField
         type='password'
         {...register("password", { required: true, minLength: 8 })}
         id="password"
@@ -112,7 +112,7 @@ function Register() {
         error={!!errors.password}
         helperText={getPasswordError()}
       />
-      <Input
+      <TextField
         type='password'
         {...register("passwordConfirmation", {
           required: true,
