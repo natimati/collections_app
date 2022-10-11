@@ -1,12 +1,15 @@
-
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
+import express from "express";
+import cors from "cors";
+import path from "path";
 
 class Server {
+  app: express.Express;
+  port: number;
+  paths: Record<string, string>
+
   constructor() {
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = Number(process.env.PORT) || 8080;
     this.paths = {
       auth: "/api/auth",
       // homepage: "/api/homepage",
@@ -20,15 +23,7 @@ class Server {
     this.app.use(
       express.static(path.join(__dirname, "./client/build"))
     );
-    this.app.use((req, res, next) => {
-      console.log('tu 1');
-      next();
-    })
     this.app.use(cors());
-    this.app.use((req, res, next) => {
-      console.log('tu 2');
-      next();
-    })
     this.app.use(express.json());
   }
 
@@ -49,4 +44,4 @@ class Server {
   }
 }
 
-module.exports = Server;
+export default Server;

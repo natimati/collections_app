@@ -1,10 +1,10 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
-function generateSalt() {
+export function generateSalt() {
     return crypto.randomBytes(8).toString('hex').slice(0, 12)
 };
 
-const hashPassword = (password, salt) => {
+export const hashPassword = (password: string, salt: string) => {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(password);
 
@@ -14,9 +14,7 @@ const hashPassword = (password, salt) => {
     }
 };
 
-function compare(inputPassword, storedPassword, storedSalt) {
+export function compare(inputPassword: string, storedPassword: string, storedSalt: string) {
     const inputPasswordHash = hashPassword(inputPassword, storedSalt)
     return inputPasswordHash.password === storedPassword
 };
-
-module.exports = { compare, generateSalt, hashPassword };
