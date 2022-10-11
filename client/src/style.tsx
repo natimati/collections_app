@@ -1,4 +1,5 @@
 import { createTheme, outlinedInputClasses } from '@mui/material';
+import styled from 'styled-components';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -12,7 +13,7 @@ declare module '@mui/material/styles' {
     laptop: true;
     desktop: true;
   }
-}
+};
 
 export const theme = createTheme({
   palette: {
@@ -73,4 +74,5 @@ export const theme = createTheme({
       }
     },
   },
-})
+});
+
