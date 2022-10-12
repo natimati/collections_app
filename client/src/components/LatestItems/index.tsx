@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from '@tanstack/react-query'
-import { getCollectionById, getLatestItems } from "../../api"
+import { getLatestItems } from "../../api"
 import Grid from '@mui/material/Grid';
 import { ImageContainer, Overlay } from "./style";
 import { Typography } from "@mui/material";
@@ -42,6 +41,6 @@ function LatestItems() {
       })}
     </Grid>
   )
-}
+};
 
 export default LatestItems;
