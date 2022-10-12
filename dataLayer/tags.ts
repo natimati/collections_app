@@ -14,6 +14,6 @@ const Tag = db.define<TagsModel>('Tag', {
         defaultValue: DataTypes.UUIDV4
     },
     name: DataTypes.STRING,
-});
+}, { timestamps: false });
 
 export default Tag;

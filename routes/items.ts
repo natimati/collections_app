@@ -3,11 +3,15 @@ import itemsModel from "../dataLayer/items";
 
 const router = Router();
 
-router.get('/', async (req: Request, res = response) => {
+router.get('/latest', async (req: Request, res = response) => {
     try {
-        const query = req.query.searchPhrase as string;
-        const result = await itemsModel.findAll({ where: { name: query } })
-        res.json(result)
+        const items = await itemsModel.findAll({
+            order: [
+                ['created_at', 'DESC']
+            ],
+            limit: 5
+        })
+        res.json(items)
     } catch (e) {
         console.error(e);
         res.status(500).send();

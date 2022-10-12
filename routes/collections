@@ -1,0 +1,18 @@
+import { Request, response, Router } from "express";
+import collectionsModel from "../dataLayer/items";
+
+const router = Router();
+
+router.get('/find/:id', async (req: Request, res = response) => {
+    try {
+        const collection = await collectionsModel.findOne({
+            where: { id: req.params.id }
+        });
+        res.json(collection)
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+});
+
+export default router;

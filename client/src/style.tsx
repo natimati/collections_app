@@ -1,5 +1,4 @@
 import { createTheme, outlinedInputClasses } from '@mui/material';
-import styled from 'styled-components';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -32,6 +31,10 @@ export const theme = createTheme({
     },
     h2: {
       fontSize: 45,
+      textTtransform: 'uppercase'
+    },
+    h3: {
+      fontSize: 25,
       textTtransform: 'uppercase'
     },
     subtitle1: {

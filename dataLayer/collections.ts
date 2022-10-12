@@ -34,6 +34,6 @@ const Collection = db.define<CollectionModel>('Collection', {
     defaultValue: DataTypes.NOW
   },
   additional_fields: DataTypes.JSON
-});
+}, { timestamps: false });
 
 export default Collection;

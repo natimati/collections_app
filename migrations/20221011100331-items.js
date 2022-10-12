@@ -10,7 +10,7 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.UUIDV4
       },
       collection_id: Sequelize.DataTypes.STRING,
-      author: Sequelize.DataTypes.STRING,
+      author_id: Sequelize.DataTypes.STRING,
       name: Sequelize.DataTypes.STRING,
       image_url: Sequelize.DataTypes.STRING,
       created_at: {

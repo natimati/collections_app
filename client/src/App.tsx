@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import AuthForm from "./components/AuthForm";
-import SearchInput from "./components/SearchInput";
+import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="login" element={<AuthForm isLogin />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="" element={<SearchInput/>} />
+        <Route path="" element={<MainPage/>} />
       </Routes>
     </div>
   );

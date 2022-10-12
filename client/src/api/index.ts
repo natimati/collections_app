@@ -60,3 +60,37 @@ export function search(value: string) {
       throw e;
   })
 };
+
+export function getLatestItems() {
+  return fetch(baseUrl + '/api/items/latest', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+};
+
+export function getCollectionById(id: string) {
+  return fetch(baseUrl + '/api/collections/find/' + id, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+}

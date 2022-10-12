@@ -30,6 +30,6 @@ const Item = db.define<ItemsModel>('Item', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-});
+}, { timestamps: false });
 
 export default Item;

@@ -3,21 +3,16 @@ import cors from "cors";
 import path from "path";
 
 import authRouter from "./routes/auth";
-import searchRouter from "./routes/search"
+import searchRouter from "./routes/search";
+import itmesRouter from "./routes/items"
 
 class Server {
   app: express.Express;
   port: number;
-  paths: Record<string, string>
 
   constructor() {
     this.app = express();
     this.port = Number(process.env.PORT) || 8080;
-    this.paths = {
-      auth: "/api/auth",
-      search: "/api/search",
-      // homepage: "/api/homepage",
-    };
 
     this.middlewares();
     this.routes();
@@ -32,9 +27,9 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.paths.auth, authRouter);
-    this.app.use(this.paths.search, searchRouter);
-    // this.app.use(this.paths.homepage, require("./routes/homepage"));
+    this.app.use("/api/auth", authRouter);
+    this.app.use("/api/search", searchRouter);
+    this.app.use("/api/items", itmesRouter);
     this.app.get("*", (req, res) => {
       res.sendFile(
         path.join(__dirname, "./client/build/index.html")
