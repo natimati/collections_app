@@ -3,7 +3,7 @@ import { compare } from "../helpers/auth";
 
 import { check, validationResult } from 'express-validator';
 import { generateSalt, hashPassword } from '../helpers/auth';
-import usersModel from '../dataLayer/users';
+import usersModel from '../dataLayer/user';
 
 const router = Router();
 

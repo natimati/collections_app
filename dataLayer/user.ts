@@ -12,7 +12,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
   last_login_time: CreationOptional<Date>;
 }
 
-const User = db.define<UserModel>('User', {
+const User = db.define<UserModel>('user', {
   id: {
     type: DataTypes.UUID,
     autoIncrement: false,

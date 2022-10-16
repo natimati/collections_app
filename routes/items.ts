@@ -1,5 +1,5 @@
 import { Request, response, Router } from "express";
-import itemsModel from "../dataLayer/items";
+import itemsModel from "../dataLayer/item";
 
 const router = Router();
 

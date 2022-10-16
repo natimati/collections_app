@@ -27,7 +27,8 @@ export const theme = createTheme({
     fontFamily: 'Cardo',
     h1: {
       fontSize: 60,
-      textTtransform: 'uppercase',
+      textTransform: 'uppercase',
+      color: "#404956",
     },
     h2: {
       fontSize: 45,
@@ -39,14 +40,16 @@ export const theme = createTheme({
     },
     subtitle1: {
       fontSize: 25,
+      color: 'red',
     },
     caption: {
       fontSize: 20,
       fontStyle: "italic",
     },
     button: {
-      fontSize: 20,
+      fontSize: 18,
       textTtransform: 'uppercase',
+      color: "#404956",
     },
     body1: {
       fontSize: 18,
@@ -65,15 +68,25 @@ export const theme = createTheme({
     'MuiOutlinedInput': {
       styleOverrides: {
         root: {
+          color: '#404956',
           [`& .${outlinedInputClasses.notchedOutline}, &:hover .${outlinedInputClasses.notchedOutline}`]: {
+            border: '2px solid',
             borderColor: "#DC9D5F",
             borderRight: 'none',
             borderTop: 'none',
             borderRadius: 0,
-            borderBottomLeftRadius: '4px',
-            backgroundColor: "#ffffffcc"
-          },
+            borderBottomLeftRadius: '5px',
+          }
         },
+        input: {
+          background: '#ffffffcc',
+          [`&::placeholder`]: {
+            color: 'rgba(0, 0, 0, 0.6)',
+            fontFamily: 'Cardo',
+            opacity: 1,
+            fontWeight: 400,
+          }
+        }
       }
     },
   },

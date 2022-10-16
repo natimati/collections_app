@@ -6,7 +6,7 @@ interface TagsModel extends Model<InferAttributes<TagsModel>, InferCreationAttri
     name: String;
 }
 
-const Tag = db.define<TagsModel>('Tag', {
+const Tag = db.define<TagsModel>('tag', {
     id: {
         type: DataTypes.UUID,
         autoIncrement: false,
@@ -15,5 +15,6 @@ const Tag = db.define<TagsModel>('Tag', {
     },
     name: DataTypes.STRING,
 }, { timestamps: false });
+
 
 export default Tag;

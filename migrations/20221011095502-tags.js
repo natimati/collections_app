@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.createTable('tags', {
+    return queryInterface.createTable('tag', {
       id: {
         type: Sequelize.DataTypes.UUID,
         primaryKey: true,
@@ -13,7 +13,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable('tags');
+  async down (queryInterface) {
+    return queryInterface.dropTable('tag');
   }
 };

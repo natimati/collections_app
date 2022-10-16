@@ -1,5 +1,6 @@
 import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 import db from '../services/db';
+import User from './user';
 
 interface CollectionModel extends Model<InferAttributes<CollectionModel>, InferCreationAttributes<CollectionModel>> {
   id: CreationOptional<number>;
@@ -9,11 +10,10 @@ interface CollectionModel extends Model<InferAttributes<CollectionModel>, InferC
   description: String;
   image_url: CreationOptional<string>;
   created_at: CreationOptional<Date>;
-  updated: CreationOptional<Date>;
-  additional_fields: CreationOptional<JSON>
+  updated_at: CreationOptional<Date>;
 }
 
-const Collection = db.define<CollectionModel>('Collection', {
+const Collection = db.define<CollectionModel>('collection', {
   id: {
     type: DataTypes.UUID,
     autoIncrement: false,
@@ -29,11 +29,22 @@ const Collection = db.define<CollectionModel>('Collection', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  updated: {
+  updated_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
-  additional_fields: DataTypes.JSON
 }, { timestamps: false });
+
+User.hasMany(Collection, {
+  foreignKey: 'author_id',
+  sourceKey: 'id',
+  as: 'collections'
+});
+
+Collection.belongsTo(User, {
+  foreignKey: 'author_id',
+  targetKey: 'id',
+  as: 'author'
+});
 
 export default Collection;
