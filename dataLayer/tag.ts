@@ -1,5 +1,6 @@
 import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 import db from '../services/db';
+import Item from './item';
 
 interface TagsModel extends Model<InferAttributes<TagsModel>, InferCreationAttributes<TagsModel>> {
     id: CreationOptional<string>;
@@ -16,5 +17,7 @@ const Tag = db.define<TagsModel>('tag', {
     name: DataTypes.STRING,
 }, { timestamps: false });
 
+Item.belongsToMany(Tag, { through: 'item_tag_relationship' });
+Tag.belongsToMany(Item, { through: 'item_tag_relationship' });
 
 export default Tag;
