@@ -2,7 +2,7 @@ import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttri
 import db from '../services/db';
 
 interface TagsModel extends Model<InferAttributes<TagsModel>, InferCreationAttributes<TagsModel>> {
-    id: CreationOptional<number>;
+    id: CreationOptional<string>;
     name: String;
 }
 

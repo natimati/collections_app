@@ -4,7 +4,7 @@ import Collection from './collection';
 import User from './user';
 
 interface ItemsModel extends Model<InferAttributes<ItemsModel>, InferCreationAttributes<ItemsModel>> {
-  id: CreationOptional<number>;
+  id: CreationOptional<string>;
   collection_id: CreationOptional<string>;
   author_id: CreationOptional<string>;
   name: string;

@@ -3,7 +3,7 @@ import db from '../services/db';
 import Collection from './collection';
 
 interface AdditionalFieldModel extends Model<InferAttributes<AdditionalFieldModel>, InferCreationAttributes<AdditionalFieldModel>> {
-    id: CreationOptional<number>;
+    id: CreationOptional<string>;
     name: string;
     type: string;
     collection_id: string;

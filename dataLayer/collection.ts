@@ -3,7 +3,7 @@ import db from '../services/db';
 import User from './user';
 
 interface CollectionModel extends Model<InferAttributes<CollectionModel>, InferCreationAttributes<CollectionModel>> {
-  id: CreationOptional<number>;
+  id: CreationOptional<string>;
   author_id: CreationOptional<string>;
   name: string;
   topic: String;

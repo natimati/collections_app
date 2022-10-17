@@ -2,7 +2,7 @@ import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttri
 import db from '../services/db';
 
 interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
-  id: CreationOptional<number>;
+  id: CreationOptional<string>;
   username: string;
   email: string;
   password: string;
