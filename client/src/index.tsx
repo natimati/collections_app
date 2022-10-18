@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './style';
 import 'react-quill/dist/quill.snow.css';
+import { UserContextProvider } from './context/UserContext.tsx';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <App />
+        <UserContextProvider>
+          <App />
+        </UserContextProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
