@@ -1,13 +1,16 @@
-import { Button, InputAdornment, TextField, Typography } from '@mui/material';
+import { useContext } from 'react';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AdditionalContainer, Container, Description } from './style';
 import { useNavigate } from 'react-router-dom';
+import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
+import { UserContext } from '../../context/UserContext.tsx';
+import { createCollection } from '../../api';
 
 interface Collection {
   name: string;
@@ -26,9 +29,9 @@ type FormFields = Pick<
   }[]
 };
 
-
 function CollectionCreator() {
   const navigate = useNavigate()
+  const { user } = useContext(UserContext)
 
   const {
     control, register, handleSubmit, formState: { errors }, setValue, getValues
@@ -38,27 +41,30 @@ function CollectionCreator() {
 
   const values = getValues();
 
-  const handleAddNewFiledClick = () => {
-    append({
-      name: '',
-      type: ''
-    })
-  };
+  const handleAddNewFiledClick = () => { append({ name: '', type: 'number' }) };
 
-  const handleRichDescriptionChange = (value: string) => {
-    setValue('description', value)
-  };
+  const handleRichDescriptionChange = (value: string) => { setValue('description', value) };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    if (!user) {
+      return navigate('/login')
+    }
     try {
-      console.log(data)
+      await createCollection({
+        author_id: user.id,
+        name: data.name,
+        topic: data.topic,
+        description: data.description,
+        image_url: data.image_url,
+        additional_fields: data.additional_fields
+      });
       return navigate("/");
     } catch (e) {
       console.log(e)
     }
   };
 
-  const onSubmitError: SubmitHandler<any> = (data) => console.log(data, errors);
+  const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);
 
   return (
     <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
@@ -126,7 +132,7 @@ function CollectionCreator() {
               label='Type'
               variant='outlined'
               fullWidth
-              defaultValue={'number'}              
+              defaultValue={'number'}
             >
               <MenuItem value={'number'}>number</MenuItem>
               <MenuItem value={'text'}>text</MenuItem>
@@ -135,7 +141,7 @@ function CollectionCreator() {
               <MenuItem value={'date'}>date</MenuItem>
             </Select>
             <Button type='button' onClick={() => remove(index)}>
-              <RemoveCircleIcon fontSize='large'/>
+              <RemoveCircleIcon fontSize='large' />
             </Button>
           </AdditionalContainer>
         )

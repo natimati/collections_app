@@ -4,6 +4,7 @@ import path from "path";
 
 import authRouter from "./routes/auth";
 import searchRouter from "./routes/search";
+import collectionsRouter from "./routes/collections"
 import itmesRouter from "./routes/items"
 
 class Server {
@@ -29,6 +30,7 @@ class Server {
   routes() {
     this.app.use("/api/auth", authRouter);
     this.app.use("/api/search", searchRouter);
+    this.app.use("/api/collections", collectionsRouter)
     this.app.use("/api/items", itmesRouter);
     this.app.get("*", (req, res) => {
       res.sendFile(

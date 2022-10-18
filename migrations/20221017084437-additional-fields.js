@@ -2,8 +2,8 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    return queryInterface.createTable('additional_field', {
+  async up(queryInterface, Sequelize) {
+    return queryInterface.createTable('additional_fields', {
       id: {
         type: Sequelize.DataTypes.UUID,
         primaryKey: true,
@@ -25,6 +25,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    return queryInterface.dropTable('additional_field');
+    return queryInterface.dropTable('additional_fields');
   }
 };

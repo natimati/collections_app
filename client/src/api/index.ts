@@ -14,7 +14,6 @@ export function login({ email, password }: { email: string, password: string }) 
     })
     .then((data) => {
       localStorage.setItem("token", data.token);
-
       return data;
     })
     .catch((e) => {
@@ -58,7 +57,7 @@ export function search(value: string) {
     .catch((e) => {
       console.log(e);
       throw e;
-  })
+    })
 };
 
 export function getLatestItems() {
@@ -93,4 +92,41 @@ export function getCollectionById(id: string) {
       console.log(e);
       throw e;
     })
-}
+};
+
+export function createCollection({
+  author_id, name, topic, description, image_url, additional_fields, 
+}: {
+    author_id: string
+    name: string,
+    topic: string,
+    description: string,
+    image_url?: string,
+    additional_fields: { name: string, type: string }[]
+  }) {
+  return fetch(baseUrl + '/api/collections/create', {
+    method: 'POST',
+    body: JSON.stringify({
+      author_id,
+      name, 
+      topic,
+      description,
+      image_url,
+      additional_fields
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
+};
+
+
+

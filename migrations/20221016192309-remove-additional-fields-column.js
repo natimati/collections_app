@@ -5,8 +5,8 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.removeColumn('collection', 'additional_fields', { transaction: t }),
-        queryInterface.createTable('additional_field', {
+        queryInterface.removeColumn('collections', 'additional_fields', { transaction: t }),
+        queryInterface.createTable('additional_fields', {
           id: {
             type: Sequelize.DataTypes.UUID,
             primaryKey: true,
@@ -14,11 +14,11 @@ module.exports = {
           },
           name: Sequelize.DataTypes.STRING,
           type: Sequelize.DataTypes.STRING,
-          collectionId: {
+          collection_id: {
             type: Sequelize.DataTypes.UUID,
             references: {
               model: {
-                tableName: 'collection'
+                tableName: 'collections'
               },
               key: 'id'
             },
@@ -40,8 +40,8 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.addColumn('collection', 'additional_fields', { type: Sequelize.DataTypes.JSON }, { transaction: t }),
-        queryInterface.dropTable('additional_field', { transaction: t })
+        queryInterface.addColumn('collections', 'additional_fields', { type: Sequelize.DataTypes.JSON }, { transaction: t }),
+        queryInterface.dropTable('additional_fields', { transaction: t })
       ])
     })
   },

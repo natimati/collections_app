@@ -2,7 +2,7 @@ import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttri
 import db from '../services/db';
 import Collection from './collection';
 
-interface AdditionalFieldModel extends Model<InferAttributes<AdditionalFieldModel>, InferCreationAttributes<AdditionalFieldModel>> {
+export interface AdditionalFieldModel extends Model<InferAttributes<AdditionalFieldModel>, InferCreationAttributes<AdditionalFieldModel>> {
     id: CreationOptional<string>;
     name: string;
     type: string;

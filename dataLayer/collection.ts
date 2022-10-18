@@ -1,14 +1,16 @@
-import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
+import { Model, DataTypes, NonAttribute, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 import db from '../services/db';
+import { AdditionalFieldModel } from './additionalField';
 import User from './user';
 
 interface CollectionModel extends Model<InferAttributes<CollectionModel>, InferCreationAttributes<CollectionModel>> {
   id: CreationOptional<string>;
-  author_id: CreationOptional<string>;
+  author_id: string;
   name: string;
   topic: String;
   description: String;
   image_url: CreationOptional<string>;
+  additional_fields?: AdditionalFieldModel[];
   created_at: CreationOptional<Date>;
   updated_at: CreationOptional<Date>;
 }
