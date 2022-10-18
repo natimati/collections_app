@@ -6,6 +6,7 @@ interface UserContextValue {
     setUser: (user: User | null) => void;
     setUserFromToken: (token: string) => void;
     isLoading: boolean;
+    logout: () => void;
 }
 
 interface User {
@@ -17,7 +18,7 @@ interface User {
 }
 
 export const UserContext = React.createContext<UserContextValue>({
-    user: null, setUser: () => undefined, isLoading: true, setUserFromToken: () => undefined,
+    user: null, setUser: () => undefined, isLoading: true, setUserFromToken: () => undefined, logout: () => undefined,
 });
 
 interface Props {
@@ -33,12 +34,18 @@ export function UserContextProvider({ children }: Props) {
         setUser(decoded);
     }, []);
 
+    const logout = useCallback(() => {
+        localStorage.removeItem("token");
+        setUser(null)
+    }, [])
+
     const contextValue = useMemo(() => ({
         user,
         setUser,
         isLoading: isLoadingUserData,
-        setUserFromToken
-    }), [user, isLoadingUserData, setUserFromToken]);
+        setUserFromToken,
+        logout
+    }), [user, isLoadingUserData, setUserFromToken, logout]);
 
     useEffect(() => {
         const token = localStorage.getItem("token");

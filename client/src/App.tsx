@@ -28,7 +28,7 @@ function App() {
         <Route
           path=""
           element={(
-            <Auth restricted>
+            <Auth>
               <MainPage />
             </Auth>
           )}
