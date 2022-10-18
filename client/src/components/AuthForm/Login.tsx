@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FormContainer, StyledButton, Text } from './style';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from '../../api';
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext.tsx';
 
 interface User {
   email: string;
@@ -17,12 +19,15 @@ function Login() {
     register, handleSubmit, formState: { errors },
   } = useForm<FormFields>();
 
+  const { setUserFromToken } = useContext(UserContext)
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await login({
+      const loginData = await login({
         email: data.email,
         password: data.password
       })
+      setUserFromToken(loginData.token)
       return navigate("/");
     } catch (e) {
       console.log(e);

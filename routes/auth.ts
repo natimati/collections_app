@@ -18,7 +18,7 @@ const validateInput = (req: Request, res: Response, next: NextFunction) => {
 }
 
 router.post('/login', [
-  check('email', 'Email is required').isEmpty(),
+  check('email', 'Email is required').not().isEmpty(),
   check('password', 'Password is required').not().isEmpty(),
   validateInput
 ], async (req: Request, res = response) => {

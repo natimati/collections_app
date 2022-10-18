@@ -16,9 +16,6 @@ export function login({ email, password }: { email: string, password: string }) 
       localStorage.setItem("token", data.token);
       return data;
     })
-    .catch((e) => {
-      console.log(e)
-    });
 };
 
 export function register({ username, email, password }: { username: string, email: string, password: string }) {
