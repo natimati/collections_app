@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
-import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext.tsx';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Menu from '@mui/material/Menu';
@@ -13,8 +14,6 @@ import LoginIcon from '@mui/icons-material/Login';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { theme } from '../../style';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext.tsx';
 
 function DropdownMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -26,7 +25,7 @@ function DropdownMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { user, setUser, logout } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
 
   const handleYourCollectionClick = () => {
     if (!user) {
@@ -41,24 +40,22 @@ function DropdownMenu() {
   };
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Menu">
-          <IconButton
-            onClick={handleClick}
-            sx={{ ml: 2 }}
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <MoreVertIcon
-              sx={{
-                width: 40,
-                height: 40,
-                fill: theme.palette.secondary.main
-              }} />
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <Tooltip title="Menu">
+        <IconButton
+          onClick={handleClick}
+          sx={{ ml: 2, margin: 0, padding: 0 }}
+          aria-controls={open ? 'account-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+        >
+          <MoreVertIcon
+            sx={{
+              width: 40,
+              height: 40,
+              fill: theme.palette.secondary.main,
+            }} />
+        </IconButton>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -126,34 +123,35 @@ function DropdownMenu() {
         </MenuItem>
         {user ? (
           <MenuItem onClick={logout}>
-          <ListItemIcon>
-            <Logout 
-              sx={{
-                width: 30,
-                height: 30,
-                fill: theme.palette.secondary.main
-              }}
-            />
-          </ListItemIcon>
-          Logout
+            <ListItemIcon>
+              <Logout
+                sx={{
+                  width: 30,
+                  height: 30,
+                  fill: theme.palette.secondary.main
+                }}
+              />
+            </ListItemIcon>
+            Logout
           </MenuItem>
         ) : (
-            <MenuItem onClick={handleLoginClick}>
-              <ListItemIcon>
-                <LoginIcon
-                  sx={{
-                    width: 30,
-                    height: 30,
-                    fill: theme.palette.secondary.main
-                  }}
-                />
-              </ListItemIcon>
-              Login
-            </MenuItem>            
+          <MenuItem onClick={handleLoginClick}>
+            <ListItemIcon>
+              <LoginIcon
+                sx={{
+                  width: 30,
+                  height: 30,
+                  fill: theme.palette.secondary.main
+                }}
+              />
+            </ListItemIcon>
+            Login
+          </MenuItem>
         )}
       </Menu>
     </>
-  );
-}
+
+  )
+};
 
 export default DropdownMenu;
