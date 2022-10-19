@@ -9,7 +9,7 @@ import ReactCountryFlag from "react-country-flag"
 
 function LanguageMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currentLanguage, setCurrentLanguage] = useState('EN');
+  const [currentLanguage, setCurrentLanguage] = useState('GB');
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

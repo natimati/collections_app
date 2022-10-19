@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
 import ThemeToggle from './ThemeToggle';
 import LanguageMenu from './LanguageMenu';
+import DropdownMenu from './DropdownMenu';
 
-function DropdownMenu() {
+function Menu() {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -14,4 +15,4 @@ function DropdownMenu() {
   );
 }
 
-export default DropdownMenu;
+export default Menu;
