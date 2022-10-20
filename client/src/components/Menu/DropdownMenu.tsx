@@ -14,7 +14,6 @@ import LoginIcon from '@mui/icons-material/Login';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { theme } from '../../style';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { Box } from '@mui/material';
 
 function DropdownMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

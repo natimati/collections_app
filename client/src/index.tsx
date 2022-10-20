@@ -8,6 +8,9 @@ import { ThemeProvider } from '@mui/material';
 import { theme } from './style';
 import 'react-quill/dist/quill.snow.css';
 import { UserContextProvider } from './context/UserContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,7 +20,9 @@ root.render(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <UserContextProvider>
-          <App />
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
         </UserContextProvider>
       </BrowserRouter>
     </ThemeProvider>

@@ -44,4 +44,16 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     }
 });
 
+router.get('/:author_id', async (req: Request, res = response) => {
+    try {
+        const collection = await collectionsModel.findOne({
+            where: { author_id: req.params.author_id }
+        });
+        res.json(collection)
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+});
+
 export default router;

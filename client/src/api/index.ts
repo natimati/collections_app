@@ -125,5 +125,19 @@ export function createCollection({
     });
 };
 
-
-
+export function getUserCollections(author_id: string) {
+  return fetch(baseUrl + '/api/collections/find/' + author_id, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+};

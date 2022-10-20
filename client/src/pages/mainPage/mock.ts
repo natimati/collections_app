@@ -1,0 +1,61 @@
+export const collectionsMock = [
+    {
+        id: '1',
+        author_id: '0105e1b3-7bfc-4d8f-bd47-60417746cdd7',
+        name: 'whiskies',
+        topic: 'alko',
+        description: 'Tasty alko',
+        image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        additional_fields: [],
+        created_at: new Date('2022-01-01').toLocaleDateString(),
+        updated_at: new Date('2022-01-01').toLocaleDateString(),
+    },
+
+    {
+        id: '2',
+        author_id: '0105e1b3-7bfc-4d8f-bd47-60417746cdd7',
+        name: 'whiskies',
+        topic: 'alko',
+        description: 'Tasty alko',
+        image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        additional_fields: [],
+        created_at: new Date('2022-01-01').toLocaleDateString(),
+        updated_at: new Date('2022-01-01').toLocaleDateString(),
+    },
+
+    {
+        id: '3',
+        author_id: '0105e1b3-7bfc-4d8f-bd47-60417746cdd7',
+        name: 'whiskies',
+        topic: 'alko',
+        description: 'Tasty alko',
+        image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        additional_fields: [],
+        created_at: new Date('2022-01-01').toLocaleDateString(),
+        updated_at: new Date('2022-01-01').toLocaleDateString(),
+    },
+
+    {
+        id: '4',
+        author_id: '0105e1b3-7bfc-4d8f-bd47-60417746cdd7',
+        name: 'whiskies',
+        topic: 'alko',
+        description: 'Tasty alko',
+        image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        additional_fields: [],
+        created_at: new Date('2022-01-01').toLocaleDateString(),
+        updated_at: new Date('2022-01-01').toLocaleDateString(),
+    },
+
+    {
+        id: '5',
+        author_id: '0105e1b3-7bfc-4d8f-bd47-60417746cdd7',
+        name: 'whiskies',
+        topic: 'alko',
+        description: 'Tasty alko',
+        image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        additional_fields: [],
+        created_at: new Date('2022-01-01').toLocaleDateString(),
+        updated_at: new Date('2022-01-01').toLocaleDateString(),
+    },
+]

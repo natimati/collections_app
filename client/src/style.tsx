@@ -18,6 +18,8 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: "#DC9D5F",
+      contrastText: 'white',
+
     },
     secondary: {
       main: "#404956"
@@ -31,8 +33,9 @@ export const theme = createTheme({
       color: "#404956",
     },
     h2: {
-      fontSize: 45,
-      textTtransform: 'uppercase'
+      fontSize: 60,
+      textTransform: 'uppercase',
+      color: "white",
     },
     h3: {
       fontSize: 25,
