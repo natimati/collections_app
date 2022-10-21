@@ -1,4 +1,4 @@
-import { Input, InputAdornment } from "@mui/material"
+import { InputAdornment, TextField } from "@mui/material"
 import SearchIcon from '@mui/icons-material/Search';
 import { search } from "../../api";
 
@@ -10,15 +10,17 @@ function SearchInput() {
 
   return (
     <>
-      <Input
+      <TextField
         placeholder="Search…"
         onChange={handleChange}
         inputProps={{ 'aria-label': 'search' }}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        }
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
       />
     </>
   )

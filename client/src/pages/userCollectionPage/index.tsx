@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserCollections } from '../../api';
 import { collectionsMock } from './mock';
 import Header from '../../components/Header';
+import CreateCollection from '../../components/CreateCollection';
 
 function UserCollectionPage() {
   const { user } = useContext(UserContext);
@@ -50,6 +51,16 @@ function UserCollectionPage() {
             />
           </Grid>
         ))}
+          <Grid item desktop={6} tablet={12} mobile={12}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: 'fit-content',
+              alignSelf: 'center',
+            }}
+          >
+            <CreateCollection authorId={collectionsMock[0].author_id} />  
+          </Grid>
       </Grid>
       </Container>
     </>
