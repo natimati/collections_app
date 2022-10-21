@@ -12,6 +12,7 @@ export const Container = styled.div`
   max-width: 600px;
   width: 100%;
   height: 350px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
   
   &:hover{
     background-image: 
