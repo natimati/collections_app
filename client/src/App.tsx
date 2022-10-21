@@ -3,6 +3,7 @@ import Auth from "./components/Auth";
 import AuthForm from "./components/AuthForm";
 import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
+import UserCollectionPage from "./pages/userCollectionPage";
 
 function App() {
 
@@ -32,6 +33,10 @@ function App() {
               <MainPage />
             </Auth>
           )}
+        />
+        <Route
+          path="collections/:userId"
+          element={<UserCollectionPage />}
         />
       </Routes>
     </div>
