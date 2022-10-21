@@ -37,8 +37,9 @@ export const theme = createTheme({
       color: "white",
     },
     h3: {
-      fontSize: 25,
-      textTtransform: 'uppercase'
+      fontSize: 30,
+      textTransform: 'uppercase',
+      color: "#404956",
     },
     subtitle1: {
       fontSize: 25,

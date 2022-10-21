@@ -4,6 +4,7 @@ import AuthForm from "./components/AuthForm";
 import CollectionCreator from "./components/CollectionCreator";
 import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
+import SingleCollectionPage from "./pages/singleCollectionPage";
 import UserCollectionPage from "./pages/userCollectionPage";
 
 function App() {
@@ -43,9 +44,13 @@ function App() {
           path='collection_creator'
           element={(
             <Auth restricted>
-              <CollectionCreator /> 
+              <CollectionCreator />
             </Auth>
           )}
+        />
+        <Route
+          path=':collectionId'
+          element={ <SingleCollectionPage /> }
         />
       </Routes>
     </div>

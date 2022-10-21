@@ -12,9 +12,9 @@ function UserCollectionPage() {
   const params = useParams();
 
   const { isLoading, error, data } = useQuery(
-    ['collections'],
+    ['collections', params.userId],
     () => {
-      if (!params.userId) { return }
+      if (!params.userId) { return null }
       return getUserCollections(params.userId)
     }
   );
