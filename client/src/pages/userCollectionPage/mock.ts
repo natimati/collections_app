@@ -58,4 +58,4 @@ export const collectionsMock = [
         created_at: new Date('2022-01-01').toLocaleDateString(),
         updated_at: new Date('2022-01-01').toLocaleDateString(),
     },
-]
+];

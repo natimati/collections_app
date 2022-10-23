@@ -5,13 +5,13 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserCollections } from '../../api';
 import { collectionsMock } from './mock';
 import Header from '../../components/Header';
-import CreateCollectionButton from '../../components/CreateCollectionButton';
+import CreateElementButton from '../../components/CreateElementButton';
 import { useParams } from 'react-router-dom';
 
 function UserCollectionPage() {
   const params = useParams();
 
-  const { isLoading, error, data } = useQuery(
+  const { data } = useQuery(
     ['collections', params.userId],
     () => {
       if (!params.userId) { return null }
@@ -63,7 +63,10 @@ function UserCollectionPage() {
               alignSelf: 'center',
             }}
           >
-            <CreateCollectionButton authorId={params.userId} />
+            <CreateElementButton
+              authorId={params.userId}
+              urlAdress='collection/new'
+            />
           </Grid>
         </Grid>
       </Container>

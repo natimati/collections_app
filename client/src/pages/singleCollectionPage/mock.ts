@@ -1,3 +1,15 @@
+export const tagMock = [
+    {
+        id: '1',
+        name: 'strong',
+    },
+    {
+        id: '1',
+        name: 'tasty',
+    }
+
+]
+
 export const collectionsMock = [
     {
         id: '1',
@@ -21,6 +33,7 @@ export const itemsMock = [
         image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         created_at: new Date('2022-01-01').toLocaleDateString(),
         updated_at: new Date('2022-01-01').toLocaleDateString(),
+        tags: tagMock
     },
     {
         id: '234',
@@ -30,6 +43,7 @@ export const itemsMock = [
         image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         created_at: new Date('2022-01-01').toLocaleDateString(),
         updated_at: new Date('2022-01-01').toLocaleDateString(),
+        tags: tagMock
     },
     {
         id: '345',
@@ -39,6 +53,7 @@ export const itemsMock = [
         image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         created_at: new Date('2022-01-01').toLocaleDateString(),
         updated_at: new Date('2022-01-01').toLocaleDateString(),
+        tags: tagMock
     },
     {
         id: '456',
@@ -48,5 +63,6 @@ export const itemsMock = [
         image_url: 'https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         created_at: new Date('2022-01-01').toLocaleDateString(),
         updated_at: new Date('2022-01-01').toLocaleDateString(),
+        tags: tagMock
     },
 ]

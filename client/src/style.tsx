@@ -42,8 +42,10 @@ export const theme = createTheme({
       color: "#404956",
     },
     subtitle1: {
-      fontSize: 25,
-      color: 'red',
+      fontSize: 30,
+      textTransform: 'uppercase',
+      color: 'white',
+      lineHeight: '1.2',
     },
     caption: {
       fontSize: 20,
@@ -57,6 +59,9 @@ export const theme = createTheme({
     body1: {
       fontSize: 18,
     },
+    body2: {
+      fontSize: 22,
+    }
 
   },
   breakpoints: {

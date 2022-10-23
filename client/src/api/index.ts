@@ -74,6 +74,23 @@ export function getLatestItems() {
     })
 };
 
+export function getItemsByCollectionId(collection_id: string) {
+  return fetch(baseUrl + '/api/items/find/' + collection_id, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+}
+
 export function getCollectionById(id: string) {
   return fetch(baseUrl + '/api/collections/find/' + id, {
     method: 'GET',
@@ -106,6 +123,38 @@ export function createCollection({
     body: JSON.stringify({
       author_id,
       name, 
+      topic,
+      description,
+      image_url,
+      additional_fields
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
+};
+export function updateCollection({
+  id, name, topic, description, image_url, additional_fields,
+}: {
+  id: string
+  name?: string,
+  topic?: string,
+  description?: string,
+  image_url?: string,
+  additional_fields?: { name: string, type: string }[]
+}) {
+  return fetch(baseUrl + '/api/collections/update', {
+    method: 'POST',
+    body: JSON.stringify({
+      name,
       topic,
       description,
       image_url,
