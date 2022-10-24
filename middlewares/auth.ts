@@ -9,37 +9,43 @@ const authMiddlewere = async (
     res: Response,
     next: NextFunction
 ) => {
-    
+
     const token = (req.headers.authorization || "")
         .replace("Bearer ", "");
     try {
         const decoded = jwt.decode(token) as { id: string };
-        if (decoded.id) {
-            await userModel.findOne({
-                where: { id: decoded.id }, rejectOnEmpty: true
-            });
+
+        if (!decoded || !decoded.id) {
+            throw new Error("Token not available")
+        }
+
+        const user = await userModel.findOne({
+            where: { id: decoded.id }
+        });
+
+        if (!user) {
+            throw new Error("User not found")
         }
 
     } catch (e) {
         return res
             .status(401)
-            .json({ message: "It's not authorized, token not available" })
+            .json({ message: (e as Error).message })
     }
 
     if (token) {
-        jwt.verify(token, tokenJwtSecret, (e) => {
+        return jwt.verify(token, tokenJwtSecret, (e) => {
             if (e) {
-                return res.status(401).json({ message: "It's not authorized" })
+                return res.status(401).json({ message: "Token is not valid" })
             }
             next();
             return null
         });
-    } else {
-        return res
-            .status(401)
-            .json({ message: "It's not authorized, token not available" })
     }
-    return null;
+
+    return res
+        .status(401)
+        .json({ message: "Unauthorized" })
 };
 
 export default authMiddlewere;

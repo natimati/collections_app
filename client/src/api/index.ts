@@ -75,7 +75,7 @@ export function getLatestItems() {
 };
 
 export function getItemsByCollectionId(collection_id: string) {
-  return fetch(baseUrl + '/api/items/find/' + collection_id, {
+  return fetch(baseUrl + '/api/items/' + collection_id, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   })
@@ -92,7 +92,7 @@ export function getItemsByCollectionId(collection_id: string) {
 }
 
 export function getCollectionById(id: string) {
-  return fetch(baseUrl + '/api/collections/find/' + id, {
+  return fetch(baseUrl + '/api/collections/' + id, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   })
@@ -109,26 +109,27 @@ export function getCollectionById(id: string) {
 };
 
 export function createCollection({
-  author_id, name, topic, description, image_url, additional_fields, 
+  author_id, name, topic, description, image_url, additional_fields,
 }: {
-    author_id: string
-    name: string,
-    topic: string,
-    description: string,
-    image_url?: string,
-    additional_fields: { name: string, type: string }[]
-  }) {
+  author_id: string
+  name: string,
+  topic: string,
+  description: string,
+  image_url?: string,
+  additional_fields: { name: string, type: string }[]
+}) {
+
   return fetch(baseUrl + '/api/collections/create', {
     method: 'POST',
     body: JSON.stringify({
       author_id,
-      name, 
+      name,
       topic,
       description,
       image_url,
       additional_fields
     }),
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
   })
     .then((response) => {
       if (!response.ok) {
@@ -141,6 +142,7 @@ export function createCollection({
       throw e;
     });
 };
+
 export function updateCollection({
   id, name, topic, description, image_url, additional_fields,
 }: {
@@ -154,13 +156,32 @@ export function updateCollection({
   return fetch(baseUrl + '/api/collections/update', {
     method: 'POST',
     body: JSON.stringify({
+      id,
       name,
       topic,
       description,
       image_url,
       additional_fields
     }),
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
+};
+
+export function deleteCollection(collectionId: string) {
+  return fetch(baseUrl + '/api/collections/delete', {
+    method: 'DELETE',
+    body: JSON.stringify({collectionId}),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
   })
     .then((response) => {
       if (!response.ok) {

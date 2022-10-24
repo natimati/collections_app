@@ -8,7 +8,7 @@ import Header from '../../components/Header';
 import CreateElementButton from '../../components/CreateElementButton';
 import { useParams } from 'react-router-dom';
 
-function UserCollectionPage() {
+function UserCollectionsPage() {
   const params = useParams();
 
   const { data } = useQuery(
@@ -52,6 +52,7 @@ function UserCollectionPage() {
                 authorId={collection.author_id}
                 name={collection.name}
                 topic={collection.topic}
+                collectionId={collection.id}
               />
             </Grid>
           ))}
@@ -74,4 +75,4 @@ function UserCollectionPage() {
   )
 };
 
-export default UserCollectionPage;
+export default UserCollectionsPage;

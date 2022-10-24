@@ -44,3 +44,18 @@ export const IconContainer = styled.div`
   align-items: flex-end;
   justify-content: flex-end;
 `;
+
+export const Button = styled.button`
+background-color: transparent;
+border: none; 
+padding: 0;
+margin: 0;
+cursor: pointer;
+border: solid 1px transparent;
+
+ & :hover {
+  border: solid 1px ${theme.palette.primary.contrastText};
+  border-radius: 5px;
+}
+`;
+
