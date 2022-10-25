@@ -57,23 +57,6 @@ export function search(value: string) {
     })
 };
 
-export function getLatestItems() {
-  return fetch(baseUrl + '/api/items/latest', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
-};
-
 export function getItemsByCollectionId(collection_id: string) {
   return fetch(baseUrl + '/api/items/' + collection_id, {
     method: 'GET',
@@ -210,4 +193,59 @@ export function getUserCollections(author_id: string) {
       console.log(e);
       throw e;
     })
+};
+
+export function getLatestItems() {
+  return fetch(baseUrl + '/api/items/latest', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+};
+
+export function createItem({
+  collection_id, author_id, name, image_url, item_properties,
+}: {
+  collection_id: string,
+  author_id: string,
+  name: string,
+  image_url?: string,
+  item_properties: {
+      additional_field_id: string,
+      collection_id: string,
+      item_id: string,
+      value: string,
+    }[]
+}) {
+
+  return fetch(baseUrl + '/api/items/create', {
+    method: 'POST',
+    body: JSON.stringify({
+      collection_id,
+      author_id,
+      name,
+      image_url,
+      item_properties
+    }),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
 };

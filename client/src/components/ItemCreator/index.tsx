@@ -1,26 +1,31 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
-import AddIcon from '@mui/icons-material/Add';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { AdditionalContainer, Container, Description } from './style';
+import { Container } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
+import { getItemNameError } from './helpers';
 import { UserContext } from '../../context/UserContext.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getCollectionById } from '../../api';
+import ItemPropertyField from './ItemPropertyField';
 
 interface Item {
   collection_id: string;
   author_id: string;
   name: string;
   image_url: string;
+  item_properties: ItemProperty[];
+}
+interface ItemProperty {
+  name: string;
+  value: string;
+  additional_field_id: string;
+  type: string;
 }
 
-type FormFields = Pick<Item, "name" | "image_url">
+type FormFields = Pick<Item, "name" | "image_url"> &
+{ item_properties: ItemProperty[] };
 
 function ItemCreator() {
   const navigate = useNavigate();
@@ -28,29 +33,49 @@ function ItemCreator() {
   const params = useParams();
 
   const {
-    control, register, handleSubmit, formState: { errors }, setValue, getValues, reset
+    control, watch, register, handleSubmit, formState: { errors }, setValue, getValues, reset
   } = useForm<FormFields>();
 
-  const values = getValues();
+  const { fields } = useFieldArray<FormFields>({ control, name: "item_properties" });
 
-  const { data } = useQuery(
+  const values = watch();
+  console.log('values', values)
+
+  const { data: collection } = useQuery(
     ['collection', params.collectionId],
     () => {
       if (!params.collectionId) { return null }
       return getCollectionById(params.collectionId)
-        .then(collection => {
-          // reset({
-          //   additional_fields: collection?.additional_fields
-          // })
-          return collection
-        })
     }
   );
+
+  useEffect(() => {
+    if (!collection || !collection.additional_fields) {
+      return;
+    }
+
+    reset({
+      item_properties: collection.additional_fields
+        .map((field: {
+          id: string,
+          name: string,
+          type: string
+        }) => {
+          return {
+            additional_field_id: field.id,
+            name: field.name,
+            type: field.type,
+            value: ''
+          }
+        })
+    })
+  }, [collection, reset])
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     if (!user) {
       return navigate('/login')
     }
+    console.log(data)
     //   try {
     //     await createCollection({
     //       collection_id: params.collection_id,
@@ -69,7 +94,7 @@ function ItemCreator() {
 
   return (
     <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
-      <Typography variant='h1'>Create new collection</Typography>
+      <Typography variant='h1'>{collection?.name} collection new item </Typography>
       <TextField
         type='text'
         {...register('name', { required: true })}
@@ -77,7 +102,7 @@ function ItemCreator() {
         label='Title'
         fullWidth
         error={!!errors.name}
-        helperText={getCollectionNameError(errors)}
+        helperText={getItemNameError(errors)}
       />
       <TextField
         InputProps={{
@@ -94,38 +119,21 @@ function ItemCreator() {
         type='text'
         placeholder="Add image url adress"
       />
-      {/* {fields.map((field, index) => {
-          return (
-            <AdditionalContainer key={field.id}>
-              <TextField
-                type='text'
-                {...register(`additional_fields.${index}.name`, { required: true })}
-                label='Name'
-                id={`${field.id}-name`}
-                fullWidth
-                error={!!errors.name}
-                helperText={getAdditionalFieldNameError(errors)}
-              />
-              <Select
-                {...register(`additional_fields.${index}.type`, { required: true })}
-                id={`${field.id}-type`}
-                label='Type'
-                variant='outlined'
-                fullWidth
-                defaultValue={'number'}
-              >
-                <MenuItem value={'number'}>number</MenuItem>
-                <MenuItem value={'text'}>text</MenuItem>
-                <MenuItem value={'multiline_text'}>multiline text</MenuItem>
-                <MenuItem value={'boolean'}>boolean checkbox</MenuItem>
-                <MenuItem value={'date'}>date</MenuItem>
-              </Select>
-              <Button type='button' onClick={() => remove(index)}>
-                <RemoveCircleIcon fontSize='large' />
-              </Button>
-            </AdditionalContainer>
-          )
-        })} */}
+      {fields.map((field, index) => {
+        return (
+          <ItemPropertyField
+            key={`${field.id}-value`}
+            type={field.type}
+            value={values.item_properties[index].value}
+            register={register}
+            index={index}
+            name={field.name}
+            id={`${field.id}-value`}
+            errors={errors}
+            setValue={setValue}
+          />
+        )
+      })}
       <Button variant="contained" type='submit'>create</Button>
     </Container>
   )

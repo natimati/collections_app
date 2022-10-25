@@ -1,26 +1,16 @@
 import { FieldError, FieldErrorsImpl } from "react-hook-form";
 
-export const getCollectionNameError = (errors: FieldErrorsImpl<{
+export const getItemNameError = (errors: FieldErrorsImpl<{
   name: string;
 }>) => {
   const error: FieldError | undefined = errors.name;
   switch (error?.type) {
     case 'required':
-      return 'Please enter collection name'
+      return 'Please enter item name'
   }
 };
 
-export const getCollectionTopicError = (errors: FieldErrorsImpl<{
-  topic: string;
-}>) => {
-  const error: FieldError | undefined = errors.topic;
-  switch (error?.type) {
-    case 'required':
-      return 'Please choose collection topic'
-  }
-};
-
-export const getAdditionalFieldNameError = (errors: FieldErrorsImpl<{
+export const getItemPropertyFieldError = (errors: FieldErrorsImpl<{
   name: string;
 }>) => {
   const error: FieldError | undefined = errors.name;
@@ -29,4 +19,3 @@ export const getAdditionalFieldNameError = (errors: FieldErrorsImpl<{
       return 'Please enter additional field name'
   }
 };
-

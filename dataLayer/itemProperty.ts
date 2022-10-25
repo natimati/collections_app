@@ -57,3 +57,5 @@ ItemProperty.belongsTo(AdditionalField, {
     targetKey: 'id',
     as: 'additional_field'
 });
+
+export default ItemProperty;

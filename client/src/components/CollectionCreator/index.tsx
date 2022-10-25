@@ -34,12 +34,12 @@ function CollectionCreator() {
   const { user } = useContext(UserContext)
 
   const {
-    control, register, handleSubmit, formState: { errors }, setValue, getValues
+    control, watch, register, handleSubmit, formState: { errors }, setValue, getValues
   } = useForm<FormFields>();
 
   const { fields, append, remove } = useFieldArray<FormFields>({ control, name: "additional_fields" });
 
-  const values = getValues();
+  const values = watch();
 
   const handleAddNewFiledClick = () => { append({ name: '', type: 'number' }) };
 
@@ -139,6 +139,7 @@ function CollectionCreator() {
               <MenuItem value={'multiline_text'}>multiline text</MenuItem>
               <MenuItem value={'boolean'}>boolean checkbox</MenuItem>
               <MenuItem value={'date'}>date</MenuItem>
+              <MenuItem value={'rating'}>rating</MenuItem>
             </Select>
             <Button type='button' onClick={() => remove(index)}>
               <RemoveCircleIcon fontSize='large' />

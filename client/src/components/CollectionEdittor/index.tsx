@@ -33,7 +33,7 @@ function CollectionEditor() {
   const navigate = useNavigate()
   const params = useParams();
   const {
-    control, register, handleSubmit, formState: { errors }, setValue, getValues, reset,
+    control, watch, register, handleSubmit, formState: { errors }, setValue, getValues, reset,
   } = useForm<FormFields>();
 
   const { data } = useQuery(
@@ -57,7 +57,7 @@ function CollectionEditor() {
 
   const { fields, append, remove } = useFieldArray<FormFields>({ control, name: "additional_fields" });
 
-  const values = getValues();
+  const values = watch();
 
   const handleAddNewFiledClick = () => { append({ name: '', type: 'number' }) };
 

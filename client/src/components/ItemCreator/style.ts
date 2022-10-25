@@ -10,12 +10,12 @@ export const Container = styled.form`
   justify-content: center;
   justify-self: center;
   margin: 10px;
-  max-width: 1000px;
+  max-width: 600px;
   width: 100%;
 `;
 
 export const Description = styled(ReactQuill)`
-  max-width: 1000px;
+  max-width: 600px;
   width: 100%;
   margin-bottom: 20px;
   border: 2px solid ${theme.palette.primary.main};
@@ -41,11 +41,7 @@ export const Description = styled(ReactQuill)`
       stroke: ${theme.palette.secondary.main}
     }
   };
-`;
-
-export const AdditionalContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: 20px;
+  & .ql-editor {
+    font-size: 18px;
+  }
 `;
