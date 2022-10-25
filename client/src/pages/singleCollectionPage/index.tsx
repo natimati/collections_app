@@ -52,7 +52,12 @@ function SingleCollectionPage() {
           }}
         >
           {items.map((item) => (
-            <Grid item desktop={6} tablet={12} mobile={12}
+            <Grid
+              key={item.id}
+              item
+              desktop={6}
+              tablet={12}
+              mobile={12}
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -61,7 +66,6 @@ function SingleCollectionPage() {
               }}
             >
               <SingleItem
-                key={item.id}
                 name={item.name}
                 image_url={item.image_url}
                 author_id={item.author_id}

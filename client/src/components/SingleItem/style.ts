@@ -1,22 +1,26 @@
 import styled from "styled-components";
 import { theme } from "../../style";
+interface Props {
+  image_url: string
+}
 
-export const Container = styled.div`
-position: relative;
+export const Container = styled.div<Props>`
+  position: relative;
   width: 100%;
-  background-image: 
-    url('https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-color: ${theme.palette.secondary.main};
+  background-image: url(${props => props.image_url});
   background-size: cover;
   background-position: center;
   max-width: 600px;
   width: 100%;
   height: 350px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
-
+  
   &:hover{
+    background-color: none;
     background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-      url('https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url(${props => props.image_url});
   }
 `;
 

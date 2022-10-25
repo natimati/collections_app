@@ -47,7 +47,6 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
             {
                 additional_field_id: string,
                 collection_id: string,
-                item_id: string,
                 value: string
             }) => {
             return ({

@@ -7,7 +7,7 @@ import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { getItemNameError } from './helpers';
 import { UserContext } from '../../context/UserContext.tsx';
 import { useQuery } from '@tanstack/react-query';
-import { getCollectionById } from '../../api';
+import { createItem, getCollectionById } from '../../api';
 import ItemPropertyField from './ItemPropertyField';
 
 interface Item {
@@ -75,19 +75,28 @@ function ItemCreator() {
     if (!user) {
       return navigate('/login')
     }
-    console.log(data)
-    //   try {
-    //     await createCollection({
-    //       collection_id: params.collection_id,
-    //       author_id: user.id,
-    //       name: data.name,
-    //       image_url: data.image_url,
-    //       item_properties: data.item_properties
-    //     });
-    //     return navigate("/");
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
+    if (!params.collectionId) {
+      return 
+    }
+    const collectionId = params.collectionId;
+    try {
+      await createItem({
+        collection_id: collectionId,
+        author_id: user.id,
+        name: data.name,
+        image_url: data.image_url,
+        item_properties: data.item_properties.map(item => {
+          return {
+            additional_field_id: item.additional_field_id,
+            collection_id: collectionId,
+            value: item.value   
+        }
+        })
+      });
+      return navigate("/");
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);

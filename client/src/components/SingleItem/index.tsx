@@ -21,7 +21,7 @@ function SingleItem(props: Props) {
   const { user } = useContext(UserContext);
 
   return (
-    <Container>
+    <Container image_url={props.image_url}>
       <DetailsContainer>
         <HeaderWrapper>
           <Typography
