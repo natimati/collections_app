@@ -57,7 +57,13 @@ export function search(value: string) {
     })
 };
 
-export function getItemsByCollectionId(collection_id: string) {
+export function getItemsByCollectionId(collection_id: string): Promise<{
+  id: string,
+  collection_id: string,
+  author_id: string,
+  name: string,
+  image_url: string,
+}[]> {
   return fetch(baseUrl + '/api/items/' + collection_id, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -163,7 +169,7 @@ export function updateCollection({
 export function deleteCollection(collectionId: string) {
   return fetch(baseUrl + '/api/collections/delete', {
     method: 'DELETE',
-    body: JSON.stringify({collectionId}),
+    body: JSON.stringify({ collectionId }),
     headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
   })
     .then((response) => {
@@ -178,7 +184,13 @@ export function deleteCollection(collectionId: string) {
     });
 };
 
-export function getUserCollections(author_id: string) {
+export function getUserCollections(author_id: string): Promise<{
+  id: string,
+  author_id: string,
+  name: string,
+  topic: string,
+  image_url: string,
+}[]> {
   return fetch(baseUrl + '/api/collections/find/' + author_id, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
@@ -220,11 +232,11 @@ export function createItem({
   name: string,
   image_url?: string,
   item_properties: {
-      additional_field_id: string,
-      collection_id: string,
-      item_id: string,
-      value: string,
-    }[]
+    additional_field_id: string,
+    collection_id: string,
+    item_id: string,
+    value: string,
+  }[]
 }) {
 
   return fetch(baseUrl + '/api/items/create', {

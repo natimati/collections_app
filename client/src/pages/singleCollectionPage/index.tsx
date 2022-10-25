@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getCollectionById, getItemsByCollectionId } from "../../api";
-import { collectionsMock, itemsMock } from "./mock";
+import { itemsMock } from "./mock";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -30,15 +30,15 @@ function SingleCollectionPage() {
   );
 
   const collection = collectionData;
-  const items = itemsData;
+  const items = itemsData || [];
 
   return (
     <>
       <Header />
       <div>
-        <Typography variant='h1'>{collectionsMock[0].name}</Typography>
-        <Typography variant='h3'>{collectionsMock[0].topic}</Typography>
-        <Typography variant="body1">{collectionsMock[0].description}</Typography>
+        <Typography variant='h1'>{collection?.name}</Typography>
+        <Typography variant='h3'>{collection?.topic}</Typography>
+        <Typography variant="body1">{collection?.description}</Typography>
       </div>
       <Container maxWidth='desktop'>
         <Grid
@@ -51,7 +51,7 @@ function SingleCollectionPage() {
             margin: '0 auto',
           }}
         >
-          {itemsMock.map((item) => (
+          {items.map((item) => (
             <Grid item desktop={6} tablet={12} mobile={12}
               sx={{
                 display: 'flex',
@@ -61,10 +61,11 @@ function SingleCollectionPage() {
               }}
             >
               <SingleItem
+                key={item.id}
                 name={item.name}
                 image_url={item.image_url}
                 author_id={item.author_id}
-                tags={item.tags}
+                tags={itemsMock[0].tags}
               />
             </Grid>
           ))}
@@ -77,8 +78,8 @@ function SingleCollectionPage() {
             }}
           >
             <CreateElementButton
-              authorId={collectionsMock[0].author_id}
-              urlAdress='collection/new'
+              authorId={collection?.author_id}
+              urlAdress={`collection/${collection?.id}/new-item`}
             />
           </Grid>
         </Grid>

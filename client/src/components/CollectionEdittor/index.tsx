@@ -159,8 +159,9 @@ function CollectionEditor() {
               <MenuItem value={'number'}>number</MenuItem>
               <MenuItem value={'text'}>text</MenuItem>
               <MenuItem value={'multiline_text'}>multiline text</MenuItem>
-              <MenuItem value={'boolean'}>boolean checkbox</MenuItem>
+              <MenuItem value={'boolean'}>boolean</MenuItem>
               <MenuItem value={'date'}>date</MenuItem>
+              <MenuItem value={'rating'}>rating</MenuItem>
             </Select>
             <Button type='button' onClick={() => remove(index)}>
               <RemoveCircleIcon fontSize='large' />

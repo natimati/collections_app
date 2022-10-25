@@ -3,7 +3,6 @@ import Container from '@mui/material/Container';
 import CollectionItem from "../../components/CollectionItem";
 import { useQuery } from '@tanstack/react-query'
 import { getUserCollections } from '../../api';
-import { collectionsMock } from './mock';
 import Header from '../../components/Header';
 import CreateElementButton from '../../components/CreateElementButton';
 import { useParams } from 'react-router-dom';
@@ -38,7 +37,7 @@ function UserCollectionsPage() {
             margin: '0 auto',
           }}
         >
-          {collectionsMock.map((collection) => (
+          {userCollections.map((collection) => (
             <Grid item desktop={6} tablet={12} mobile={12}
               sx={{
                 display: 'flex',
@@ -53,6 +52,7 @@ function UserCollectionsPage() {
                 name={collection.name}
                 topic={collection.topic}
                 collectionId={collection.id}
+                image_url={collection.image_url}
               />
             </Grid>
           ))}

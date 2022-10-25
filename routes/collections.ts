@@ -83,9 +83,9 @@ router.post('/update', [authMiddlewere], async (req: Request, res = response) =>
 });
 
 
-router.get('/:author_id', async (req: Request, res = response) => {
+router.get('/find/:author_id', async (req: Request, res = response) => {
     try {
-        const collection = await collectionsModel.findOne({
+        const collection = await collectionsModel.findAll({
             where: { author_id: req.params.author_id }
         });
         res.json(collection)

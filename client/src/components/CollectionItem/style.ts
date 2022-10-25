@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import { theme } from "../../style";
 
+interface Props {
+  image_url: string
+}
 
-export const Container = styled.div`
+export const Container = styled.div<Props>`
   position: relative;
   width: 100%;
-  background-image: 
-    url('https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-color: ${theme.palette.secondary.main};
+  background-image: url(${props => props.image_url});
   background-size: cover;
   background-position: center;
   max-width: 600px;
@@ -15,9 +18,10 @@ export const Container = styled.div`
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
   
   &:hover{
+    background-color: none;
     background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-      url('https://images.pexels.com/photos/33044/sunflower-sun-summer-yellow.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url(${props => props.image_url});
   }
 `;
 
@@ -43,6 +47,8 @@ export const IconContainer = styled.div`
   width: 100%;
   align-items: flex-end;
   justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 10px;
 `;
 
 export const Button = styled.button`
@@ -51,11 +57,5 @@ border: none;
 padding: 0;
 margin: 0;
 cursor: pointer;
-border: solid 1px transparent;
-
- & :hover {
-  border: solid 1px ${theme.palette.primary.contrastText};
-  border-radius: 5px;
-}
 `;
 
