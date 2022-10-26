@@ -24,7 +24,7 @@ export const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Cardo',
+    fontFamily: 'Cardo, Raleway',
     h1: {
       fontSize: 60,
       textTransform: 'uppercase',
@@ -56,11 +56,15 @@ export const theme = createTheme({
       color: "#404956",
     },
     body1: {
-      fontSize: 18,
-      color: 'white'
+      fontSize: 20,
+      color: "#404956",
     },
     body2: {
-      fontSize: 22,
+      fontSize: 18,
+      color: 'white',
+      fontFamily: 'Raleway',
+      fontWeight: '300',
+      
     }
 
   },

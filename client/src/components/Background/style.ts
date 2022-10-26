@@ -11,7 +11,7 @@ export const LeftCloud = styled.img`
   position: fixed;
   top: 600px;
   left: 0px;
-  width: 200px;
+  width: 250px;
   z-index: -1;
 `;
 

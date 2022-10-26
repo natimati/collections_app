@@ -61,8 +61,8 @@ function LatestItems() {
                 <Overlay>
                   <TextContainer>
                     <Typography variant='subtitle1'>{item.name}</Typography>
-                    <Typography variant='body1'>in {item.collection.name} collection</Typography>
-                    <Typography variant='body1'>by {item.author.username}</Typography>
+                    <Typography variant='body2'>in {item.collection.name} collection</Typography>
+                    <Typography variant='body2'>by {item.author.username}</Typography>
                   </TextContainer>
                 </Overlay>
               </ImageContainer>

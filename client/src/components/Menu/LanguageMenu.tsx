@@ -35,8 +35,8 @@ function LanguageMenu() {
         >
           <LanguageIcon
             sx={{
-              width: 40,
-              height: 40,
+              width: 50,
+              height: 50,
               fill: theme.palette.secondary.main
             }}
           />

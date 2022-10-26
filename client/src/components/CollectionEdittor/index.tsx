@@ -3,10 +3,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AdditionalContainer, Container, Description } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, InputAdornment, TextField, Typography } from '@mui/material';
+import { Button, Fab, InputAdornment, TextField, Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
 import { getCollectionById, updateCollection } from '../../api';
 import { useQuery } from '@tanstack/react-query';
@@ -86,91 +86,124 @@ function CollectionEditor() {
   const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);
 
   return (
-    <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
-      <Typography variant='h1'>Edit your {data?.name} collection</Typography>
-      <TextField
-        type='text'
-        {...register('name', { required: true })}
-        id='name'
-        label='Title'
-        fullWidth
-        error={!!errors.name}
-        helperText={getCollectionNameError(errors)}
-        InputLabelProps={{ shrink: true }}
-      />
-      <TextField
-        type='text'
-        {...register('topic', { required: true })}
-        id='topic'
-        label='Topic'
-        fullWidth
-        error={!!errors.topic}
-        helperText={getCollectionTopicError(errors)}
-        InputLabelProps={{ shrink: true }}
-      />
-      <Description
-        theme="snow"
-        value={values.description}
-        placeholder='Describe your collection'
-        onChange={handleRichDescriptionChange}
-      />
-      <TextField
-        InputProps={{
-          startAdornment: (
-            < InputAdornment position="start">
-              <AddPhotoAlternateOutlinedIcon />
-            </InputAdornment>
-          ),
+    <>
+      <Typography variant='h1'
+        sx={{
+          margin: '20px',
+          marginTop: '50px'
         }}
-        fullWidth
-        color='primary'
-        id='image-url'
-        {...register('image_url')}
-        type='text'
-        placeholder="Add image url adress"
-        InputLabelProps={{ shrink: true }}
-      />
-      {fields.length < 3 && (
-        <Button onClick={handleAddNewFiledClick}>
-          <AddIcon />
-          Add new filed
+      >
+        Edit your {data?.name} collection
+      </Typography>
+      <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
+        <TextField
+          type='text'
+          {...register('name', { required: true })}
+          id='name'
+          label='Title'
+          fullWidth
+          error={!!errors.name}
+          helperText={getCollectionNameError(errors)}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          type='text'
+          {...register('topic', { required: true })}
+          id='topic'
+          label='Topic'
+          fullWidth
+          error={!!errors.topic}
+          helperText={getCollectionTopicError(errors)}
+          InputLabelProps={{ shrink: true }}
+        />
+        <Description
+          theme="snow"
+          value={values.description}
+          placeholder='Describe your collection'
+          onChange={handleRichDescriptionChange}
+        />
+        <TextField
+          InputProps={{
+            startAdornment: (
+              < InputAdornment position="start">
+                <AddPhotoAlternateOutlinedIcon />
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+          color='primary'
+          id='image-url'
+          {...register('image_url')}
+          type='text'
+          placeholder="Add image url adress"
+          InputLabelProps={{ shrink: true }}
+        />
+        {fields.map((field, index) => {
+          return (
+            <AdditionalContainer key={field.id}>
+              <TextField
+                type='text'
+                {...register(`additional_fields.${index}.name`, { required: true })}
+                label='Name'
+                id={`${field.id}-name`}
+                error={!!errors.name}
+                helperText={getAdditionalFieldNameError(errors)}
+                sx={{
+                  width: '60%'
+                }}
+              />
+              <Select
+                {...register(`additional_fields.${index}.type`, { required: true })}
+                id={`${field.id}-type`}
+                label='Type'
+                variant='outlined'
+                defaultValue={field.type}
+                sx={{
+                  width: '30%',
+                }}
+              >
+                <MenuItem value={'number'}>number</MenuItem>
+                <MenuItem value={'text'}>text</MenuItem>
+                <MenuItem value={'multiline_text'}>multiline text</MenuItem>
+                <MenuItem value={'boolean'}>boolean</MenuItem>
+                <MenuItem value={'date'}>date</MenuItem>
+                <MenuItem value={'rating'}>rating</MenuItem>
+              </Select>
+              <Fab
+                color="secondary"
+                aria-label="remove"
+                size='small'
+                onClick={() => remove(index)}>
+                <RemoveIcon fontSize='medium' />
+              </Fab>
+            </AdditionalContainer>
+          )
+        })}
+        {fields.length < 3 && (
+          <Button
+            onClick={handleAddNewFiledClick}
+            color='secondary'
+            sx={{
+              alignSelf: 'center',
+            }}
+          >
+            <AddIcon />
+            Add new filed
+          </Button>
+        )}
+        <Button variant="contained"
+          type='submit'
+          color='secondary'
+          sx={{
+            margin: '10px',
+            alignSelf: 'center',
+            width: '200px',
+            height: '50px'
+          }}
+        >update
         </Button>
-      )}
-      {fields.map((field, index) => {
-        return (
-          <AdditionalContainer key={field.id}>
-            <TextField
-              type='text'
-              {...register(`additional_fields.${index}.name`, { required: true })}
-              label='Name'
-              id={`${field.id}-name`}
-              fullWidth
-              error={!!errors.name}
-              helperText={getAdditionalFieldNameError(errors)}
-            />
-            <Select
-              {...register(`additional_fields.${index}.type`, { required: true })}
-              id={`${field.id}-type`}
-              label='Type'
-              variant='outlined'
-              fullWidth
-              defaultValue={'number'}
-            >
-              <MenuItem value={'number'}>number</MenuItem>
-              <MenuItem value={'text'}>text</MenuItem>
-              <MenuItem value={'multiline_text'}>multiline text</MenuItem>
-              <MenuItem value={'boolean'}>boolean</MenuItem>
-              <MenuItem value={'date'}>date</MenuItem>
-              <MenuItem value={'rating'}>rating</MenuItem>
-            </Select>
-            <Button type='button' onClick={() => remove(index)}>
-              <RemoveCircleIcon fontSize='large' />
-            </Button>
-          </AdditionalContainer>
-        )
-      })}
-      <Button variant="contained" type='submit'>update</Button>
-    </Container>
+      </Container>
+    </>
   )
 };
 

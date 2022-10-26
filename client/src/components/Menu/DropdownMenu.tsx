@@ -35,6 +35,14 @@ function DropdownMenu() {
     navigate('/collections/' + user.id)
   };
 
+  const handleCreateCollectionClick = () => {
+    if (!user) {
+      navigate('/login');
+      return
+    }
+    navigate('/collection/new')
+  }
+
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -50,8 +58,8 @@ function DropdownMenu() {
         >
           <MoreVertIcon
             sx={{
-              width: 40,
-              height: 40,
+              width: 50,
+              height: 50,
               fill: theme.palette.secondary.main,
             }} />
         </IconButton>
@@ -94,28 +102,28 @@ function DropdownMenu() {
         <MenuItem onClick={handleYourCollectionClick}>
           <CollectionsIcon
             sx={{
-              width: 30,
-              height: 30,
+              width: 40,
+              height: 40,
               fill: theme.palette.secondary.main
             }}
           /> Your collections
         </MenuItem>
         <MenuItem>
           <AdminPanelSettingsIcon sx={{
-            width: 30,
-            height: 30,
+            width: 40,
+            height: 40,
             fill: theme.palette.secondary.main
           }}
           /> Admin page
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={handleCreateCollectionClick}>
           <ListItemIcon>
             <AddPhotoAlternateIcon
               sx={{
-                width: 30,
-                height: 30,
-                fill: theme.palette.secondary.main
+                width: 40,
+                height: 40,
+                fill: theme.palette.secondary.main,
               }}
             />
           </ListItemIcon>

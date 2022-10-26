@@ -29,7 +29,7 @@ function CollectionItem(props: Props) {
     <Container image_url={props.image_url} onClick={() => navigate(`/collection/${props.collectionId}`)}>
       <DetailsContainer>
         <Typography variant="h2">{props.name}</Typography>
-        <Typography variant="h3">{props.topic}</Typography>
+        <Typography variant="body2">{props.topic}</Typography>
         {user && (user.id === props.authorId) && (
           <IconContainer>
             <Button onClick={(event) => { event.stopPropagation(); navigate(`/collection/${props.collectionId}/edit`) }}>

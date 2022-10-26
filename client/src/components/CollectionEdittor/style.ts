@@ -9,7 +9,7 @@ export const Container = styled.form`
   align-items: flex-start;
   justify-content: center;
   justify-self: center;
-  margin: 10px;
+   margin: 0 auto;
   max-width: 1000px;
   width: 100%;
 `;
@@ -30,17 +30,21 @@ export const Description = styled(ReactQuill)`
   & .ql-toolbar {
     border: none;
     font-family: ${theme.typography.fontFamily};
-    background-color: ${ theme.palette.primary.main + 'E6'};
+    background-color: ${theme.palette.primary.main + 'E6'};
   };
 
   & .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     border: 1px solid ${theme.palette.secondary.main};
     color: ${theme.palette.secondary.main};
+   };
 
     & .ql-stroke {
       stroke: ${theme.palette.secondary.main}
     }
-  };
+    
+    & .ql-editor {
+    font-size: 18px;
+  }
 `;
 
 export const AdditionalContainer = styled.div`

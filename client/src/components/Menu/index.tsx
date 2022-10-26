@@ -6,7 +6,14 @@ import DropdownMenu from './DropdownMenu';
 function Menu() {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+      <Box sx={{
+        position: 'fixed',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 3,
+        right: '20px',
+        top: '20px'
+      }}>
         <ThemeToggle />
         <LanguageMenu />
         <DropdownMenu />

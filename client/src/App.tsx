@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import Auth from "./components/Auth";
 import AuthForm from "./components/AuthForm";
-import CollectionCreator from "./components/CollectionCreator";
-import CollectionEditor from "./components/CollectionEdittor";
 import ItemCreator from "./components/ItemCreator";
+import CreateCollectionPage from "./pages/createCollectionPage";
+import EditCollectionPage from "./pages/editCollectionPage";
 import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
 import SingleCollectionPage from "./pages/singleCollectionPage";
@@ -46,7 +46,7 @@ function App() {
           path='collection/new'
           element={(
             <Auth restricted>
-              <CollectionCreator />
+              <CreateCollectionPage />
             </Auth>
           )}
         />
@@ -56,7 +56,11 @@ function App() {
         />
         <Route
           path='collection/:collectionId/edit'
-          element={<CollectionEditor />}
+          element={
+            <Auth restricted>
+              <EditCollectionPage />
+            </Auth>
+          }
         />
         <Route
           path='collection/:collectionId/new-item'
