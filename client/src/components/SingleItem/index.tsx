@@ -3,8 +3,9 @@ import Typography from "@mui/material/Typography";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import Fab from '@mui/material/Fab';
 import { UserContext } from "../../context/UserContext.tsx";
-import { CommentInfo, Container, DetailsContainer, FooterWrapper, HeaderWrapper, IconContainer } from "./style";
+import { Button, CommentInfo, Container, DetailsContainer, FooterWrapper, HeaderWrapper, IconContainer } from "./style";
 import { theme } from "../../style";
 
 interface Props {
@@ -55,8 +56,16 @@ function SingleItem(props: Props) {
           </Typography>
           {user && (user.id === props.author_id) && (
             <IconContainer>
-              <EditOutlinedIcon sx={{ width: 40, height: 40, fill: theme.palette.primary.contrastText }} />
-              <DeleteOutlinedIcon sx={{ width: 40, height: 40, fill: theme.palette.primary.contrastText }} />
+              <Button onClick={() => {}}>
+                <Fab size="large" color="secondary" aria-label="edit">
+                  <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
+                </Fab>
+              </Button>
+              <Button onClick={() => {}}>
+                <Fab size="large" color="secondary" aria-label="delete">
+                  <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
+                </Fab>
+              </Button>
             </IconContainer>
           )}
         </FooterWrapper>

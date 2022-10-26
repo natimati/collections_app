@@ -13,7 +13,6 @@ declare module '@mui/material/styles' {
     desktop: true;
   }
 };
-
 export const theme = createTheme({
   palette: {
     primary: {
@@ -58,6 +57,7 @@ export const theme = createTheme({
     },
     body1: {
       fontSize: 18,
+      color: 'white'
     },
     body2: {
       fontSize: 22,

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getLatestItems } from "../../api"
+import { getCollectionById, getLatestItems } from "../../api"
 import Grid from '@mui/material/Grid';
-import { ImageContainer, Overlay } from "./style";
+import { ImageContainer, Overlay, TextContainer } from "./style";
 import { Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 type Item = {
   id: string;
@@ -10,13 +11,17 @@ type Item = {
   author_id: string;
   name: string
   image_url: string;
-  created_at: number;
-  updated: number
+  author: {
+    username: string
+  };
+  collection: {
+    name: string
+  };  
 }
 
 function LatestItems() {
   const [latestItems, setLatestItems] = useState<Item[]>([]);
-
+  
   useEffect(() => {
     getLatestItems().then((data) => {
       setLatestItems(data);
@@ -24,22 +29,47 @@ function LatestItems() {
   }, []);
 
   return (
-    <Grid container rowSpacing={1} columnSpacing={{ mobile: 1, tablet: 2 }}>
-      {latestItems.map( item => {
+    <>
+      <Typography variant='h1'>Latest items</Typography>
+    <Grid
+      container
+      rowSpacing={5}
+        columnSpacing={{ laptop: 10 }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          margin: '0 auto',
+        }}
+    >
+      {latestItems.map( (item, index) => {
         return (
-          <>
+          <Grid
+            key={item.id}
+            item
+            desktop={2}
+            tablet={12}
+            mobile={12}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              width: 'fit-content',
+              alignSelf: 'center',
+            }}
+          >
             <ImageContainer imageUrl={item.image_url}>
               <Overlay>
-                <Typography variant='h3'>{item.name}</Typography>
-                <Typography variant='subtitle1'>
-                  {item.collection_id} by {item.author_id}
-                </Typography>               
+                <TextContainer>
+                <Typography variant='subtitle1'>{item.name}</Typography>
+                <Typography variant='body1'>in {item.collection.name} collection</Typography>
+                  <Typography variant='body1'>by {item.author.username}</Typography>
+                </TextContainer>
               </Overlay>
             </ImageContainer>
-          </>
+          </Grid>
         );
       })}
-    </Grid>
+      </Grid>
+    </>
   )
 };
 

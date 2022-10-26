@@ -6,7 +6,6 @@ interface Props {
 
 export const Container = styled.div<Props>`
   position: relative;
-  width: 100%;
   background-color: ${theme.palette.secondary.main};
   background-image: url(${props => props.image_url});
   background-size: cover;
@@ -56,11 +55,20 @@ export const IconContainer = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  gap: 2px;
+  margin-bottom: 10px;
+  gap: 10px;
 `;
 
 export const CommentInfo = styled.div`
   display: flex;
   gap: 5px;
   align-self: flex-end;
+`;
+
+export const Button = styled.button`
+background-color: transparent;
+border: none; 
+padding: 0;
+margin: 0;
+cursor: pointer;
 `;

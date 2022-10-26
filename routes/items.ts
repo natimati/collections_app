@@ -1,6 +1,8 @@
 import { Request, response, Router } from "express";
+import Collection from "../dataLayer/collection";
 import itemsModel from "../dataLayer/item";
 import itemPropertyModel from '../dataLayer/itemProperty';
+import User from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
 
 const router = Router();
@@ -11,7 +13,17 @@ router.get('/latest', async (req: Request, res = response) => {
             order: [
                 ['created_at', 'DESC']
             ],
-            limit: 5
+            limit: 5,
+            include: [{
+                model: Collection,
+                attributes: ['id', 'name'],
+                as: 'collection'
+            },
+            {
+                model: User,
+                attributes: ['id', 'username'],
+                as: 'author'
+            }]
         })
         res.json(items)
     } catch (e) {

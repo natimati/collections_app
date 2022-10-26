@@ -38,7 +38,9 @@ function SingleCollectionPage() {
       <div>
         <Typography variant='h1'>{collection?.name}</Typography>
         <Typography variant='h3'>{collection?.topic}</Typography>
-        <Typography variant="body1">{collection?.description}</Typography>
+        <div>
+          {collection?.description}
+        </div>
       </div>
       <Container maxWidth='desktop'>
         <Grid
