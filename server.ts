@@ -21,7 +21,7 @@ class Server {
 
   middlewares() {
     this.app.use(
-      express.static(path.join(__dirname, "./client/build"))
+      express.static(path.join(__dirname, "../client/build"))
     );
     this.app.use(cors());
     this.app.use(express.json());
@@ -34,7 +34,7 @@ class Server {
     this.app.use("/api/items", itmesRouter);
     this.app.get("*", (req, res) => {
       res.sendFile(
-        path.join(__dirname, "./client/build/index.html")
+        path.join(__dirname, "../client/build/index.html")
       );
     });
   }
