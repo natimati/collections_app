@@ -1,15 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
 export const TopCloud = styled.img`
  position: fixed;
  top: -200px;
  right: 150px;
+ z-index: -1;
 `;
 
 export const LeftCloud = styled.img`
@@ -17,6 +12,7 @@ export const LeftCloud = styled.img`
   top: 600px;
   left: 0px;
   width: 200px;
+  z-index: -1;
 `;
 
 export const RightCloud = styled.img`
@@ -24,4 +20,5 @@ export const RightCloud = styled.img`
   top: 1100px;
   right: 0px;
   width: 400px;
+  z-index: -1;
 `;

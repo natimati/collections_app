@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getCollectionById, getLatestItems } from "../../api"
+import { getLatestItems } from "../../api"
 import Grid from '@mui/material/Grid';
-import { ImageContainer, Overlay, TextContainer } from "./style";
+import { Container, ImageContainer, Overlay, TextContainer } from "./style";
 import { Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 
 type Item = {
   id: string;
@@ -16,12 +15,12 @@ type Item = {
   };
   collection: {
     name: string
-  };  
+  };
 }
 
 function LatestItems() {
   const [latestItems, setLatestItems] = useState<Item[]>([]);
-  
+
   useEffect(() => {
     getLatestItems().then((data) => {
       setLatestItems(data);
@@ -29,47 +28,49 @@ function LatestItems() {
   }, []);
 
   return (
-    <>
+    <Container>
       <Typography variant='h1'>Latest items</Typography>
-    <Grid
-      container
-      rowSpacing={5}
-        columnSpacing={{ laptop: 10 }}
+      <Grid
+        container
+        rowSpacing={5}
+        columnSpacing={{ laptop: 5 }}
         sx={{
           display: 'flex',
+          flexDirection: 'row',
           justifyContent: 'center',
           margin: '0 auto',
         }}
-    >
-      {latestItems.map( (item, index) => {
-        return (
-          <Grid
-            key={item.id}
-            item
-            desktop={2}
-            tablet={12}
-            mobile={12}
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              width: 'fit-content',
-              alignSelf: 'center',
-            }}
-          >
-            <ImageContainer imageUrl={item.image_url}>
-              <Overlay>
-                <TextContainer>
-                <Typography variant='subtitle1'>{item.name}</Typography>
-                <Typography variant='body1'>in {item.collection.name} collection</Typography>
-                  <Typography variant='body1'>by {item.author.username}</Typography>
-                </TextContainer>
-              </Overlay>
-            </ImageContainer>
-          </Grid>
-        );
-      })}
+      >
+        {latestItems.map((item) => {
+          return (
+            <Grid
+              key={item.id}
+              item
+              desktop={2}
+              laptop={6}
+              tablet={12}
+              mobile={12}
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                width: 'fit-content',
+                alignSelf: 'center',
+              }}
+            >
+              <ImageContainer imageUrl={item.image_url}>
+                <Overlay>
+                  <TextContainer>
+                    <Typography variant='subtitle1'>{item.name}</Typography>
+                    <Typography variant='body1'>in {item.collection.name} collection</Typography>
+                    <Typography variant='body1'>by {item.author.username}</Typography>
+                  </TextContainer>
+                </Overlay>
+              </ImageContainer>
+            </Grid>
+          );
+        })}
       </Grid>
-    </>
+    </Container>
   )
 };
 

@@ -6,6 +6,7 @@ import { getUserCollections } from '../../api';
 import Header from '../../components/Header';
 import CreateElementButton from '../../components/CreateElementButton';
 import { useParams } from 'react-router-dom';
+import Background from '../../components/Background';
 
 function UserCollectionsPage() {
   const params = useParams();
@@ -25,6 +26,7 @@ function UserCollectionsPage() {
 
   return (
     <>
+      <Background />
       <Header />
       <Container maxWidth='desktop'>
         <Grid

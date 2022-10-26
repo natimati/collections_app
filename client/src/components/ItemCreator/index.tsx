@@ -39,7 +39,6 @@ function ItemCreator() {
   const { fields } = useFieldArray<FormFields>({ control, name: "item_properties" });
 
   const values = watch();
-  console.log('values', values)
 
   const { data: collection } = useQuery(
     ['collection', params.collectionId],

@@ -1,9 +1,17 @@
 import styled from "styled-components";
-import { theme } from "../../style";
 
 interface Props {
     imageUrl: string
 }
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content:center;
+  margin: 0 50px;
+  margin-top: 40px;
+`;
 
 export const ImageContainer = styled.div<Props>`
   background-image: url(${props => props.imageUrl});
@@ -12,8 +20,7 @@ export const ImageContainer = styled.div<Props>`
   background-repeat: no-repeat;
   position: relative;
   cursor: pointer;
-  max-width: 500px;
-  height: 180px;
+  height: 200px;
   width: 100%;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
 `;

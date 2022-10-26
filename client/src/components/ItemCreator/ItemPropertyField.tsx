@@ -104,7 +104,6 @@ const ItemPropertyField = (props: Props) => {
           inputProps={{ 'aria-label': 'controlled' }}
           checked={props.value === '1'}
           onChange={(event) => {
-            console.log('onChange', event.target.checked)
             props.setValue(
               `item_properties.${props.index}.value`,
               event.target.checked ? '1' : '0'
