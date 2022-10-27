@@ -7,8 +7,10 @@ import Fab from '@mui/material/Fab';
 import { UserContext } from "../../context/UserContext.tsx";
 import { Button, CommentInfo, Container, DetailsContainer, FooterWrapper, HeaderWrapper, IconContainer } from "./style";
 import { theme } from "../../style";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
+  id: string;
   name: string;
   image_url: string;
   author_id: string;
@@ -20,9 +22,10 @@ interface Props {
 
 function SingleItem(props: Props) {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   return (
-    <Container image_url={props.image_url}>
+    <Container image_url={props.image_url} onClick={() => navigate(`/item/${props.id}`)}>
       <DetailsContainer>
         <HeaderWrapper>
           <Typography
@@ -56,12 +59,19 @@ function SingleItem(props: Props) {
           </Typography>
           {user && (user.id === props.author_id) && (
             <IconContainer>
-              <Button onClick={() => {}}>
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
                 <Fab size="large" color="secondary" aria-label="edit">
                   <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
                 </Fab>
               </Button>
-              <Button onClick={() => {}}>
+              <Button
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}>
                 <Fab size="large" color="secondary" aria-label="delete">
                   <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
                 </Fab>

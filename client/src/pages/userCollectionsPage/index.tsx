@@ -40,7 +40,10 @@ function UserCollectionsPage() {
           }}
         >
           {userCollections.map((collection) => (
-            <Grid item desktop={6} tablet={12} mobile={12}
+            <Grid
+              key={collection.id}
+              item
+              desktop={6} tablet={12} mobile={12}
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -49,7 +52,6 @@ function UserCollectionsPage() {
               }}
             >
               <CollectionItem
-                key={collection.id}
                 authorId={collection.author_id}
                 name={collection.name}
                 topic={collection.topic}

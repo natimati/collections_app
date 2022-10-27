@@ -71,6 +71,7 @@ function SingleCollectionPage() {
             >
               <SingleItem
                 name={item.name}
+                id={item.id}
                 image_url={item.image_url}
                 author_id={item.author_id}
                 tags={itemsMock[0].tags}

@@ -3,6 +3,7 @@ import { getLatestItems } from "../../api"
 import Grid from '@mui/material/Grid';
 import { Container, ImageContainer, Overlay, TextContainer } from "./style";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type Item = {
   id: string;
@@ -20,6 +21,7 @@ type Item = {
 
 function LatestItems() {
   const [latestItems, setLatestItems] = useState<Item[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getLatestItems().then((data) => {
@@ -57,7 +59,7 @@ function LatestItems() {
                 alignSelf: 'center',
               }}
             >
-              <ImageContainer imageUrl={item.image_url}>
+              <ImageContainer imageUrl={item.image_url} onClick={() => navigate(`item/${item.id}`)}>
                 <Overlay>
                   <TextContainer>
                     <Typography variant='subtitle1'>{item.name}</Typography>

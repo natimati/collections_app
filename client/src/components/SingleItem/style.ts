@@ -49,13 +49,14 @@ export const FooterWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 10px;
 `;
 
 export const IconContainer = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  margin-bottom: 10px;
   gap: 10px;
 `;
 

@@ -1,7 +1,8 @@
 import { Request, response, Router } from "express";
+import AdditionalFieldModel from "../dataLayer/additionalField";
 import Collection from "../dataLayer/collection";
-import itemsModel from "../dataLayer/item";
-import itemPropertyModel from '../dataLayer/itemProperty';
+import ItemsModel from "../dataLayer/item";
+import ItemPropertyModel from '../dataLayer/itemProperty';
 import User from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
 
@@ -9,7 +10,7 @@ const router = Router();
 
 router.get('/latest', async (req: Request, res = response) => {
     try {
-        const items = await itemsModel.findAll({
+        const items = await ItemsModel.findAll({
             order: [
                 ['created_at', 'DESC']
             ],
@@ -32,9 +33,9 @@ router.get('/latest', async (req: Request, res = response) => {
     }
 });
 
-router.get('/:collection_id', async (req: Request, res = response) => {
+router.get('/collection/:collection_id', async (req: Request, res = response) => {
     try {
-        const items = await itemsModel.findAll({
+        const items = await ItemsModel.findAll({
             where: { collection_id: req.params.collection_id }
         });
         res.json(items)
@@ -48,14 +49,14 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     const { collection_id, author_id, name, image_url, item_properties } = req.body;
 
     try {
-        const item = await itemsModel.create({
+        const item = await ItemsModel.create({
             collection_id: collection_id,
             author_id: author_id,
             name: name,
             image_url: image_url,
         })
 
-        await itemPropertyModel.bulkCreate(item_properties.map((property:
+        await ItemPropertyModel.bulkCreate(item_properties.map((property:
             {
                 additional_field_id: string,
                 collection_id: string,
@@ -73,6 +74,38 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: 'internal server error' })
+    }
+});
+
+router.get('/:id', async (req: Request, res = response) => {
+    try {
+        const item = await ItemsModel.findOne({
+            where: { id: req.params.id },
+            include: [{
+                model: ItemPropertyModel,
+                as: 'item_properties',
+                include: [{
+                    model: AdditionalFieldModel,
+                    attributes: ['name', 'type'],
+                    as: 'additional_field',
+                }]
+            },
+                {
+                    model: Collection,
+                    attributes: ['id', 'name'],
+                    as: 'collection'
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'username'],
+                    as: 'author'
+                }
+            ]
+        });
+        res.json(item)
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
     }
 });
 

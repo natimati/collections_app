@@ -99,7 +99,7 @@ const ItemPropertyField = (props: Props) => {
   if (props.type === 'boolean') {
     return (
       <Container sx={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '20px', marginBottom: '20px' }}>
-        <Typography variant="body2">{props.name}</Typography>
+        <Typography variant="body1">{props.name}</Typography>
         <Switch
           inputProps={{ 'aria-label': 'controlled' }}
           checked={props.value === '1'}
@@ -134,11 +134,12 @@ const ItemPropertyField = (props: Props) => {
   if (props.type === 'rating') {
     return (
       <Container sx={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '20px', marginBottom: '20px' }}>
-        <Typography variant="body2">{props.name}</Typography>
+        <Typography variant="body1">{props.name}</Typography>
         <Rating
           value={Number(props.value)}
           size="large"
           onChange={(event, newValue) => handleRatingChange(newValue as number)}
+          sx={{ color: "#DC9D5F" }}
         />
       </Container>
     )

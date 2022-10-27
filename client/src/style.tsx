@@ -46,6 +46,12 @@ export const theme = createTheme({
       color: 'white',
       lineHeight: '1.2',
     },
+    subtitle2: {
+      fontSize: 30,
+      textTransform: 'uppercase',
+      color: "#404956",
+      lineHeight: '1.2',
+    },
     caption: {
       fontSize: 20,
       fontStyle: "italic",

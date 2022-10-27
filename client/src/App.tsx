@@ -7,6 +7,7 @@ import EditCollectionPage from "./pages/editCollectionPage";
 import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
 import SingleCollectionPage from "./pages/singleCollectionPage";
+import SingleItemPage from "./pages/singleItemPage";
 import UserCollectionsPage from "./pages/userCollectionsPage";
 
 function App() {
@@ -65,6 +66,10 @@ function App() {
         <Route
           path='collection/:collectionId/new-item'
           element={<ItemCreator />}
+        />
+        <Route
+          path='item/:itemId'
+          element={<SingleItemPage />}
         />
       </Routes>
     </div>
