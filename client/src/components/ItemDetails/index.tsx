@@ -5,32 +5,7 @@ import { Container, ItemImage, PropertiesContainer, TextContainer, Wrapper } fro
 import { Typography } from '@mui/material';
 import ItemProperty from "./ItemProperty";
 import { format, formatDistanceToNow } from 'date-fns'
-
-
-interface Item {
-  id: string;
-  name: string;
-  image_url: string;
-  created_at: string;
-  updated_at: string;
-  item_properties: {
-    additional_field: {
-      name: string,
-      type: string,
-    }
-    id: string,
-    additional_field_id: string,
-    value: string,
-  }[];
-  collection: {
-    name: string
-  }
-  author: {
-    username: string
-  };
-}
-
-interface ItemProperty {
+interface Property {
   additional_field: {
     name: string,
     type: string
@@ -73,7 +48,7 @@ function ItemDetails() {
            <Typography sx={{ marginTop: '10px' }}>
              Last update {formatDistanceToNow(new Date(item.updated_at))}
            </Typography>
-          {item.item_properties.map((property: ItemProperty) => {
+          {item.item_properties.map((property: Property) => {
             return (
               <ItemProperty
                 key={property.id}

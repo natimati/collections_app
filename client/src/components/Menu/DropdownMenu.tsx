@@ -108,7 +108,7 @@ function DropdownMenu() {
             }}
           /> Your collections
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => {navigate('/admin')}}>
           <AdminPanelSettingsIcon sx={{
             width: 40,
             height: 40,

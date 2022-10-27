@@ -40,6 +40,26 @@ export function register({ username, email, password }: { username: string, emai
     });
 };
 
+export function getAllUsers() {
+  return fetch(baseUrl + "/api/users", {
+    method: 'GET',
+    headers: { "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          window.location.href = "/login";
+          localStorage.removeItem("token");
+        }
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+    });
+};
+
 export function search(value: string) {
   return fetch(baseUrl + '/api/search?searchPhrase=' + value, {
     method: 'GET',

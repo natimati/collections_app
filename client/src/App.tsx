@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Auth from "./components/Auth";
 import AuthForm from "./components/AuthForm";
 import ItemCreator from "./components/ItemCreator";
+import AdminPage from "./pages/adminPage";
 import CreateCollectionPage from "./pages/createCollectionPage";
 import EditCollectionPage from "./pages/editCollectionPage";
 import MainPage from "./pages/mainPage";
@@ -70,6 +71,10 @@ function App() {
         <Route
           path='item/:itemId'
           element={<SingleItemPage />}
+        />
+        <Route
+          path='admin'
+          element={<AdminPage />}
         />
       </Routes>
     </div>

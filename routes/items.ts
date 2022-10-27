@@ -1,9 +1,9 @@
 import { Request, response, Router } from "express";
 import AdditionalFieldModel from "../dataLayer/additionalField";
-import Collection from "../dataLayer/collection";
+import CollectionModel from "../dataLayer/collection";
 import ItemsModel from "../dataLayer/item";
 import ItemPropertyModel from '../dataLayer/itemProperty';
-import User from "../dataLayer/user";
+import UserModel from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
 
 const router = Router();
@@ -16,12 +16,12 @@ router.get('/latest', async (req: Request, res = response) => {
             ],
             limit: 5,
             include: [{
-                model: Collection,
+                model: CollectionModel,
                 attributes: ['id', 'name'],
                 as: 'collection'
             },
             {
-                model: User,
+                model: UserModel,
                 attributes: ['id', 'username'],
                 as: 'author'
             }]
@@ -91,12 +91,12 @@ router.get('/:id', async (req: Request, res = response) => {
                 }]
             },
                 {
-                    model: Collection,
+                    model: CollectionModel,
                     attributes: ['id', 'name'],
                     as: 'collection'
                 },
                 {
-                    model: User,
+                    model: UserModel,
                     attributes: ['id', 'username'],
                     as: 'author'
                 }
