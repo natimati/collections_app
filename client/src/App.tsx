@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Auth from "./components/Auth";
 import AuthForm from "./components/AuthForm";
+import Background from "./components/Background";
+import Header from "./components/Header";
 import ItemCreator from "./components/ItemCreator";
 import AdminPage from "./pages/adminPage";
 import CreateCollectionPage from "./pages/createCollectionPage";
@@ -11,10 +13,13 @@ import SingleCollectionPage from "./pages/singleCollectionPage";
 import SingleItemPage from "./pages/singleItemPage";
 import UserCollectionsPage from "./pages/userCollectionsPage";
 
+
 function App() {
 
   return (
     <div className="App">
+      <Header />
+      <Background />
       <Routes>
         <Route
           path="login"

@@ -5,10 +5,8 @@ import { itemsMock } from "./mock";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Header from "../../components/Header";
 import SingleItem from "../../components/SingleItem";
 import CreateElementButton from "../../components/CreateElementButton";
-import Background from "../../components/Background";
 
 
 function SingleCollectionPage() {
@@ -35,8 +33,6 @@ function SingleCollectionPage() {
 
   return (
     <>
-      <Background />
-      <Header />
       <div>
         <Typography variant='h1'>{collection?.name}</Typography>
         <Typography variant='h3'>{collection?.topic}</Typography>

@@ -1,15 +1,8 @@
-import Background from "../../components/Background";
-import Header from "../../components/Header";
 import UsersTable from "../../components/UsersTable";
 
 function AdminPage() {
-  return (
-    <>
-      <Background />
-      <Header />
-      <UsersTable />
-    </>
-  )
+  return <UsersTable />
+  
 };
 
 export default AdminPage;

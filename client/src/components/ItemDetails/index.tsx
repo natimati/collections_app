@@ -31,24 +31,27 @@ function ItemDetails() {
   if (!item) {
     return null
   }
-  
-   return (
+
+  return (
     <Wrapper>
       <TextContainer>
         <Typography variant='h1'>{item.name}</Typography>
-        <Typography variant="subtitle2" sx={{marginLeft: '25px'}}>in {item.collection.name} collection</Typography>
+        <Typography variant="subtitle2" sx={{ marginLeft: '25px' }}>in {item.collection.name} collection</Typography>
         <Typography variant="subtitle2" sx={{ marginLeft: '25px' }}>by {item.author.username}</Typography>
       </TextContainer>
       <Container>
         <ItemImage src={item.image_url} alt={item.name} />
         <PropertiesContainer>
-           <Typography>
-             Created at: {format(new Date(item.created_at), 'do MMMM yyyy')}
-           </Typography>
-           <Typography sx={{ marginTop: '10px' }}>
-             Last update {formatDistanceToNow(new Date(item.updated_at))}
-           </Typography>
+          <Typography>
+            Created at: {format(new Date(item.created_at), 'do MMMM yyyy')}
+          </Typography>
+          <Typography sx={{ marginTop: '10px' }}>
+            Last update {formatDistanceToNow(new Date(item.updated_at))}
+          </Typography>
           {item.item_properties.map((property: Property) => {
+            if (!property.additional_field) {
+              return null
+            }
             return (
               <ItemProperty
                 key={property.id}

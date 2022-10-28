@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Divider, InputAdornment, TextField, Menu, MenuItem, Typography } from "@mui/material"
 import SearchIcon from '@mui/icons-material/Search';
 import { useHits, useSearchBox } from 'react-instantsearch-hooks-web';
@@ -23,7 +23,7 @@ function SearchInput() {
     setAnchorEl(null);
   };
 
-   return (
+  return (
     <>
       <TextField
         placeholder="Search…"
@@ -80,7 +80,7 @@ function SearchInput() {
       >
         {hits.map((hit) => {
           return (
-            <>
+            <React.Fragment key={hit.objectID}>
               <MenuItem autoFocus={false} onClick={() => navigate(`item/${hit.objectID}`)}>
                 <ImageContainer imageUrl={hit.image_url as string}>
                   <Overlay>
@@ -91,39 +91,7 @@ function SearchInput() {
                 </ImageContainer>
               </MenuItem>
               <Divider />
-            </>
-          );
-        })}
-        {hits.map((hit) => {
-          return (
-            <>
-              <MenuItem onClick={() => navigate(`item/${hit.objectID}`)}>
-                <ImageContainer imageUrl={hit.image_url as string}>
-                  <Overlay>
-                    <TextContainer>
-                      <Typography variant='body2'>{hit.name as string}</Typography>
-                    </TextContainer>
-                  </Overlay>
-                </ImageContainer>
-              </MenuItem>
-              <Divider />
-            </>
-          );
-        })}
-        {hits.map((hit) => {
-          return (
-            <>
-              <MenuItem onClick={() => navigate(`item/${hit.objectID}`)}>
-                <ImageContainer imageUrl={hit.image_url as string}>
-                  <Overlay>
-                    <TextContainer>
-                      <Typography variant='body2'>{hit.name as string}</Typography>
-                    </TextContainer>
-                  </Overlay>
-                </ImageContainer>
-              </MenuItem>
-              <Divider />
-            </>
+            </React.Fragment>
           );
         })}
       </Menu>

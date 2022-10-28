@@ -3,6 +3,7 @@ import { parseJwt } from "./helpers";
 
 interface UserContextValue {
     user: User | null;
+    isAdmin: boolean;
     setUser: (user: User | null) => void;
     setUserFromToken: (token: string) => void;
     isLoading: boolean;
@@ -18,7 +19,12 @@ interface User {
 }
 
 export const UserContext = React.createContext<UserContextValue>({
-    user: null, setUser: () => undefined, isLoading: true, setUserFromToken: () => undefined, logout: () => undefined,
+    user: null,
+    isAdmin: false,
+    setUser: () => undefined,
+    isLoading: true,
+    setUserFromToken: () => undefined,
+    logout: () => undefined,
 });
 
 interface Props {
@@ -41,6 +47,7 @@ export function UserContextProvider({ children }: Props) {
 
     const contextValue = useMemo(() => ({
         user,
+        isAdmin: user?.isAdmin || false,
         setUser,
         isLoading: isLoadingUserData,
         setUserFromToken,

@@ -52,7 +52,7 @@ export const Overlay = styled.div`
 export const TextContainer = styled.div`
 margin: 5px;
 padding: 5px;
-width: 100%;
+width: 80%;
 border-top: solid 1px white;
 border-bottom: solid 1px white;
 `;

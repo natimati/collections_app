@@ -3,10 +3,8 @@ import Container from '@mui/material/Container';
 import CollectionItem from "../../components/CollectionItem";
 import { useQuery } from '@tanstack/react-query'
 import { getUserCollections } from '../../api';
-import Header from '../../components/Header';
 import CreateElementButton from '../../components/CreateElementButton';
 import { useParams } from 'react-router-dom';
-import Background from '../../components/Background';
 
 function UserCollectionsPage() {
   const params = useParams();
@@ -25,10 +23,7 @@ function UserCollectionsPage() {
   };
 
   return (
-    <>
-      <Background />
-      <Header />
-      <Container maxWidth='desktop'>
+    <Container maxWidth='desktop'>
         <Grid
           container
           rowSpacing={5}
@@ -75,7 +70,6 @@ function UserCollectionsPage() {
           </Grid>
         </Grid>
       </Container>
-    </>
   )
 };
 
