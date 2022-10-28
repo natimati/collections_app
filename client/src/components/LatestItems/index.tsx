@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getLatestItems } from "../../api"
-import Grid from '@mui/material/Grid';
 import { Container, ImageContainer, Overlay, TextContainer } from "./style";
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 type Item = {

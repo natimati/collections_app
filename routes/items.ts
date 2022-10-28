@@ -5,6 +5,7 @@ import ItemsModel from "../dataLayer/item";
 import ItemPropertyModel from '../dataLayer/itemProperty';
 import UserModel from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
+import algoliasearch from "algoliasearch";
 
 const router = Router();
 
@@ -69,6 +70,14 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
                 value: property.value
             })
         }))
+        const client = algoliasearch(
+            process.env.ALGOLIA_APPLICATION_ID as string,
+            process.env.ALGOLIA_ADMIN_API_KEY as string
+        );
+        const index = client.initIndex('items');
+        const record = { objectID: item.id, name: item.name, image_url: item.image_url }
+        
+        await index.saveObject(record).wait();
 
         res.status(201).json({ message: 'collection created' })
     } catch (e) {
