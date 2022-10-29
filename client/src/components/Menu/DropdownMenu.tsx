@@ -25,7 +25,7 @@ function DropdownMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { user, logout } = useContext(UserContext)
+  const { user, logout, isAdmin } = useContext(UserContext)
 
   const handleYourCollectionClick = () => {
     if (!user) {
@@ -108,14 +108,16 @@ function DropdownMenu() {
             }}
           /> Your collections
         </MenuItem>
-        <MenuItem onClick={() => {navigate('/admin')}}>
-          <AdminPanelSettingsIcon sx={{
-            width: 40,
-            height: 40,
-            fill: theme.palette.secondary.main
-          }}
-          /> Admin page
-        </MenuItem>
+        {isAdmin && (
+          <MenuItem onClick={() => { navigate('/admin') }}>
+            <AdminPanelSettingsIcon sx={{
+              width: 40,
+              height: 40,
+              fill: theme.palette.secondary.main
+            }}
+            /> Admin page
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem onClick={handleCreateCollectionClick}>
           <ListItemIcon>

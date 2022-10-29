@@ -86,10 +86,10 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     }
 });
 
-router.get('/:id', async (req: Request, res = response) => {
+router.get('/:itemId', async (req: Request, res = response) => {
     try {
         const item = await ItemsModel.findOne({
-            where: { id: req.params.id },
+            where: { id: req.params.itemId },
             include: [{
                 model: ItemPropertyModel,
                 as: 'item_properties',

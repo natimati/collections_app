@@ -3,6 +3,7 @@ import additionalFieldModel from "../dataLayer/additionalField";
 import collectionsModel from "../dataLayer/collection";
 import authMiddlewere from "../middlewares/auth";
 import { Op } from 'sequelize';
+import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast";
 
 const router = Router();
 
@@ -49,7 +50,7 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     }
 });
 
-router.post('/update', [authMiddlewere], async (req: Request, res = response) => {
+router.post('/update', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     const { id, name, topic, description, image_url, additional_fields } = req.body;
 
     try {
@@ -95,7 +96,7 @@ router.get('/find/:author_id', async (req: Request, res = response) => {
     }
 });
 
-router.get('/delete', [authMiddlewere], async (req: Request, res = response) => {
+router.get('/delete/:collectionId', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     try {
         await collectionsModel.destroy({
             where: { id: req.params.collectionId }
