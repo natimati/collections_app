@@ -17,7 +17,7 @@ interface Props {
 }
 
 function CollectionItem(props: Props) {
-  const { user } = useContext(UserContext);
+  const { user, isAdmin } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -30,7 +30,7 @@ function CollectionItem(props: Props) {
       <DetailsContainer>
         <Typography variant="h2">{props.name}</Typography>
         <Typography variant="body2">{props.topic}</Typography>
-        {user && (user.id === props.authorId) && (
+        {user && (user.id === props.authorId || isAdmin) && (
           <IconContainer>
             <Button onClick={(event) => { event.stopPropagation(); navigate(`/collection/${props.collectionId}/edit`) }}>
               <Fab size="large" color="secondary" aria-label="edit">

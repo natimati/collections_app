@@ -21,7 +21,7 @@ interface Props {
 }
 
 function SingleItem(props: Props) {
-  const { user } = useContext(UserContext);
+  const { user, isAdmin } = useContext(UserContext);
   const navigate = useNavigate();
 
   return (
@@ -57,7 +57,7 @@ function SingleItem(props: Props) {
               <span key={tag.id}>#{tag.name}{' '}</span>
             ))}
           </Typography>
-          {user && (user.id === props.author_id) && (
+          {user && (user.id === props.author_id || isAdmin) && (
             <IconContainer>
               <Button
                 onClick={(event) => {
