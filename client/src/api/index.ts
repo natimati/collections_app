@@ -60,10 +60,10 @@ export function getAllUsers() {
     });
 };
 
-export function search(value: string) {
-  return fetch(baseUrl + '/api/search?searchPhrase=' + value, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+export function syncSearchResults() {
+  return fetch(baseUrl + '/api/search/sync', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
   })
     .then((response) => {
       if (!response.ok) {

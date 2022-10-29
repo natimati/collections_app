@@ -1,8 +1,14 @@
+import SyncSearchResults from "../../components/SyncSearchResults";
 import UsersTable from "../../components/UsersTable";
 
 function AdminPage() {
-  return <UsersTable />
-  
+  return (
+    <>
+      <SyncSearchResults />
+      <UsersTable />
+    </>
+  )
+
 };
 
 export default AdminPage;

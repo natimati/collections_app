@@ -13,6 +13,9 @@ function SearchInput() {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const { hits = [] } = useHits();
+  const handleFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const value = event.target.value;
     setAnchorEl(event.currentTarget);
@@ -28,6 +31,7 @@ function SearchInput() {
       <TextField
         placeholder="Search…"
         onChange={handleChange}
+        onFocus={handleFocus}
         value={query}
         inputProps={{ 'aria-label': 'search' }}
         InputProps={{

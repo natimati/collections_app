@@ -4,7 +4,7 @@ import userModel from '../dataLayer/user'
 
 const tokenJwtSecret = process.env.ACCESS_TOKEN_SECRET as string;
 
-const authMiddleware = async (
+const isAdminMiddleware = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -32,6 +32,9 @@ const authMiddleware = async (
             throw new Error("User not found")
         }
 
+        if (!user.is_admin) {
+            throw new Error("No permission")
+        }
     } catch (e) {
         return res
             .status(401)
@@ -47,4 +50,4 @@ const authMiddleware = async (
     });
 };
 
-export default authMiddleware;
+export default isAdminMiddleware;
