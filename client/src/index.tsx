@@ -15,7 +15,13 @@ import { InstantSearch } from 'react-instantsearch-hooks-web';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  }
+});
 const searchClient = algoliasearch('3HS4PEGVGR', 'e3e770b80eb60161a13626152506a67c');
 
 const root = ReactDOM.createRoot(
