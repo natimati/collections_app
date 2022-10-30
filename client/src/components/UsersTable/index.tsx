@@ -52,15 +52,19 @@ function UsersTable() {
   };
 
   const handleChangeRoleClick = (isAdmin: boolean) => {
-    changeUserRole(isAdmin, selectedUserIds).then(() => {
-      setSelectedUserIds([]);
-      client.invalidateQueries(['users']);
-      if (!user) { return; }
 
+    if (selectedUserIds.length === 0) {
+      return;
+    }
+    changeUserRole(isAdmin, selectedUserIds).then(() => {
+      client.invalidateQueries(['users']);
+      toast.success('Role changed');
+      if (!user) { return; }
       if (selectedUserIds.includes(user.id) && user.isAdmin !== isAdmin) {
         logout()
-      };
-      toast.success('Role changed');
+      } else {
+        setSelectedUserIds([]);
+      }
     })
   };
   const columns: GridColDef[] = [

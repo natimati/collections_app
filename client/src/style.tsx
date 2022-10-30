@@ -1,4 +1,6 @@
 import { createTheme, outlinedInputClasses } from '@mui/material';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -29,6 +31,8 @@ export const theme = createTheme({
       fontSize: 60,
       textTransform: 'uppercase',
       color: "#404956",
+      margin: '10px',
+      marginLeft: "-10px"
     },
     h2: {
       fontSize: 60,
@@ -39,12 +43,14 @@ export const theme = createTheme({
       fontSize: 30,
       textTransform: 'uppercase',
       color: "#404956",
+      margin: '5px',
     },
     subtitle1: {
       fontSize: 30,
       textTransform: 'uppercase',
       color: 'white',
       lineHeight: '1.2',
+      margin: '5px',
     },
     subtitle2: {
       fontSize: 30,
@@ -64,13 +70,15 @@ export const theme = createTheme({
     body1: {
       fontSize: 20,
       color: "#404956",
+      margin: '5px',
+      backgroundColor: '#fffffCC',
     },
     body2: {
       fontSize: 18,
       color: 'white',
       fontFamily: 'Raleway',
       fontWeight: '300',
-      
+
     }
 
   },
@@ -110,3 +118,11 @@ export const theme = createTheme({
   },
 });
 
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #404956;
+
+  &:hover{
+    color: #DC9D5F
+  }
+`

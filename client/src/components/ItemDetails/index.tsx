@@ -5,6 +5,7 @@ import { Container, ItemImage, PropertiesContainer, TextContainer, Wrapper } fro
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ItemProperty from "./ItemProperty";
 import { format, formatDistanceToNow } from 'date-fns'
+import { StyledLink } from "../../style";
 interface Property {
   additional_field: {
     name: string,
@@ -44,8 +45,8 @@ function ItemDetails() {
     <Wrapper>
       <TextContainer>
         <Typography variant='h1'>{item.name}</Typography>
-        <Typography variant="subtitle2" sx={{ marginLeft: '25px' }}>in {item.collection.name} collection</Typography>
-        <Typography variant="subtitle2" sx={{ marginLeft: '25px' }}>by {item.author.username}</Typography>
+        <Typography variant="subtitle2">in <StyledLink to={`/collection/${item.collection_id}`}>{item.collection.name} collection</StyledLink></Typography>
+        <Typography variant="subtitle2">by <StyledLink to={`/collections/${item.author_id}`}>{item.author.username}</StyledLink></Typography>
       </TextContainer>
       <Container>
         <ItemImage src={item.image_url} alt={item.name} />

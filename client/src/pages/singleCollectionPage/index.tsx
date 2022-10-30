@@ -2,17 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getCollectionById, getItemsByCollectionId } from "../../api";
 import { itemsMock } from "./mock";
-import Typography from "@mui/material/Typography";
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import { Box, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import SingleItem from "../../components/SingleItem";
 import CreateElementButton from "../../components/CreateElementButton";
+import { StyledLink } from "../../style";
 
 
 function SingleCollectionPage() {
   const params = useParams();
 
-  const { data: collectionData } = useQuery(
+  const { data: collection, isLoading } = useQuery(
     ['collection', params.collectionId],
     () => {
       if (!params.collectionId) { return null }
@@ -28,19 +27,26 @@ function SingleCollectionPage() {
     }
   );
 
-  const collection = collectionData;
   const items = itemsData || [];
-
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
   return (
-    <>
+    <Container sx={{ maxWidth: '1400px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', margin: '0 auto' }}>
       <div>
-        <Typography variant='h1'>{collection?.name}</Typography>
-        <Typography variant='h3'>{collection?.topic}</Typography>
-        <div>
+        <Typography variant='h1'>
+          {collection.name} by <StyledLink to={`/collections/${collection.author_id}`}>{collection.author.username}</StyledLink>
+        </Typography>
+        <Typography variant='h3'>{collection.topic}</Typography>
+        <Typography variant='body1' sx={{backgroundColor: '#ffffffCC'}}>
           {collection?.description}
-        </div>
+        </Typography>
       </div>
-      <Container maxWidth='desktop'>
+      <Container maxWidth='desktop' sx={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
         <Grid
           container
           rowSpacing={5}
@@ -89,7 +95,7 @@ function SingleCollectionPage() {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Container>
   )
 };
 

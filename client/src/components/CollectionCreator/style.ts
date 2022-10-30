@@ -12,7 +12,6 @@ export const Container = styled.form`
   margin: 0 auto;
   max-width: 1000px;
   width: 100%;
-
 `;
 
 export const Description = styled(ReactQuill)`
