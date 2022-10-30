@@ -50,7 +50,7 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
     }
 });
 
-router.post('/update', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
+router.post('/update/:collectionId', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     const { id, name, topic, description, image_url, additional_fields } = req.body;
 
     try {

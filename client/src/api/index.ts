@@ -162,7 +162,7 @@ export function updateCollection({
   image_url?: string,
   additional_fields?: { name: string, type: string }[]
 }) {
-  return fetch(baseUrl + '/api/collections/update', {
+  return fetch(baseUrl + '/api/collections/update/' + id, {
     method: 'POST',
     body: JSON.stringify({
       id,

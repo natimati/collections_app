@@ -73,11 +73,11 @@ function CollectionEditor() {
     try {
       await updateCollection({
         id: params.collectionId,
-        name: collection.name,
-        topic: collection.topic,
-        description: collection.description,
-        image_url: collection.image_url,
-        additional_fields: collection.additional_fields
+        name: data.name,
+        topic: data.topic,
+        description: data.description,
+        image_url: data.image_url,
+        additional_fields: data.additional_fields
       });
 
       return navigate(`/collection/${params.collectionId}`);
