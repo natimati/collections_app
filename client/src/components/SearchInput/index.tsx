@@ -84,8 +84,10 @@ function SearchInput() {
       >
         {hits.map((hit) => {
           return (
-            <React.Fragment key={hit.objectID}>
-              <MenuItem autoFocus={false} onClick={() => navigate(`item/${hit.objectID}`)}>
+            <div key={hit.objectID}>
+              <MenuItem autoFocus={false} onClick={() => {
+                navigate(`item/${hit.objectID}`)
+              }}>
                 <ImageContainer imageUrl={hit.image_url as string}>
                   <Overlay>
                     <TextContainer>
@@ -95,7 +97,7 @@ function SearchInput() {
                 </ImageContainer>
               </MenuItem>
               <Divider />
-            </React.Fragment>
+            </div>
           );
         })}
       </Menu>
