@@ -46,10 +46,13 @@ function CollectionEditor() {
     }
   );
 
+  const { fields, append, remove, replace } = useFieldArray<FormFields>({ control, name: "additional_fields" });
+
   useEffect(() => {
     if (!collection) {
       return;
     }
+
     reset({
       name: collection.name,
       topic: collection.topic,
@@ -57,9 +60,8 @@ function CollectionEditor() {
       image_url: collection.image_url,
       additional_fields: collection.additional_fields
     })
-  }, [collection, reset])
-
-  const { fields, append, remove } = useFieldArray<FormFields>({ control, name: "additional_fields" });
+    replace(collection.additional_fields)
+  }, [collection, reset, replace])
 
   const values = watch();
 
