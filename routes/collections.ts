@@ -5,6 +5,7 @@ import userModel from "../dataLayer/user"
 import authMiddlewere from "../middlewares/auth";
 import { Op } from 'sequelize';
 import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast";
+import sanitize from "sanitize-html";
 
 const router = Router();
 
@@ -33,13 +34,14 @@ router.get('/:collectionId', async (req: Request, res = response) => {
 
 router.post('/create', [authMiddlewere], async (req: Request, res = response) => {
     const { author_id, name, topic, description, image_url, additional_fields } = req.body;
+    const sanitizedDescription = sanitize(description);
 
     try {
         const collection = await collectionsModel.create({
             author_id: author_id,
             name: name,
             topic: topic,
-            description: description,
+            description: sanitizedDescription,
             image_url: image_url,
         })
 
@@ -60,12 +62,14 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
 
 router.post('/update/:collectionId', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     const { id, name, topic, description, image_url, additional_fields } = req.body;
+    const sanitizedDescription = sanitize(description);
+
 
     try {
         await collectionsModel.update({
             name: name,
             topic: topic,
-            description: description,
+            description: sanitizedDescription,
             image_url: image_url,
         }, { where: { id: id } })
 

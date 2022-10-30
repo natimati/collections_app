@@ -30,7 +30,7 @@ function SingleCollectionPage() {
   const items = itemsData || [];
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <CircularProgress />
       </Box>
     )
@@ -42,9 +42,7 @@ function SingleCollectionPage() {
           {collection.name} by <StyledLink to={`/collections/${collection.author_id}`}>{collection.author.username}</StyledLink>
         </Typography>
         <Typography variant='h3'>{collection.topic}</Typography>
-        <Typography variant='body1' sx={{backgroundColor: '#ffffffCC'}}>
-          {collection?.description}
-        </Typography>
+        <Typography variant='body1' dangerouslySetInnerHTML={{__html: collection.description}} sx={{ backgroundColor: '#ffffffCC', maxWidth: '1400px' }} />
       </div>
       <Container maxWidth='desktop' sx={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
         <Grid

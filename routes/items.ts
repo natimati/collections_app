@@ -8,6 +8,7 @@ import authMiddlewere from "../middlewares/auth";
 import algoliasearch from "algoliasearch";
 import isItemAuthorAtLeast from "../middlewares/isItemAuthorAtLeast";
 import { Op } from "sequelize";
+import sanitize from "sanitize-html";
 
 const router = Router();
 
@@ -65,11 +66,13 @@ router.post('/create', [authMiddlewere], async (req: Request, res = response) =>
         collection_id: string,
         value: string
       }) => {
+      const sanitizedValue = sanitize(property.value);
+
       return ({
         additional_field_id: property.additional_field_id,
         collection_id: item.collection_id,
         item_id: item.id,
-        value: property.value
+        value: sanitizedValue
       })
     }))
     const client = algoliasearch(
@@ -136,11 +139,12 @@ router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res =
     }, { where: { id: req.params.itemId } })
 
     await itemPropertyModel.bulkCreate(item_properties.map((property: { id: string, value: string, additional_field_id: string }) => {
+      const sanitizedValue = sanitize(property.value);
       return ({
         additional_field_id: property.additional_field_id,
         item_id: id,
         id: property.id,
-        value: property.value,
+        value: sanitizedValue,
         collection_id
       })
     }), { updateOnDuplicate: ['value'] });

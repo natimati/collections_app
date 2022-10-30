@@ -28,7 +28,7 @@ function ItemProperty(props: Props) {
     return (
       <PropertyWrapper>
         <Typography>{props.name}</Typography>
-        <Typography>{props.value || '-'}</Typography>
+        <Typography dangerouslySetInnerHTML={{ __html: props.value || '' }} />
       </PropertyWrapper>
     )
   }
