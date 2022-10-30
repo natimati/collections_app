@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -33,27 +34,29 @@ function CollectionEditor() {
   const navigate = useNavigate()
   const params = useParams();
   const {
-    control, watch, register, handleSubmit, formState: { errors }, setValue, getValues, reset,
+    control, watch, register, handleSubmit, formState: { errors }, setValue, reset,
   } = useForm<FormFields>();
 
-  const { data } = useQuery(
+  const { data: collection } = useQuery(
     ['collection', params.collectionId],
     () => {
       if (!params.collectionId) { return null }
       return getCollectionById(params.collectionId)
-        .then(collection => {
-          reset({
-            name: collection?.name,
-            topic: collection?.topic,
-            description: collection?.description,
-            image_url: collection?.image_url,
-            additional_fields: collection?.additional_fields
-          })
-
-          return collection
-        })
     }
   );
+
+  useEffect(() => {
+    if (!collection) {
+      return;
+    }
+    reset({
+      name: collection.name,
+      topic: collection.topic,
+      description: collection.description,
+      image_url: collection.image_url,
+      additional_fields: collection.additional_fields
+    })
+  }, [collection, reset])
 
   const { fields, append, remove } = useFieldArray<FormFields>({ control, name: "additional_fields" });
 
@@ -70,11 +73,11 @@ function CollectionEditor() {
     try {
       await updateCollection({
         id: params.collectionId,
-        name: data.name,
-        topic: data.topic,
-        description: data.description,
-        image_url: data.image_url,
-        additional_fields: data.additional_fields
+        name: collection.name,
+        topic: collection.topic,
+        description: collection.description,
+        image_url: collection.image_url,
+        additional_fields: collection.additional_fields
       });
 
       return navigate(`/collection/${params.collectionId}`);
@@ -93,7 +96,7 @@ function CollectionEditor() {
           marginTop: '50px'
         }}
       >
-        Edit your {data?.name} collection
+        Edit your {collection?.name} collection
       </Typography>
       <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <TextField
