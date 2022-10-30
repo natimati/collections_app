@@ -7,10 +7,10 @@ import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast"
 
 const router = Router();
 
-router.get('/:id', async (req: Request, res = response) => {
+router.get('/:collectionId', async (req: Request, res = response) => {
     try {
         const collection = await collectionsModel.findOne({
-            where: { id: req.params.id },
+            where: { id: req.params.collectionId },
             include: {
                 model: additionalFieldModel,
                 as: 'additional_fields'
@@ -64,7 +64,7 @@ router.post('/update', [isCollectionAuthorAtLeast], async (req: Request, res = r
         await additionalFieldModel.bulkCreate(additional_fields.map((field: { id: string, name: string, type: string }) => {
             return ({
                 collection_id: id,
-                id: field.name,
+                id: field.id,
                 name: field.name,
                 type: field.type,
             })

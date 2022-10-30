@@ -62,6 +62,7 @@ function SingleItem(props: Props) {
               <Button
                 onClick={(event) => {
                   event.stopPropagation();
+                  navigate(`/item/${props.id}/edit`)
                 }}
               >
                 <Fab size="large" color="secondary" aria-label="edit">

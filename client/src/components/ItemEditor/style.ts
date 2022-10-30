@@ -47,3 +47,10 @@ export const Description = styled(ReactQuill)`
     font-size: 18px;
   }
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin: 10px;
+`;

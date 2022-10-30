@@ -1,121 +1,155 @@
 import { Request, response, Router } from "express";
-import AdditionalFieldModel from "../dataLayer/additionalField";
-import CollectionModel from "../dataLayer/collection";
-import ItemsModel from "../dataLayer/item";
-import ItemPropertyModel from '../dataLayer/itemProperty';
-import UserModel from "../dataLayer/user";
+import additionalFieldModel from "../dataLayer/additionalField";
+import collectionModel from "../dataLayer/collection";
+import itemsModel from "../dataLayer/item";
+import itemPropertyModel from '../dataLayer/itemProperty';
+import userModel from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
 import algoliasearch from "algoliasearch";
+import isItemAuthorAtLeast from "../middlewares/isItemAuthorAtLeast";
+import { Op } from "sequelize";
 
 const router = Router();
 
 router.get('/latest', async (req: Request, res = response) => {
-    try {
-        const items = await ItemsModel.findAll({
-            order: [
-                ['created_at', 'DESC']
-            ],
-            limit: 5,
-            include: [{
-                model: CollectionModel,
-                attributes: ['id', 'name'],
-                as: 'collection'
-            },
-            {
-                model: UserModel,
-                attributes: ['id', 'username'],
-                as: 'author'
-            }]
-        })
-        res.json(items)
-    } catch (e) {
-        console.error(e);
-        res.status(500).send();
-    }
+  try {
+    const items = await itemsModel.findAll({
+      order: [
+        ['created_at', 'DESC']
+      ],
+      limit: 5,
+      include: [{
+        model: collectionModel,
+        attributes: ['id', 'name'],
+        as: 'collection'
+      },
+      {
+        model: userModel,
+        attributes: ['id', 'username'],
+        as: 'author'
+      }]
+    })
+    res.json(items)
+  } catch (e) {
+    console.error(e);
+    res.status(500).send();
+  }
 });
 
-router.get('/collection/:collection_id', async (req: Request, res = response) => {
-    try {
-        const items = await ItemsModel.findAll({
-            where: { collection_id: req.params.collection_id }
-        });
-        res.json(items)
-    } catch (e) {
-        console.error(e);
-        res.status(500).send();
-    }
+router.get('/collection/:collectionId', async (req: Request, res = response) => {
+  try {
+    const items = await itemsModel.findAll({
+      where: { collection_id: req.params.collectionId }
+    });
+    res.json(items)
+  } catch (e) {
+    console.error(e);
+    res.status(500).send();
+  }
 });
 
 router.post('/create', [authMiddlewere], async (req: Request, res = response) => {
-    const { collection_id, author_id, name, image_url, item_properties } = req.body;
+  const { collection_id, author_id, name, image_url, item_properties } = req.body;
 
-    try {
-        const item = await ItemsModel.create({
-            collection_id: collection_id,
-            author_id: author_id,
-            name: name,
-            image_url: image_url,
-        })
+  try {
+    const item = await itemsModel.create({
+      collection_id: collection_id,
+      author_id: author_id,
+      name: name,
+      image_url: image_url,
+    })
 
-        await ItemPropertyModel.bulkCreate(item_properties.map((property:
-            {
-                additional_field_id: string,
-                collection_id: string,
-                value: string
-            }) => {
-            return ({
-                additional_field_id: property.additional_field_id,
-                collection_id: item.collection_id,
-                item_id: item.id,
-                value: property.value
-            })
-        }))
-        const client = algoliasearch(
-            process.env.ALGOLIA_APPLICATION_ID as string,
-            process.env.ALGOLIA_ADMIN_API_KEY as string
-        );
-        const index = client.initIndex('items');
-        const record = { objectID: item.id, name: item.name, image_url: item.image_url }
-        
-        await index.saveObject(record).wait();
+    await itemPropertyModel.bulkCreate(item_properties.map((property:
+      {
+        additional_field_id: string,
+        collection_id: string,
+        value: string
+      }) => {
+      return ({
+        additional_field_id: property.additional_field_id,
+        collection_id: item.collection_id,
+        item_id: item.id,
+        value: property.value
+      })
+    }))
+    const client = algoliasearch(
+      process.env.ALGOLIA_APPLICATION_ID as string,
+      process.env.ALGOLIA_ADMIN_API_KEY as string
+    );
+    const index = client.initIndex('items');
+    const record = { objectID: item.id, name: item.name, image_url: item.image_url }
 
-        res.status(201).json({ message: 'collection created' })
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({ message: 'internal server error' })
-    }
+    await index.saveObject(record).wait();
+
+    res.status(201).json({ message: 'collection created' })
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: 'internal server error' })
+  }
 });
 
+
 router.get('/:itemId', async (req: Request, res = response) => {
-    try {
-        const item = await ItemsModel.findOne({
-            where: { id: req.params.itemId },
-            include: [{
-                model: ItemPropertyModel,
-                as: 'item_properties',
-                include: [{
-                    model: AdditionalFieldModel,
-                    attributes: ['name', 'type'],
-                    as: 'additional_field',
-                }]
-            },
-                {
-                    model: CollectionModel,
-                    attributes: ['id', 'name'],
-                    as: 'collection'
-                },
-                {
-                    model: UserModel,
-                    attributes: ['id', 'username'],
-                    as: 'author'
-                }
-            ]
-        });
-        res.json(item)
-    } catch (e) {
-        console.error(e);
-        res.status(500).send();
-    }
+  try {
+    const item = await itemsModel.findOne({
+      where: { id: req.params.itemId },
+      include: [{
+        model: itemPropertyModel,
+        as: 'item_properties',
+        include: [{
+          model: additionalFieldModel,
+          attributes: ['name', 'type'],
+          as: 'additional_field',
+        }]
+      },
+      {
+        model: collectionModel,
+        attributes: ['id', 'name'],
+        as: 'collection',
+        include: [{
+          model: additionalFieldModel,
+          attributes: ['id', 'name', 'type'],
+          as: 'additional_fields',
+        }]
+      },
+      {
+        model: userModel,
+        attributes: ['id', 'username'],
+        as: 'author'
+      }
+      ]
+    });
+    res.json(item)
+  } catch (e) {
+    console.error(e);
+    res.status(500).send();
+  }
+});
+
+router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res = response) => {
+  const { id, name, image_url, item_properties, collection_id } = req.body;
+
+  try {
+    await itemsModel.update({
+      name: name,
+      image_url: image_url,
+    }, { where: { id: req.params.itemId } })
+
+    await itemPropertyModel.bulkCreate(item_properties.map((property: { id: string, value: string, additional_field_id: string }) => {
+      return ({
+        additional_field_id: property.additional_field_id,
+        item_id: id,
+        id: property.id,
+        value: property.value,
+        collection_id
+      })
+    }), { updateOnDuplicate: ['value'] });
+
+    res.status(201).json({ message: 'collection updated' })
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: 'internal server error' })
+  }
 });
 
 export default router;

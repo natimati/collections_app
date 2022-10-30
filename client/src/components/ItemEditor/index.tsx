@@ -1,14 +1,13 @@
-import { useContext, useEffect } from 'react';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { Container } from './style';
+import { Container, Wrapper } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { getItemNameError } from './helpers';
-import { UserContext } from '../../context/UserContext.tsx';
 import { useQuery } from '@tanstack/react-query';
-import { createItem, getCollectionById } from '../../api';
-import ItemPropertyField from './ItemPropertyField';
+import { getItemById, updateItem } from '../../api';
+import ItemPropertyValue, { ItemProperty } from './ItemPropertyValue';
+import { useEffect } from 'react'
 
 interface Item {
   collection_id: string;
@@ -16,90 +15,94 @@ interface Item {
   name: string;
   image_url: string;
   item_properties: ItemProperty[];
-}
-interface ItemProperty {
-  name: string;
-  value: string;
-  additional_field_id: string;
-  type: string;
+  author: {
+    id: string;
+    username: string;
+  }
+  collection: {
+    id: string;
+    name: string,
+    additional_fields: {
+      id: string;
+      name: string;
+      type: string;
+    }[]
+  }
 }
 
 type FormFields = Pick<Item, "name" | "image_url"> &
 { item_properties: ItemProperty[] };
 
-function ItemCreator() {
+function ItemEditor() {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
   const params = useParams();
-
   const {
     control, watch, register, handleSubmit, formState: { errors }, setValue, reset
   } = useForm<FormFields>();
-
   const { fields } = useFieldArray<FormFields>({ control, name: "item_properties" });
 
-  const values = watch();
-
-  const { data: collection } = useQuery(
-    ['collection', params.collectionId],
+  const { data: item } = useQuery(
+    ['item', params.itemId],
     () => {
-      if (!params.collectionId) { return null }
-      return getCollectionById(params.collectionId)
+      if (!params.itemId) {
+        return null
+      }
+
+      return getItemById(params.itemId)
     }
   );
 
   useEffect(() => {
-    if (!collection || !collection.additional_fields) {
+    if (!item) {
       return;
     }
 
     reset({
-      item_properties: collection.additional_fields
-        .map((field: {
-          id: string,
-          name: string,
-          type: string
-        }) => {
-          return {
-            additional_field_id: field.id,
-            name: field.name,
-            type: field.type,
-            value: ''
-          }
-        })
+      name: item.name,
+      image_url: item.image_url,
+      item_properties: item.collection.additional_fields.map(field => {
+        const property = item.item_properties.find(property => property.additional_field_id === field.id)
+
+        if (property) {
+          return property
+        }
+
+        return {
+          additional_field_id: field.id,
+          additional_field: field,
+          itemId: item.id,
+          collection_id: item.collection_id,
+          name: field.name,
+          type: field.type,
+          value: ''
+        }
+      })
     })
-  }, [collection, reset])
+  }, [item, reset])
+
+  const values = watch();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    if (!user) {
-      return navigate('/login')
-    }
-    if (!params.collectionId) {
+    if (!item || !params.itemId) {
       return
     }
-    const collectionId = params.collectionId;
     try {
-      await createItem({
-        collection_id: collectionId,
-        author_id: user.id,
+      await updateItem({
+        id: params.itemId,
+        collection_id: item.collection_id,
+        author_id: item.author_id,
         name: data.name,
         image_url: data.image_url,
-        item_properties: data.item_properties.map(item => {
-          return {
-            additional_field_id: item.additional_field_id,
-            collection_id: collectionId,
-            value: item.value
-          }
-        })
+        item_properties: data.item_properties
       });
-      return navigate("/");
+      return navigate(`/item/${item.id}`);
     } catch (e) {
       console.log(e)
     }
   };
 
   const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);
-
+  if (!item) { return null }
   return (
     <>
       <Typography
@@ -109,7 +112,7 @@ function ItemCreator() {
           justifyContent: 'center'
         }}
         variant='h1'>
-        new item
+        Edit {item.name} item
       </Typography>
       <Typography
         sx={{
@@ -118,7 +121,7 @@ function ItemCreator() {
           marginBottom: '50px',
         }}
         variant='subtitle2'>
-        in {collection?.name} collection
+        in {item?.collection?.name} collection
       </Typography>
       <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <TextField
@@ -146,18 +149,22 @@ function ItemCreator() {
           placeholder="Add image url adress"
         />
         {fields.map((field, index) => {
+          if (!field.additional_field) {
+            return null;
+          }
+
           return (
-            <ItemPropertyField
-              key={`${field.id}-value`}
-              type={field.type}
-              value={values.item_properties[index].value}
-              register={register}
-              index={index}
-              name={field.name}
-              id={`${field.id}-value`}
-              errors={errors}
-              setValue={setValue}
-            />
+            <Wrapper>
+              <ItemPropertyValue
+                type={field.additional_field.type}
+                value={values.item_properties[index].value}
+                name={field.additional_field.name}
+                id={field.id}
+                index={index}
+                register={register}
+                setValue={setValue}
+              />
+            </Wrapper>
           )
         })}
         <Button sx={{
@@ -170,11 +177,11 @@ function ItemCreator() {
           type='submit'
           color='secondary'
         >
-          create
+          update
         </Button>
       </Container>
     </>
   )
 };
 
-export default ItemCreator;
+export default ItemEditor;

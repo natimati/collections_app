@@ -1,24 +1,21 @@
-import { FieldErrorsImpl, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { useState } from 'react';
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Rating, Stack, Switch, TextField, Typography } from '@mui/material';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { getItemPropertyFieldError } from "./helpers";
-import { Description } from "./style";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useState } from 'react'
 import { format } from 'date-fns'
-import { Container } from "@mui/system";
+import { Description } from "./style";
 
 interface Props {
   type: string;
   value: string;
-  register: UseFormRegister<FormFields>;
-  index: number;
   name: string;
   id: string;
-  errors: FieldErrorsImpl<FormFields>
+  index: number;
+  register: UseFormRegister<FormFields>;
   setValue: UseFormSetValue<FormFields>
-}
+};
 
 interface Item {
   collection_id: string;
@@ -26,20 +23,40 @@ interface Item {
   name: string;
   image_url: string;
   item_properties: ItemProperty[];
+  author: {
+    id: string;
+    username: string;
+  }
+  collection: {
+    id: string;
+    name: string
+  }
 }
-
-interface ItemProperty {
-  name: string;
-  value: string;
+export interface ItemProperty {
+  additional_field: {
+    name: string;
+    type: string;
+  }
   additional_field_id: string;
-  type: string;
+  value: string;
+  id: string;
 }
 
 type FormFields = Pick<Item, "name" | "image_url"> &
 { item_properties: ItemProperty[] };
 
-const ItemPropertyField = (props: Props) => {
-  const [selectedDate, setSelectedDate] = useState<string | null>();
+function ItemPropertyValue(props: Props) {
+  const [selectedDate, setSelectedDate] = useState<string | null>(() => {
+    if (props.type !== 'date' || !props.value) {
+      return null;
+    }
+
+    const [day, month, year] = props.value.split('/')
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+    return date.toDateString();
+  });
+
   const handleDateChange = (newValue: any) => {
     setSelectedDate(newValue);
     props.setValue(
@@ -60,48 +77,46 @@ const ItemPropertyField = (props: Props) => {
       <TextField
         sx={{ alignSelf: 'center' }}
         type={props.type}
+        value={props.value}
         {...props.register(`item_properties.${props.index}.value`, { required: true })}
         label={props.name}
         id={`${props.id}-value`}
         fullWidth
-        error={!!props.errors.item_properties?.[props.index]?.value}
-        helperText={getItemPropertyFieldError(props.errors)}
+        InputLabelProps={{ shrink: true }}
       />
     )
   }
-
   if (props.type === 'text') {
     return (
       <TextField
         sx={{ alignSelf: 'center' }}
         type={props.type}
+        value={props.value}
         {...props.register(`item_properties.${props.index}.value`, { required: true })}
         label={props.name}
         id={`${props.id}-value`}
         fullWidth
-        error={!!props.errors.item_properties?.[props.index]?.value}
-        helperText={getItemPropertyFieldError(props.errors)}
+        InputLabelProps={{ shrink: true }}
       />
     )
   }
   if (props.type === 'multiline_text') {
     return (
-      <>
-        <Description
-          theme="snow"
-          value={props.value}
-          placeholder={props.name}
-          onChange={(value: string) => {
-            props.setValue(`item_properties.${props.index}.value`, value)
-          }}
-        />
-      </>
+      <Description
+        theme="snow"
+        value={props.value}
+        defaultValue={props.value}
+        placeholder={props.name}
+        onChange={(value: string) => {
+          props.setValue(`item_properties.${props.index}.value`, value)
+        }}
+      />
     )
   }
   if (props.type === 'boolean') {
     return (
-      <Container sx={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '20px', marginBottom: '20px', justifyContent: 'center' }}>
-        <Typography variant="body1">{props.name}</Typography>
+      <>
+        <Typography variant='body1' sx={{ marginRight: '20px' }}>{props.name}</Typography>
         <Switch
           inputProps={{ 'aria-label': 'controlled' }}
           checked={props.value === '1'}
@@ -112,19 +127,15 @@ const ItemPropertyField = (props: Props) => {
             )
           }}
         />
-      </Container>
+      </>
     )
   }
   if (props.type === 'date') {
     return (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Stack sx={{
-          display: 'flex',
-          alignSelf: 'center',
-          margin: '20px 0'
-        }}
-          spacing={3}
-        >
+      <LocalizationProvider
+        dateAdapter={AdapterDateFns}
+      >
+        <Stack sx={{ display: 'flex', alignSelf: 'center', margin: '20px 0' }} spacing={3}>
           <MobileDatePicker
             label={props.name}
             inputFormat="dd/MM/yyyy"
@@ -141,26 +152,18 @@ const ItemPropertyField = (props: Props) => {
   }
   if (props.type === 'rating') {
     return (
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '20px',
-          marginTop: '20px',
-          marginBottom: '20px',
-          justifyContent: 'center'
-        }}>
-        <Typography variant="body1">{props.name}</Typography>
+      <>
+        <Typography variant='body1' sx={{ marginRight: '20px' }}>{props.name}</Typography>
         <Rating
           value={Number(props.value)}
           size="large"
           onChange={(event, newValue) => handleRatingChange(newValue as number)}
           sx={{ color: "#DC9D5F" }}
         />
-      </Container>
+      </>
     )
   }
-  return null
+  return null;
 }
 
-export default ItemPropertyField;
+export default ItemPropertyValue;

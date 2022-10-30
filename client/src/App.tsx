@@ -7,6 +7,7 @@ import ItemCreator from "./components/ItemCreator";
 import AdminPage from "./pages/adminPage";
 import CreateCollectionPage from "./pages/createCollectionPage";
 import EditCollectionPage from "./pages/editCollectionPage";
+import EditItemPage from "./pages/editItemPage";
 import MainPage from "./pages/mainPage";
 import { RegisterPage } from "./pages/register";
 import SingleCollectionPage from "./pages/singleCollectionPage";
@@ -78,11 +79,19 @@ function App() {
           element={<SingleItemPage />}
         />
         <Route
+          path='item/:itemId/edit'
+          element={
+            <Auth restricted>
+              <EditItemPage />
+            </Auth>
+          }
+        />
+        <Route
           path='admin'
           element={<AdminPage />}
         />
       </Routes>
-    </div>
+    </div >
   );
 }
 

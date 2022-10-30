@@ -100,8 +100,8 @@ export function getItemsByCollectionId(collection_id: string): Promise<{
     })
 }
 
-export function getCollectionById(id: string) {
-  return fetch(baseUrl + '/api/collections/' + id, {
+export function getCollectionById(collectionId: string) {
+  return fetch(baseUrl + '/api/collections/' + collectionId, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   })
@@ -281,8 +281,72 @@ export function createItem({
     });
 };
 
-export function getItemById(id: string) {
-  return fetch(baseUrl + '/api/items/' + id, {
+export function updateItem({
+  id, collection_id, author_id, name, image_url, item_properties,
+}: {
+  id: string,
+  collection_id: string,
+  author_id: string,
+  name?: string,
+  image_url?: string,
+  item_properties?: { value: string }[]
+}) {
+  return fetch(baseUrl + '/api/items/update/' + id, {
+    method: 'POST',
+    body: JSON.stringify({
+      id,
+      name,
+      collection_id,
+      author_id,
+      image_url,
+      item_properties,
+    }),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
+};
+
+export function getItemById(itemId: string): Promise<{
+  id: string;
+  collection_id: string;
+  author_id: string;
+  name: string;
+  image_url: string;
+  item_properties: {
+    additional_field: {
+      name: string;
+      type: string;
+    }
+    additional_field_id: string;
+    value: string;
+    id: string;
+  }[];
+  author: {
+    id: string;
+    username: string;
+  }
+  collection: {
+    id: string;
+    name: string,
+    additional_fields: {
+      id: string;
+      name: string;
+      type: string;
+    }[]
+  }
+  created_at: string;
+  updated_at: string;
+}> {
+  return fetch(baseUrl + '/api/items/' + itemId, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   })
