@@ -165,7 +165,7 @@ function ItemEditor() {
           }
 
           return (
-            <Wrapper>
+            <Wrapper key={field.id}>
               <ItemPropertyValue
                 type={field.additional_field.type}
                 value={values.item_properties[index].value}
