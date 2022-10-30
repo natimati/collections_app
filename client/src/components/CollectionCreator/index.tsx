@@ -11,6 +11,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
 import { UserContext } from '../../context/UserContext.tsx';
 import { createCollection } from '../../api';
+import { toast } from 'react-toastify';
 
 interface Collection {
   name: string;
@@ -58,8 +59,10 @@ function CollectionCreator() {
         image_url: data.image_url,
         additional_fields: data.additional_fields
       });
+      toast.success('Collection created');
       return navigate("/");
     } catch (e) {
+      toast.error('Something went wrong. Pls try again');
       console.log(e)
     }
   };

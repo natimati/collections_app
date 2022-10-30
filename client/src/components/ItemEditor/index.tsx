@@ -7,7 +7,8 @@ import { getItemNameError } from './helpers';
 import { useQuery } from '@tanstack/react-query';
 import { getItemById, updateItem } from '../../api';
 import ItemPropertyValue, { ItemProperty } from './ItemPropertyValue';
-import { useEffect } from 'react'
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 interface Item {
   collection_id: string;
@@ -95,8 +96,10 @@ function ItemEditor() {
         image_url: data.image_url,
         item_properties: data.item_properties
       });
+      toast.success(`Item ${data.name} edited successfully`);
       return navigate(`/item/${item.id}`);
     } catch (e) {
+      toast.error('Something went wrong. Pls try again');
       console.log(e)
     }
   };

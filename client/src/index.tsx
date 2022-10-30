@@ -12,6 +12,8 @@ import { UserContextProvider } from './context/UserContext.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch } from 'react-instantsearch-hooks-web';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
 const searchClient = algoliasearch('3HS4PEGVGR', 'e3e770b80eb60161a13626152506a67c');
@@ -29,6 +31,19 @@ root.render(
             <InstantSearch searchClient={searchClient} indexName="items">
               <App />
             </InstantSearch>
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+              toastStyle={{ backgroundColor: theme.palette.secondary.main }}
+            />
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </UserContextProvider>

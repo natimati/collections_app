@@ -88,7 +88,11 @@ function App() {
         />
         <Route
           path='admin'
-          element={<AdminPage />}
+          element={
+            <Auth restricted>
+              <AdminPage />
+            </Auth>
+          }
         />
       </Routes>
     </div >

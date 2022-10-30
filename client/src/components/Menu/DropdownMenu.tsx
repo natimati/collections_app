@@ -14,6 +14,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { theme } from '../../style';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { toast } from 'react-toastify';
 
 function DropdownMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -46,6 +47,12 @@ function DropdownMenu() {
   const handleLoginClick = () => {
     navigate('/login');
   };
+
+  const handleLogoutClick = () => {
+    logout();
+    toast.success('Logged out successfully');
+  }
+
   return (
     <>
       <Tooltip title="Menu">
@@ -63,7 +70,7 @@ function DropdownMenu() {
               fill: theme.palette.secondary.main,
             }} />
         </IconButton>
-        </Tooltip>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -132,7 +139,7 @@ function DropdownMenu() {
           Create collection
         </MenuItem>
         {user ? (
-          <MenuItem onClick={logout}>
+          <MenuItem onClick={handleLogoutClick}>
             <ListItemIcon>
               <Logout
                 sx={{

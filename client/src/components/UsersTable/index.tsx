@@ -13,7 +13,9 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonIcon from '@mui/icons-material/Person';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; import { theme } from '../../style';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import { theme } from '../../style';
+import { toast } from 'react-toastify';
 
 function UsersTable() {
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([])
@@ -25,6 +27,7 @@ function UsersTable() {
   const { user, logout } = useContext(UserContext);
 
   const navigate = useNavigate();
+
   const handleCollectionCellClick = (params: GridCellParams) => {
     if (params.field === 'collections') {
       navigate(`/collections/${params.id}`)
@@ -44,6 +47,7 @@ function UsersTable() {
       if (selectedUserIds.includes(user.id)) {
         logout()
       };
+      toast.success('Deleted successfully');
     })
   };
 
@@ -56,6 +60,7 @@ function UsersTable() {
       if (selectedUserIds.includes(user.id) && user.isAdmin !== isAdmin) {
         logout()
       };
+      toast.success('Role changed');
     })
   };
   const columns: GridColDef[] = [

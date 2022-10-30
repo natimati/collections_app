@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FormContainer, StyledButton, Text } from './style'
 import { SubmitHandler, useForm } from "react-hook-form";
 import { register as registerNewUser } from "../../api";
+import { toast } from 'react-toastify';
 
 interface User {
   username: string;
@@ -25,6 +26,7 @@ function Register() {
         email: data.email,
         password: data.password
       });
+      toast.success("Account is created. You can login now.");
       return navigate("/login");
     } catch (e) {
       console.log(e)

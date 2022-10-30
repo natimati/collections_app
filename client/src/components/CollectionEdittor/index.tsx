@@ -11,6 +11,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
 import { getCollectionById, updateCollection } from '../../api';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 interface Collection {
   id: string;
@@ -79,9 +80,10 @@ function CollectionEditor() {
         image_url: data.image_url,
         additional_fields: data.additional_fields
       });
-
+      toast.success('Collection edited successfully');
       return navigate(`/collection/${params.collectionId}`);
     } catch (e) {
+      toast.error('Something went wrong. Pls try again');
       console.log(e)
     }
   };

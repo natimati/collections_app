@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from '../../api';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext.tsx';
+import { toast } from 'react-toastify';
 
 interface User {
   email: string;
@@ -28,6 +29,7 @@ function Login() {
         password: data.password
       })
       setUserFromToken(loginData.token)
+      toast.success('You logged in successfully');
       return navigate("/");
     } catch (e) {
       console.log(e);

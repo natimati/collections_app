@@ -9,6 +9,7 @@ import { UserContext } from '../../context/UserContext.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { createItem, getCollectionById } from '../../api';
 import ItemPropertyField from './ItemPropertyField';
+import { toast } from 'react-toastify';
 
 interface Item {
   collection_id: string;
@@ -92,8 +93,10 @@ function ItemCreator() {
           }
         })
       });
-      return navigate("/");
+      toast.success(`Item ${data.name} created`);
+      return navigate(`/item/${collectionId}`);
     } catch (e) {
+      toast.error('Something went wrong. Pls try again');
       console.log(e)
     }
   };
