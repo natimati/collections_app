@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AdditionalContainer, Container, Description } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Fab, InputAdornment, TextField, Typography } from '@mui/material';
+import { Button, Box, CircularProgress, Fab, InputAdornment, TextField, Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -37,7 +37,7 @@ function CollectionEditor() {
     control, watch, register, handleSubmit, formState: { errors }, setValue, reset,
   } = useForm<FormFields>();
 
-  const { data: collection } = useQuery(
+  const { data: collection, isLoading } = useQuery(
     ['collection', params.collectionId],
     () => {
       if (!params.collectionId) { return null }
@@ -88,6 +88,14 @@ function CollectionEditor() {
 
   const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);
 
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
   return (
     <>
       <Typography variant='h1'
@@ -96,7 +104,7 @@ function CollectionEditor() {
           marginTop: '50px'
         }}
       >
-        Edit your {collection?.name} collection
+        Edit your {collection.name} collection
       </Typography>
       <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <TextField

@@ -34,7 +34,7 @@ function CollectionCreator() {
   const { user } = useContext(UserContext)
 
   const {
-    control, watch, register, handleSubmit, formState: { errors }, setValue, getValues
+    control, watch, register, handleSubmit, formState: { errors }, setValue
   } = useForm<FormFields>();
 
   const { fields, append, remove } = useFieldArray<FormFields>({ control, name: "additional_fields" });

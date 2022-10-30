@@ -2,7 +2,7 @@ import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternate
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Container, Wrapper } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
 import { getItemNameError } from './helpers';
 import { useQuery } from '@tanstack/react-query';
 import { getItemById, updateItem } from '../../api';
@@ -41,7 +41,7 @@ function ItemEditor() {
   } = useForm<FormFields>();
   const { fields } = useFieldArray<FormFields>({ control, name: "item_properties" });
 
-  const { data: item } = useQuery(
+  const { data: item, isLoading } = useQuery(
     ['item', params.itemId],
     () => {
       if (!params.itemId) {
@@ -103,6 +103,14 @@ function ItemEditor() {
 
   const onSubmitError: SubmitHandler<any> = (data) => console.log('err', data, errors);
   if (!item) { return null }
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
   return (
     <>
       <Typography

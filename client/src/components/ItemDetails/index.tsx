@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getItemById } from "../../api";
 import { Container, ItemImage, PropertiesContainer, TextContainer, Wrapper } from "./style";
-import { Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import ItemProperty from "./ItemProperty";
 import { format, formatDistanceToNow } from 'date-fns'
 interface Property {
@@ -18,7 +18,7 @@ interface Property {
 function ItemDetails() {
   const params = useParams();
 
-  const { data: item } = useQuery(
+  const { data: item, isLoading } = useQuery(
     ['item', params.itemId],
     () => {
       if (!params.itemId) {
@@ -30,6 +30,14 @@ function ItemDetails() {
 
   if (!item) {
     return null
+  }
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (

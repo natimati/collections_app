@@ -11,12 +11,14 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonIcon from '@mui/icons-material/Person';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'; import { theme } from '../../style';
 
 function UsersTable() {
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([])
   const client = useQueryClient();
-  const { data: users = [] } = useQuery(['users'], () => {
+  const { data: users = [], isLoading } = useQuery(['users'], () => {
     return getAllUsers();
   });
 
@@ -50,13 +52,14 @@ function UsersTable() {
       setSelectedUserIds([]);
       client.invalidateQueries(['users']);
       if (!user) { return; }
-      if (selectedUserIds.includes(user.id)) {
+
+      if (selectedUserIds.includes(user.id) && user.isAdmin !== isAdmin) {
         logout()
       };
     })
   };
   const columns: GridColDef[] = [
-    { field: 'username', headerName: 'username', width: 180 },
+    { field: 'username', headerName: 'username', width: 180, description: 'Click on the cell to see collection' },
     { field: 'email', headerName: 'email', width: 400 },
     { field: 'registration_time', headerName: 'registration time', width: 180 },
     { field: 'last_login_time', headerName: 'last saw', width: 100 },
@@ -76,6 +79,14 @@ function UsersTable() {
       }
     )
   });
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
     <>
