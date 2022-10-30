@@ -1,6 +1,7 @@
 import { Request, response, Router } from "express";
 import additionalFieldModel from "../dataLayer/additionalField";
 import collectionsModel from "../dataLayer/collection";
+import userModel from "../dataLayer/user"
 import authMiddlewere from "../middlewares/auth";
 import { Op } from 'sequelize';
 import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast";
@@ -11,10 +12,17 @@ router.get('/:collectionId', async (req: Request, res = response) => {
     try {
         const collection = await collectionsModel.findOne({
             where: { id: req.params.collectionId },
-            include: {
+            include: [{
                 model: additionalFieldModel,
                 as: 'additional_fields'
+            },
+            {
+                model: userModel,
+                attributes: ['id', 'username'],
+                as: 'author',
             }
+            ]
+
         });
         res.json(collection)
     } catch (e) {
@@ -86,10 +94,10 @@ router.post('/update/:collectionId', [isCollectionAuthorAtLeast], async (req: Re
 
 router.get('/find/:author_id', async (req: Request, res = response) => {
     try {
-        const collection = await collectionsModel.findAll({
+        const collections = await collectionsModel.findAll({
             where: { author_id: req.params.author_id }
         });
-        res.json(collection)
+        res.json(collections)
     } catch (e) {
         console.error(e);
         res.status(500).send();
@@ -101,10 +109,10 @@ router.get('/delete/:collectionId', [isCollectionAuthorAtLeast], async (req: Req
         await collectionsModel.destroy({
             where: { id: req.params.collectionId }
         });
-        res.status(200).send();
+        res.status(200).send({ message: 'Success' });
     } catch (e) {
         console.error(e);
-        res.status(500).send();
+        res.status(500).send({ message: 'Faild to delete user' });
     }
 });
 
