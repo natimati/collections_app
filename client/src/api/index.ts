@@ -40,7 +40,15 @@ export function register({ username, email, password }: { username: string, emai
     });
 };
 
-export function getAllUsers() {
+export function getAllUsers(): Promise<{
+  id: string;
+  username: string;
+  email: string;
+  is_admin: boolean;
+  registration_time: string;
+  last_login_time: string;
+  collections: {}[]
+}[]> {
   return fetch(baseUrl + "/api/users", {
     method: 'GET',
     headers: { "Authorization": localStorage.getItem("token") || "" }
@@ -51,6 +59,40 @@ export function getAllUsers() {
           window.location.href = "/login";
           localStorage.removeItem("token");
         }
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+    });
+};
+
+export function changeUserRole(isAdmin: boolean, userIds: string[]) {
+  return fetch(baseUrl + '/api/users/role-change', {
+    method: 'POST',
+    body: JSON.stringify({ isAdmin, userIds }),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+    });
+}
+
+export function deleteUsers(userIds: string[]) {
+  return fetch(baseUrl + "/api/users/delete", {
+    method: 'DELETE',
+    body: JSON.stringify({ userIds }),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
         throw new Error('HTTP status ' + response.status)
       }
       return response.json();

@@ -8,3 +8,12 @@ export const Container = styled.div`
   margin: 0 auto;
   border: none;
 `;
+
+export const ButtonContainer = styled.div`
+max-width: 90%;
+margin: 0 auto;
+padding: 20px 0;
+display: flex;
+justify-content: flex-end;
+gap: 25px;
+`;

@@ -5,9 +5,7 @@ import DropdownMenu from './DropdownMenu';
 
 function Menu() {
   return (
-    <>
       <Box sx={{
-        position: 'fixed',
         display: 'flex',
         alignItems: 'center',
         gap: 3,
@@ -18,7 +16,6 @@ function Menu() {
         <LanguageMenu />
         <DropdownMenu />
       </Box>
-    </>
   );
 }
 
