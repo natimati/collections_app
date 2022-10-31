@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.DataTypes.UUIDV4
       },
-      collection_id: Sequelize.DataTypes.STRING,
+      collection_id: Sequelize.DataTypes.UUID,
       author_id: Sequelize.DataTypes.UUID,
       name: Sequelize.DataTypes.STRING,
       image_url: Sequelize.DataTypes.STRING,

@@ -37,7 +37,8 @@ const Item = db.define<ItemsModel>('item', {
 Collection.hasMany(Item, {
   foreignKey: 'collection_id',
   sourceKey: 'id',
-  as: 'items'
+  as: 'items',
+  onDelete: 'CASCADE'
 });
 
 Item.belongsTo(Collection, {
@@ -49,7 +50,8 @@ Item.belongsTo(Collection, {
 User.hasMany(Item, {
   foreignKey: 'author_id',
   sourceKey: 'id',
-  as: 'items'
+  as: 'items',
+  onDelete: 'CASCADE'
 });
 
 Item.belongsTo(User, {

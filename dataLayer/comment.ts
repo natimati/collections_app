@@ -29,7 +29,8 @@ const Comment = db.define<CommentsModel>('comment', {
 Item.hasMany(Comment, {
     foreignKey: 'item_id',
     sourceKey: 'id',
-    as: 'comments'
+    as: 'comments',
+    onDelete: 'CASCADE'
 });
 
 Comment.belongsTo(Item, {

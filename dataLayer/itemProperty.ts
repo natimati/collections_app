@@ -43,13 +43,15 @@ ItemProperty.belongsTo(Item, {
 Item.hasMany(ItemProperty, {
     foreignKey: 'item_id',
     sourceKey: 'id',
-    as: 'item_properties'
+    as: 'item_properties',
+    onDelete: 'CASCADE'
 });
 
 AdditionalField.hasMany(ItemProperty, {
     foreignKey: 'additional_field_id',
     sourceKey: 'id',
-    as: 'item_properties'
+    as: 'item_properties',
+    onDelete: 'CASCADE'
 });
 
 ItemProperty.belongsTo(AdditionalField, {

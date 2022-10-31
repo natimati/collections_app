@@ -4,8 +4,27 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface.createTable('item-tag-relationships', {
-      itemId: Sequelize.DataTypes.UUID,
-      tagId: Sequelize.DataTypes.UUID,
+      itemId: {
+        type: Sequelize.DataTypes.UUID,
+        references: {
+          model: {
+            tableName: 'items'
+          },
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        allowNull: false
+      },
+      tagId: {
+        type: Sequelize.DataTypes.UUID,
+        references: {
+          model: {
+            tableName: 'tags'
+          },
+          key: 'id',
+        },
+        allowNull: false
+      },
     });
   },
 

@@ -40,7 +40,8 @@ const Collection = db.define<CollectionModel>('collection', {
 User.hasMany(Collection, {
   foreignKey: 'author_id',
   sourceKey: 'id',
-  as: 'collections'
+  as: 'collections',
+  onDelete: 'CASCADE'
 });
 
 Collection.belongsTo(User, {

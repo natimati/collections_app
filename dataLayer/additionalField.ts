@@ -35,13 +35,14 @@ const AdditionalField = db.define<AdditionalFieldModel>('additional_field', {
 Collection.hasMany(AdditionalField, {
     foreignKey: 'collection_id',
     sourceKey: 'id',
-    as: 'additional_fields'
+    as: 'additional_fields',
+    onDelete: 'CASCADE'
 });
 
 AdditionalField.belongsTo(Collection, {
     foreignKey: 'collection_id',
     targetKey: 'id',
-    as: 'collection'
+    as: 'collection',
 });
 
 export default AdditionalField;
