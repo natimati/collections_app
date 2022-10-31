@@ -40,6 +40,9 @@ router.post('/login', [
       process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: tokenMaxAgeInSeconds }
     )
+
+    await usersModel.update({ last_login_time: new Date() }, { where: { email } });
+    
     return res.status(200).json({ id: user.id, token: token },
     );
   } catch {

@@ -136,6 +136,7 @@ router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res =
     await itemsModel.update({
       name: name,
       image_url: image_url,
+      updated_at: new Date(),
     }, { where: { id: req.params.itemId } })
 
     await itemPropertyModel.bulkCreate(item_properties.map((property: { id: string, value: string, additional_field_id: string }) => {

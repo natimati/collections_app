@@ -71,6 +71,7 @@ router.post('/update/:collectionId', [isCollectionAuthorAtLeast], async (req: Re
             topic: topic,
             description: sanitizedDescription,
             image_url: image_url,
+            updated_at: new Date(),
         }, { where: { id: id } })
 
         await additionalFieldModel.bulkCreate(additional_fields.map((field: { id: string, name: string, type: string }) => {
