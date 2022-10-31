@@ -78,9 +78,7 @@ export const theme = createTheme({
       color: 'white',
       fontFamily: 'Raleway',
       fontWeight: '300',
-
     }
-
   },
   breakpoints: {
     values: {

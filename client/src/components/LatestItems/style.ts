@@ -18,6 +18,7 @@ export const ImageContainer = styled.div<Props>`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #404956CC;
   position: relative;
   cursor: pointer;
   height: 200px;
