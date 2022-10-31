@@ -20,7 +20,7 @@ function SingleCollectionPage() {
   );
 
   const { data: itemsData } = useQuery(
-    ['items', params.collectionsId],
+    ['items', params.collectionId],
     () => {
       if (!params.collectionId) { return null }
       return getItemsByCollectionId(params.collectionId);
@@ -70,6 +70,7 @@ function SingleCollectionPage() {
               }}
             >
               <SingleItem
+                collectionId={item.collection_id}
                 name={item.name}
                 id={item.id}
                 image_url={item.image_url}

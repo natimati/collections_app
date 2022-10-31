@@ -108,10 +108,10 @@ router.get('/find/:author_id', async (req: Request, res = response) => {
     }
 });
 
-router.get('/delete/:collectionId', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
+router.delete('/delete', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     try {
         await collectionsModel.destroy({
-            where: { id: req.params.collectionId }
+            where: { id: req.body.collectionId }
         });
         res.status(200).send({ message: 'Success' });
     } catch (e) {

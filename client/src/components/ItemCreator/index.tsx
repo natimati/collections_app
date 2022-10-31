@@ -116,7 +116,7 @@ function ItemCreator() {
         
       });
       toast.success(`Item ${data.name} created`);
-      return navigate(`/item/${collectionId}`);
+      return navigate(`/collection/${collectionId}`);
     } catch (e) {
       toast.error('Something went wrong. Pls try again');
       console.log(e)

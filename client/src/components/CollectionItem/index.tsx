@@ -7,6 +7,8 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.tsx";
 import { useNavigate } from "react-router-dom";
 import { deleteCollection } from "../../api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from 'react-toastify';
 
 interface Props {
   name: string;
@@ -14,16 +16,31 @@ interface Props {
   authorId: string;
   collectionId: string;
   image_url: string
-}
+  }
 
 function CollectionItem(props: Props) {
   const { user, isAdmin } = useContext(UserContext);
   const navigate = useNavigate();
+  const client = useQueryClient();
+  const { mutate: deleteMutation, isLoading: isDeleting } = useMutation(
+    (collectionId: string) => {
+      return deleteCollection(collectionId).then(() => {
+        client.invalidateQueries(['collections', props.authorId])
+        toast.success('Collection delated successfully')
+      });
+    });
+
+  console.log(props);
 
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    deleteCollection(props.collectionId)
-  }
+    try {
+      deleteMutation(props.collectionId)
+    } catch (e) {
+      toast.error(`Something went wrong. Pls try again`);
+      console.log(e);
+    }
+  };
 
   return (
     <Container image_url={props.image_url} onClick={() => navigate(`/collection/${props.collectionId}`)}>
@@ -32,16 +49,25 @@ function CollectionItem(props: Props) {
         <Typography variant="body2">{props.topic}</Typography>
         {user && (user.id === props.authorId || isAdmin) && (
           <IconContainer>
-            <Button onClick={(event) => { event.stopPropagation(); navigate(`/collection/${props.collectionId}/edit`) }}>
-              <Fab size="large" color="secondary" aria-label="edit">
-                <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
-              </Fab>
-            </Button>
-            <Button onClick={handleDelete}>
-              <Fab size="large" color="secondary" aria-label="delete">
-                <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
-              </Fab>
-            </Button>
+            <Fab
+              size="large"
+              color="secondary"
+              aria-label="edit"
+              onClick={(event) => {
+                event.stopPropagation();
+                navigate(`/collection/${props.collectionId}/edit`)
+              }}
+            >
+              <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
+            </Fab>
+            <Fab
+              size="large"
+              color="secondary"
+              aria-label="delete"
+              disabled={isDeleting}
+              onClick={handleDelete}>
+              <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
+            </Fab>
           </IconContainer>
         )}
       </DetailsContainer>

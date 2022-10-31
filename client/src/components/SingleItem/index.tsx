@@ -5,11 +5,15 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import Fab from '@mui/material/Fab';
 import { UserContext } from "../../context/UserContext.tsx";
-import { Button, CommentInfo, Container, DetailsContainer, FooterWrapper, HeaderWrapper, IconContainer } from "./style";
+import { CommentInfo, Container, DetailsContainer, FooterWrapper, HeaderWrapper, IconContainer } from "./style";
 import { theme } from "../../style";
 import { useNavigate } from "react-router-dom";
+import { deleteItem } from "../../api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from 'react-toastify';
 
 interface Props {
+  collectionId: string;
   id: string;
   name: string;
   image_url: string;
@@ -22,7 +26,24 @@ interface Props {
 
 function SingleItem(props: Props) {
   const { user, isAdmin } = useContext(UserContext);
+  const client = useQueryClient();
   const navigate = useNavigate();
+  const { mutate: deleteMutation, isLoading: isDeleting } = useMutation((itemId: string) => {
+    return deleteItem(itemId).then(() => {
+      client.invalidateQueries(['items', props.collectionId])
+      toast.success(`Item deleted successfully`)
+    });
+  });
+
+  const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    try {
+      deleteMutation(props.id)
+    } catch (e) {
+      toast.error(`Something went wrong. Pls try again`);
+      console.log(e);
+    }
+  };
 
   return (
     <Container image_url={props.image_url} onClick={() => navigate(`/item/${props.id}`)}>
@@ -59,24 +80,25 @@ function SingleItem(props: Props) {
           </Typography>
           {user && (user.id === props.author_id || isAdmin) && (
             <IconContainer>
-              <Button
+              <Fab
+                size="large"
+                color="secondary"
+                aria-label="edit"
                 onClick={(event) => {
                   event.stopPropagation();
                   navigate(`/item/${props.id}/edit`)
-                }}
-              >
-                <Fab size="large" color="secondary" aria-label="edit">
-                  <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
-                </Fab>
-              </Button>
-              <Button
-                onClick={(event) => {
-                  event.stopPropagation();
                 }}>
-                <Fab size="large" color="secondary" aria-label="delete">
-                  <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
-                </Fab>
-              </Button>
+                <EditOutlinedIcon sx={{ width: 30, height: 30 }} />
+              </Fab>
+              <Fab
+                size="large"
+                color="secondary"
+                aria-label="delete"
+                disabled={isDeleting}
+                onClick={handleDeleteClick}
+              >
+                <DeleteOutlinedIcon sx={{ width: 30, height: 30 }} />
+              </Fab>
             </IconContainer>
           )}
         </FooterWrapper>

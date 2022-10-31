@@ -39,10 +39,10 @@ router.post('/role-change',
 router.delete('/delete', [isAdminMiddleware], async (req: Request, res = response) => {
     try {
         await UserModel.destroy({ where: { id: req.body.userIds } })
-        res.status(200).send()
+        res.status(200).send({ message: 'Success'})
     } catch (e) {
         console.error(e);
-        res.status(500).send();
+        res.status(500).send({ message: 'Faild to delete user' });
     }
 })
 

@@ -16,6 +16,7 @@ function UserCollectionsPage() {
       return getUserCollections(params.userId)
     }
   );
+  
   const userCollections = data || [];
 
   if (!params.userId) {

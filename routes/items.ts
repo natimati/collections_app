@@ -156,4 +156,15 @@ router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res =
   }
 });
 
+router.delete('/delete', [isItemAuthorAtLeast], async (req: Request, res = response) => {
+  try {
+    await itemsModel.destroy({ where: { id: req.body.itemId }
+    });
+    res.status(200).send({ message: 'Success' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ message: 'Faild to delete user' });
+  }
+});
+
 export default router;

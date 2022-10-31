@@ -37,7 +37,7 @@ function UsersTable() {
   );
 
   const { mutateAsync: roleChange, isLoading: isRoleChanging } = useMutation(
-    (data: { isAdmin: boolean; selectedUserIds: string[]}) => {
+    (data: { isAdmin: boolean; selectedUserIds: string[] }) => {
       return changeUserRole(data.isAdmin, data.selectedUserIds).then(() => {
         client.invalidateQueries(['users']);
         toast.success('Role changed');
@@ -49,18 +49,14 @@ function UsersTable() {
         }
       })
     }
-  )
-
+  );
   const { user, logout } = useContext(UserContext);
-
   const navigate = useNavigate();
-
   const handleCollectionCellClick = (params: GridCellParams) => {
     if (params.field === 'collections') {
       navigate(`/collections/${params.id}`)
     }
   };
-
   const onCheckboxChange = (ids: GridSelectionModel) => {
     setSelectedUserIds(ids.map((id) => {
       return String(id)

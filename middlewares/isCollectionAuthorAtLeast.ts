@@ -29,12 +29,14 @@ const isCollectionAuthorAtLeast = async (
             where: { id: decoded.id }
         });
 
-        if (!req.params.collectionId) {
+        const collectionId = req.params.collectionId || req.body.collectionId;
+
+        if (!collectionId) {
             throw new Error("There's no collection id")
         };
 
         const collection = await collectionModel.findOne({
-            where: { id: req.params.collectionId }
+            where: { id: collectionId }
         });
 
         if (!user) {

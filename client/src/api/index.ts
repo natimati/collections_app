@@ -356,6 +356,23 @@ export function updateItem({
       throw e;
     });
 };
+export function deleteItem(itemId: string) {
+  return fetch(baseUrl + '/api/items/delete', {
+    method: 'DELETE',
+    body: JSON.stringify({ itemId }),
+    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e)
+      throw e;
+    });
+};
 
 export function getItemById(itemId: string): Promise<{
   id: string;

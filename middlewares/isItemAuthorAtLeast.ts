@@ -29,12 +29,14 @@ const isItemAuthorAtLeast = async (
             where: { id: decoded.id }
         });
 
-        if (!req.params.itemId) {
+        const itemId = req.params.itemId || req.body.itemId;
+
+        if (!itemId) {
             throw new Error("There's no item id")
         };
 
         const item = await itemModel.findOne({
-            where: { id: req.params.itemId }
+            where: { id: itemId }
         });
 
         if (!user) {
