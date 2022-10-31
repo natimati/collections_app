@@ -106,7 +106,7 @@ function CollectionEditor() {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <CircularProgress />
       </Box>
     )

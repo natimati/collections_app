@@ -82,13 +82,13 @@ function UsersTable() {
   };
   
   const columns: GridColDef[] = [
-    { field: 'username', headerName: 'username', width: 180, description: 'Click on the cell to see collection' },
-    { field: 'email', headerName: 'email', width: 400 },
-    { field: 'registration_time', headerName: 'registration time', width: 180 },
-    { field: 'last_login_time', headerName: 'last saw', width: 100 },
-    { field: 'collections', headerName: 'collections number', width: 180 },
-    { field: 'is_admin', headerName: 'role', width: 80 },
-    { field: 'id', headerName: 'ID', width: 390 },
+    { field: 'username', headerName: 'username', width: 180, description: 'Click on the cell to see collection', headerAlign: 'center' },
+    { field: 'email', headerName: 'email', width: 410, headerAlign: 'center' },
+    { field: 'registration_time', headerName: 'registration time', width: 210, align: 'center', headerAlign: 'center' },
+    { field: 'last_login_time', headerName: 'last saw', width: 180, align: 'center', headerAlign: 'center' },
+    { field: 'collections', headerName: 'collections number', width: 180, align: 'center', headerAlign: 'center' },
+    { field: 'is_admin', headerName: 'role', width: 120, align: 'center', headerAlign: 'center' },
+    { field: 'id', headerName: 'ID', width: 390, headerAlign: 'center' },
   ];
 
   const rows = users.map((user) => {
@@ -105,7 +105,7 @@ function UsersTable() {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <CircularProgress />
       </Box>
     )
