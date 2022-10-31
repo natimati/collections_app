@@ -82,6 +82,9 @@ function SearchInput() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        {hits.length === 0 && (
+          <Typography variant='body1' sx={{ margin: '20px' }}>Can't find item you're looking for</Typography>
+        )}
         {hits.map((hit) => {
           return (
             <div key={hit.objectID}>
@@ -100,6 +103,9 @@ function SearchInput() {
             </div>
           );
         })}
+        {hits.length !== 0 && (
+          <Typography variant='body1' sx={{ margin: '20px 50px' }}>That's everithing we have</Typography>
+        )}
       </Menu>
     </>
   )
