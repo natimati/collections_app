@@ -3,11 +3,46 @@ import additionalFieldModel from "../dataLayer/additionalField";
 import collectionsModel from "../dataLayer/collection";
 import userModel from "../dataLayer/user"
 import authMiddlewere from "../middlewares/auth";
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast";
 import sanitize from "sanitize-html";
 
 const router = Router();
+
+router.get('/largest', async (req: Request, res = response) => {
+    try {
+        const collections = await collectionsModel.findAll({
+            order: [
+                [Sequelize.literal('itemsCount'), 'DESC']
+            ],
+            limit: 5,
+            include: [
+                {
+                    model: userModel,
+                    attributes: ['id', 'username'],
+                    as: 'author',
+                }
+            ],
+            attributes: [
+                'id',
+                'name',
+                'topic',
+                'image_url',
+                [Sequelize.literal(`(
+                    SELECT COUNT(*)
+                    FROM items
+                    WHERE
+                        items.collection_id = collection.id)`),
+                    'itemsCount'             
+                ]
+            ]
+        })
+        res.json(collections)
+    } catch (e) {
+        console.error(e);
+        res.status(500).send();
+    }
+});
 
 router.get('/:collectionId', async (req: Request, res = response) => {
     try {
@@ -96,7 +131,6 @@ router.post('/update/:collectionId', [isCollectionAuthorAtLeast], async (req: Re
     }
 });
 
-
 router.get('/find/:author_id', async (req: Request, res = response) => {
     try {
         const collections = await collectionsModel.findAll({
@@ -120,7 +154,5 @@ router.delete('/delete', [isCollectionAuthorAtLeast], async (req: Request, res =
         res.status(500).send({ message: 'Faild to delete user' });
     }
 });
-
-
 
 export default router;

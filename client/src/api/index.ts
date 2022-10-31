@@ -269,6 +269,23 @@ export function getUserCollections(author_id: string): Promise<{
     })
 };
 
+export function getLargestCollections() {
+  return fetch(baseUrl + '/api/collections/largest', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status)
+      }
+      return response.json();
+    })
+    .catch((e) => {
+      console.log(e);
+      throw e;
+    })
+};
+
 export function getLatestItems() {
   return fetch(baseUrl + '/api/items/latest', {
     method: 'GET',
@@ -356,6 +373,7 @@ export function updateItem({
       throw e;
     });
 };
+
 export function deleteItem(itemId: string) {
   return fetch(baseUrl + '/api/items/delete', {
     method: 'DELETE',
