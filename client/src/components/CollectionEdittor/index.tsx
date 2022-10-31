@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
 import { getCollectionById, updateCollection } from '../../api';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 interface Collection {
@@ -46,13 +46,24 @@ function CollectionEditor() {
     }
   );
 
+  const { mutateAsync, isLoading: isEditing } = useMutation(
+    (data: { collectionId: string, values: FormFields }) => {
+    return updateCollection({
+      id: data.collectionId,
+      name: data.values.name,
+      topic: data.values.topic,
+      description: data.values.description,
+      image_url: data.values.image_url,
+      additional_fields: data.values.additional_fields
+    })
+  })
+
   const { fields, append, remove, replace } = useFieldArray<FormFields>({ control, name: "additional_fields" });
 
   useEffect(() => {
     if (!collection) {
       return;
     }
-
     reset({
       name: collection.name,
       topic: collection.topic,
@@ -74,13 +85,14 @@ function CollectionEditor() {
       return null
     }
     try {
-      await updateCollection({
-        id: params.collectionId,
+      await mutateAsync({
+        collectionId: params.collectionId, values: {
         name: data.name,
         topic: data.topic,
         description: data.description,
         image_url: data.image_url,
-        additional_fields: data.additional_fields
+          additional_fields: data.additional_fields
+        }
       });
       toast.success('Collection edited successfully');
       return navigate(`/collection/${params.collectionId}`);
@@ -209,6 +221,7 @@ function CollectionEditor() {
         <Button variant="contained"
           type='submit'
           color='secondary'
+          disabled={isEditing}
           sx={{
             margin: '10px',
             alignSelf: 'center',

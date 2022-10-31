@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
 import { getItemNameError } from './helpers';
 import { UserContext } from '../../context/UserContext.tsx';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createItem, getCollectionById } from '../../api';
 import ItemPropertyField from './ItemPropertyField';
 import { toast } from 'react-toastify';
@@ -32,6 +32,23 @@ function ItemCreator() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const params = useParams();
+  const { mutateAsync, isLoading: isCreating } = useMutation(
+    ((data: { values: FormFields, authorId: string, collectionId: string }) => {
+      return createItem({
+        collection_id: data.collectionId,
+        author_id: data.authorId,
+        name: data.values.name,
+        image_url: data.values.image_url,
+        item_properties: data.values.item_properties.map(item => {
+          return {
+            additional_field_id: item.additional_field_id,
+            collection_id: data.collectionId,
+            value: item.value
+          }
+        })
+      });
+    
+    }));
 
   const {
     control, watch, register, handleSubmit, formState: { errors }, setValue, reset
@@ -80,18 +97,23 @@ function ItemCreator() {
     }
     const collectionId = params.collectionId;
     try {
-      await createItem({
-        collection_id: collectionId,
-        author_id: user.id,
+      await mutateAsync({
+        values: {
         name: data.name,
         image_url: data.image_url,
         item_properties: data.item_properties.map(item => {
           return {
             additional_field_id: item.additional_field_id,
             collection_id: collectionId,
-            value: item.value
+            value: item.value,
+            type: item.type,
+            name: item.name,
           }
         })
+      }, 
+        collectionId: collectionId,
+        authorId: user.id,
+        
       });
       toast.success(`Item ${data.name} created`);
       return navigate(`/item/${collectionId}`);
@@ -171,12 +193,14 @@ function ItemCreator() {
             />
           )
         })}
-        <Button sx={{
+        <Button
+          sx={{
           margin: '10px',
           alignSelf: 'center',
           width: '200px',
           height: '50px'
-        }}
+          }}
+          disabled={isCreating}
           variant="contained"
           type='submit'
           color='secondary'

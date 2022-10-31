@@ -4,6 +4,7 @@ import { FormContainer, StyledButton, Text } from './style'
 import { SubmitHandler, useForm } from "react-hook-form";
 import { register as registerNewUser } from "../../api";
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 interface User {
   username: string;
@@ -19,9 +20,17 @@ function Register() {
     register, handleSubmit, watch, formState: { errors },
   } = useForm<FormFields>();
 
+  const { mutateAsync, isLoading } = useMutation((data: Omit<FormFields, 'passwordConfirmation'>) => {
+   return registerNewUser({
+        username: data.username,
+        email: data.email,
+        password: data.password
+      });
+  });
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await registerNewUser({
+      await mutateAsync({
         username: data.username,
         email: data.email,
         password: data.password
@@ -133,7 +142,7 @@ function Register() {
       <Text>
         Do you have an account? Sign in <Link to='/login'><MaterialLink href='/login'>here.</MaterialLink></Link>
       </Text>
-      <StyledButton type='submit' variant="contained">Send</StyledButton>
+      <StyledButton disabled={isLoading} type='submit' variant="contained">Send</StyledButton>
     </FormContainer>
   )
 };

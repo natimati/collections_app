@@ -6,6 +6,7 @@ import { login } from '../../api';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext.tsx';
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 interface User {
   email: string;
@@ -21,10 +22,16 @@ function Login() {
   } = useForm<FormFields>();
 
   const { setUserFromToken } = useContext(UserContext)
+  const { mutateAsync, isLoading } = useMutation((data: FormFields) => {
+    return login({
+      email: data.email,
+      password: data.password
+    })
+  })
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const loginData = await login({
+      const loginData = await mutateAsync({
         email: data.email,
         password: data.password
       })
@@ -79,7 +86,7 @@ function Login() {
         helperText={getPasswordError()}
       />
       <Text>Do you have an account? Sign up <Link to='/register'><MaterialLink href='/register'>here.</MaterialLink></Link></Text>
-      <StyledButton type='submit' variant="contained">Send</StyledButton>
+      <StyledButton disabled={isLoading} type='submit' variant="contained">Send</StyledButton>
     </FormContainer>
   )
 };

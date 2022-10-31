@@ -4,7 +4,7 @@ import { Container, Wrapper } from './style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
 import { getItemNameError } from './helpers';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getItemById, updateItem } from '../../api';
 import ItemPropertyValue, { ItemProperty } from './ItemPropertyValue';
 import { useEffect } from 'react';
@@ -37,6 +37,19 @@ type FormFields = Pick<Item, "name" | "image_url"> &
 function ItemEditor() {
   const navigate = useNavigate();
   const params = useParams();
+  const { mutateAsync, isLoading: isEditing } = useMutation(
+    (data: { itemId: string, collectionId: string, authorId: string, values: FormFields }) => {
+      return updateItem({
+        id: data.itemId,
+        collection_id: data.collectionId,
+        author_id: data.authorId,
+        name: data.values.name,
+        image_url: data.values.image_url,
+        item_properties: data.values.item_properties
+      });
+    }
+  ); 
+
   const {
     control, watch, register, handleSubmit, formState: { errors }, setValue, reset
   } = useForm<FormFields>();
@@ -88,14 +101,15 @@ function ItemEditor() {
       return
     }
     try {
-      await updateItem({
-        id: params.itemId,
-        collection_id: item.collection_id,
-        author_id: item.author_id,
+      await mutateAsync({
+        itemId: params.itemId,
+        collectionId: item.collection_id,
+        authorId: item.author_id,
+        values: {
         name: data.name,
         image_url: data.image_url,
         item_properties: data.item_properties
-      });
+      }});
       toast.success(`Item ${data.name} edited successfully`);
       return navigate(`/item/${item.id}`);
     } catch (e) {
@@ -178,12 +192,14 @@ function ItemEditor() {
             </Wrapper>
           )
         })}
-        <Button sx={{
+        <Button
+          sx={{
           margin: '10px',
           alignSelf: 'center',
           width: '200px',
           height: '50px'
-        }}
+          }}
+          disabled={isEditing}
           variant="contained"
           type='submit'
           color='secondary'

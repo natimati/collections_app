@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { DataGrid, GridCellParams, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import format from 'date-fns/format';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,33 @@ function UsersTable() {
   const { data: users = [], isLoading } = useQuery(['users'], () => {
     return getAllUsers();
   });
+  const { mutateAsync: userDelete, isLoading: isDeleting } = useMutation(
+    (selectedUserIds: string[]) => {
+      return deleteUsers(selectedUserIds).then(() => {
+        client.invalidateQueries(['users']);
+        if (!user) { return; }
+        if (selectedUserIds.includes(user.id)) {
+          logout()
+        };
+        toast.success('Deleted successfully');
+      })
+    }
+  );
+
+  const { mutateAsync: roleChange, isLoading: isRoleChanging } = useMutation(
+    (data: { isAdmin: boolean; selectedUserIds: string[]}) => {
+      return changeUserRole(data.isAdmin, data.selectedUserIds).then(() => {
+        client.invalidateQueries(['users']);
+        toast.success('Role changed');
+        if (!user) { return; }
+        if (selectedUserIds.includes(user.id) && user.isAdmin !== data.isAdmin) {
+          logout()
+        } else {
+          setSelectedUserIds([]);
+        }
+      })
+    }
+  )
 
   const { user, logout } = useContext(UserContext);
 
@@ -41,32 +68,19 @@ function UsersTable() {
   };
 
   const handleUsersDeleteClick = () => {
-    deleteUsers(selectedUserIds).then(() => {
-      client.invalidateQueries(['users']);
-      if (!user) { return; }
-      if (selectedUserIds.includes(user.id)) {
-        logout()
-      };
-      toast.success('Deleted successfully');
-    })
+    userDelete(selectedUserIds)
   };
 
   const handleChangeRoleClick = (isAdmin: boolean) => {
-
     if (selectedUserIds.length === 0) {
       return;
     }
-    changeUserRole(isAdmin, selectedUserIds).then(() => {
-      client.invalidateQueries(['users']);
-      toast.success('Role changed');
-      if (!user) { return; }
-      if (selectedUserIds.includes(user.id) && user.isAdmin !== isAdmin) {
-        logout()
-      } else {
-        setSelectedUserIds([]);
-      }
+    roleChange({
+      isAdmin: isAdmin,
+      selectedUserIds: selectedUserIds
     })
   };
+  
   const columns: GridColDef[] = [
     { field: 'username', headerName: 'username', width: 180, description: 'Click on the cell to see collection' },
     { field: 'email', headerName: 'email', width: 400 },
@@ -103,6 +117,7 @@ function UsersTable() {
         <Tooltip title="Delete selected user">
           <IconButton
             onClick={handleUsersDeleteClick}
+            disabled={isDeleting}
             sx={{ ml: 2, margin: 0, padding: 0 }}
           >
             <PersonRemoveIcon
@@ -116,6 +131,7 @@ function UsersTable() {
         </Tooltip>
         <Tooltip title="Give admin status">
           <IconButton
+            disabled={isRoleChanging}
             onClick={() => handleChangeRoleClick(true)}
             sx={{ ml: 2, margin: 0, padding: 0 }}
           >
@@ -130,6 +146,7 @@ function UsersTable() {
         </Tooltip>
         <Tooltip title="Remove admin status">
           <IconButton
+            disabled={isRoleChanging}
             onClick={() => handleChangeRoleClick(false)}
             sx={{ ml: 2, margin: 0, padding: 0 }}
           >
@@ -147,7 +164,7 @@ function UsersTable() {
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={5}
+          pageSize={10}
           rowsPerPageOptions={[5]}
           checkboxSelection
           sx={{ color: "#404956", cursor: 'pointer' }}

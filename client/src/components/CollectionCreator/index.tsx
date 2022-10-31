@@ -12,6 +12,7 @@ import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopic
 import { UserContext } from '../../context/UserContext.tsx';
 import { createCollection } from '../../api';
 import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 interface Collection {
   name: string;
@@ -32,7 +33,18 @@ type FormFields = Pick<
 
 function CollectionCreator() {
   const navigate = useNavigate()
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
+  const { mutateAsync, isLoading } = useMutation(
+    (data: { userId: string, values: FormFields }) => {
+      return createCollection({
+        author_id: data.userId,
+        name: data.values.name,
+        topic: data.values.topic,
+        description: data.values.description,
+        image_url: data.values.image_url,
+        additional_fields: data.values.additional_fields
+      })
+    })
 
   const {
     control, watch, register, handleSubmit, formState: { errors }, setValue
@@ -51,13 +63,14 @@ function CollectionCreator() {
       return navigate('/login')
     }
     try {
-      await createCollection({
-        author_id: user.id,
-        name: data.name,
-        topic: data.topic,
-        description: data.description,
-        image_url: data.image_url,
-        additional_fields: data.additional_fields
+      await mutateAsync({
+        userId: user.id, values: {
+          name: data.name,
+          topic: data.topic,
+          description: data.description,
+          image_url: data.image_url,
+          additional_fields: data.additional_fields
+        }
       });
       toast.success('Collection created');
       return navigate("/");
@@ -183,6 +196,7 @@ function CollectionCreator() {
             width: '200px',
             height: '50px'
           }}
+          disabled={isLoading}
         >
           create
         </Button>
