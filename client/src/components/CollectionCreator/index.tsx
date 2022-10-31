@@ -8,11 +8,12 @@ import { Button, Fab, InputAdornment, TextField, Typography } from '@mui/materia
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { getAdditionalFieldNameError, getCollectionNameError, getCollectionTopicError } from './helpers';
+import { getAdditionalFieldNameError, getCollectionNameError } from './helpers';
 import { UserContext } from '../../context/UserContext.tsx';
 import { createCollection } from '../../api';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
+import ListOfTopics from './ListOfTopics';
 
 interface Collection {
   name: string;
@@ -103,7 +104,11 @@ function CollectionCreator() {
           error={!!errors.name}
           helperText={getCollectionNameError(errors)}
         />
-        <TextField
+        <ListOfTopics
+          register={register}
+          errors={errors}
+        />
+        {/* <TextField
           type='text'
           {...register('topic', { required: true })}
           id='topic'
@@ -111,7 +116,7 @@ function CollectionCreator() {
           fullWidth
           error={!!errors.topic}
           helperText={getCollectionTopicError(errors)}
-        />
+        /> */}
         <Description
           theme="snow"
           value={values.description}

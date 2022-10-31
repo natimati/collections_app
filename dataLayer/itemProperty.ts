@@ -27,7 +27,7 @@ const ItemProperty = db.define<ItemPropertyModel>('item_property', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
     },
-    value: DataTypes.STRING,
+    value: DataTypes.TEXT,
     updated_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW

@@ -12,7 +12,7 @@ module.exports = {
       additional_field_id: Sequelize.DataTypes.UUID,
       collection_id: Sequelize.DataTypes.UUID,
       item_id: Sequelize.DataTypes.UUID,
-      value: Sequelize.DataTypes.STRING,
+      value: Sequelize.DataTypes.TEXT,
       created_at: {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.DataTypes.NOW
