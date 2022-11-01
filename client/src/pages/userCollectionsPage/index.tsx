@@ -1,5 +1,4 @@
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import { Box, CircularProgress, Container, Grid} from '@mui/material';
 import CollectionItem from "../../components/CollectionItem";
 import { useQuery } from '@tanstack/react-query'
 import { getUserCollections } from '../../api';
@@ -9,18 +8,25 @@ import { useParams } from 'react-router-dom';
 function UserCollectionsPage() {
   const params = useParams();
 
-  const { data } = useQuery(
+  const { data: userCollections = [], isLoading } = useQuery(
     ['collections', params.userId],
     () => {
       if (!params.userId) { return null }
       return getUserCollections(params.userId)
     }
   );
-  
-  const userCollections = data || [];
 
   if (!params.userId) {
     return null
+  };
+  if (!userCollections) { return null };
+  
+  if (isLoading) {
+    return (
+      <Box sx={{ height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <CircularProgress />
+      </Box>
+    )
   };
 
   return (

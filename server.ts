@@ -4,9 +4,10 @@ import path from "path";
 
 import authRouter from "./routes/auth";
 import searchRouter from "./routes/search";
-import collectionsRouter from "./routes/collections"
-import itmesRouter from "./routes/items"
-import usersRouter from "./routes/users"
+import collectionsRouter from "./routes/collections";
+import itmesRouter from "./routes/items";
+import usersRouter from "./routes/users";
+import commentsRouter from "./routes/comments";
 
 class Server {
   app: express.Express;
@@ -34,6 +35,7 @@ class Server {
     this.app.use("/api/collections", collectionsRouter)
     this.app.use("/api/items", itmesRouter);
     this.app.use("/api/users", usersRouter);
+    this.app.use("/api/comments", commentsRouter)
     this.app.get("*", (req, res) => {
       res.sendFile(
         path.join(__dirname, "../client/build/index.html")

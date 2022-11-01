@@ -275,3 +275,29 @@ export function getItemById(itemId: string) {
     updated_at: string;
   }>()
 };
+
+export function createComment({ item_id, author_id, body }:
+  { item_id: string, author_id: string, body: string }) {
+  return api.post('api/comments/create', {
+    json: {
+      item_id,
+      author_id,
+      body
+    }
+  })
+    .json<{ message: string; data: { id: string, username: string, email: string } }>()
+};
+
+export function getCommentsByItemId(item_id: string) {
+  return api.get(`api/comments/item/${item_id}`).json<{
+    id: string,
+    item_id: string,
+    author_id: string,
+    body: string,
+    created_at: string,
+    author: {
+      id: string;
+      username:string
+    }
+  }[]>()
+}

@@ -1,6 +1,7 @@
 import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 import db from '../services/db';
 import Item from './item';
+import User from './user';
 
 interface CommentsModel extends Model<InferAttributes<CommentsModel>, InferCreationAttributes<CommentsModel>> {
     id: CreationOptional<string>;
@@ -38,3 +39,18 @@ Comment.belongsTo(Item, {
     targetKey: 'id',
     as: 'item'
 });
+
+User.hasMany(Comment, {
+    foreignKey: 'author_id',
+    sourceKey: 'id',
+    as: 'comments',
+    onDelete: 'CASCADE'
+});
+
+Comment.belongsTo(User, {
+    foreignKey: 'author_id',
+    targetKey: 'id',
+    as: 'author'
+});
+
+export default Comment;

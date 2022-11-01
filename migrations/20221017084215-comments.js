@@ -10,7 +10,17 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.UUIDV4
       },
       item_id: Sequelize.DataTypes.UUID,
-      author_id: Sequelize.DataTypes.UUID,
+      author_id: {
+        type: Sequelize.DataTypes.UUID,
+        references: {
+          model: {
+            tableName: 'users'
+          },
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        allowNull: false
+      },
       body: Sequelize.DataTypes.TEXT,
       created_at: {
         type: Sequelize.DataTypes.DATE,

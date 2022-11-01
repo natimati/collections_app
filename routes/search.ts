@@ -1,6 +1,5 @@
 import algoliasearch from "algoliasearch";
 import { Request, response, Router } from "express";
-import { Readable } from "stream";
 import itemsModel from "../dataLayer/item";
 import isAdminMiddleware from "../middlewares/isAdmin";
 
