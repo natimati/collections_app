@@ -14,7 +14,11 @@ function LatestItems() {
 
   return (
     <Container>
-      <Typography variant='h1'>{t(`latest`)}</Typography>
+      <Typography
+        sx={{
+          textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+        }}
+        variant='h1'>{t(`latest`)}</Typography>
       <Grid
         container
         rowSpacing={5}
@@ -45,9 +49,15 @@ function LatestItems() {
               <ImageContainer imageUrl={item.image_url} onClick={() => navigate(`item/${item.id}`)}>
                 <Overlay>
                   <TextContainer>
-                    <Typography variant='subtitle1'>{item.name}</Typography>
-                    <Typography variant='body2'>in {item.collection.name} collection</Typography>
-                    <Typography variant='body2'>by {item.author.username}</Typography>
+                    <Typography variant='subtitle1' sx={{
+                      textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                    }}>{item.name}</Typography>
+                    <Typography variant='body2' style={{
+                      textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                    }}>in {item.collection.name} collection</Typography>
+                    <Typography variant='body2' style={{
+                      textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                    }}>by {item.author.username}</Typography>
                   </TextContainer>
                 </Overlay>
               </ImageContainer>

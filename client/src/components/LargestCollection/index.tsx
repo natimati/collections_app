@@ -39,7 +39,11 @@ function LargestCollections() {
 
   return (
     <Container>
-      <Typography variant='h1'>{t(`largest`)}</Typography>
+      <Typography
+        sx={{
+          textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+        }}
+        variant='h1'>{t(`largest`)}</Typography>
       <Grid
         container
         rowSpacing={5}
@@ -73,8 +77,16 @@ function LargestCollections() {
               >
               <Overlay>
                 <TextContainer>
-                  <Typography variant='subtitle1'>{collection.name}</Typography>
-                  <Typography variant='body2'>by {collection.author.username} </Typography>
+                    <Typography
+                      sx={{
+                        textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                      }}
+                      variant='subtitle1'>{collection.name}</Typography>
+                    <Typography
+                      sx={{
+                        textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                      }}
+                      variant='body2'>by {collection.author.username} </Typography>
                 </TextContainer>
                 </Overlay>
                 </ImageContainer>
