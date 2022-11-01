@@ -4,6 +4,7 @@ import collectionModel from "../dataLayer/collection";
 import itemsModel from "../dataLayer/item";
 import itemPropertyModel from '../dataLayer/itemProperty';
 import userModel from "../dataLayer/user";
+import commentsModel from "../dataLayer/comment"
 import authMiddlewere from "../middlewares/auth";
 import algoliasearch from "algoliasearch";
 import isItemAuthorAtLeast from "../middlewares/isItemAuthorAtLeast";
@@ -39,7 +40,14 @@ router.get('/latest', async (req: Request, res = response) => {
 router.get('/collection/:collectionId', async (req: Request, res = response) => {
   try {
     const items = await itemsModel.findAll({
-      where: { collection_id: req.params.collectionId }
+      where: { collection_id: req.params.collectionId },
+      include: [
+        {
+          model: commentsModel,
+          attributes: ['id'],
+          as: 'comments'
+        }
+      ]
     });
     res.json(items)
   } catch (e) {
@@ -167,7 +175,8 @@ router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res =
 
 router.delete('/delete', [isItemAuthorAtLeast], async (req: Request, res = response) => {
   try {
-    await itemsModel.destroy({ where: { id: req.body.itemId }
+    await itemsModel.destroy({
+      where: { id: req.body.itemId }
     });
     const client = algoliasearch(
       process.env.ALGOLIA_APPLICATION_ID as string,

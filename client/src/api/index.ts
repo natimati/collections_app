@@ -74,6 +74,9 @@ export function getItemsByCollectionId(collection_id: string) {
     author_id: string,
     name: string,
     image_url: string,
+    comments: {
+      id: string;
+    }[]
   }[]>()
 }
 

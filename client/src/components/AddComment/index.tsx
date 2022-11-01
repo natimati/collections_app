@@ -19,7 +19,7 @@ type FormFields = Pick<Comment, "body">;
 function AddComment() {
   const { user } = useContext(UserContext);
   const {
-    register, handleSubmit, formState: { errors },
+    reset, register, handleSubmit, formState: { errors },
   } = useForm<FormFields>();
   const params = useParams();
   const client = useQueryClient();
@@ -49,6 +49,9 @@ function AddComment() {
         },
         item_id: params.itemId,
         author_id: user.id,
+      })
+      reset({
+        body: ''
       })
     } catch (e) {
       console.log(e);

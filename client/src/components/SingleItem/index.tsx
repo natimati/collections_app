@@ -22,6 +22,7 @@ interface Props {
     id: string,
     name: string
   }[];
+  commentsCount: number
 }
 
 function SingleItem(props: Props) {
@@ -34,6 +35,7 @@ function SingleItem(props: Props) {
       toast.success(`Item deleted successfully`)
     });
   });
+
 
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -61,7 +63,7 @@ function SingleItem(props: Props) {
             {props.name}
           </Typography>
           <CommentInfo>
-            <Typography variant="subtitle1">1</Typography>
+            <Typography variant="subtitle1">{props.commentsCount}</Typography>
             <ChatOutlinedIcon sx={{ width: 40, height: 40, fill: theme.palette.primary.contrastText }} />
           </CommentInfo>
         </HeaderWrapper>
