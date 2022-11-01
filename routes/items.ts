@@ -7,7 +7,6 @@ import userModel from "../dataLayer/user";
 import authMiddlewere from "../middlewares/auth";
 import algoliasearch from "algoliasearch";
 import isItemAuthorAtLeast from "../middlewares/isItemAuthorAtLeast";
-import { Op } from "sequelize";
 import sanitize from "sanitize-html";
 
 const router = Router();
@@ -150,6 +149,15 @@ router.post('/update/:itemId', [isItemAuthorAtLeast], async (req: Request, res =
       })
     }), { updateOnDuplicate: ['value'] });
 
+    const client = algoliasearch(
+      process.env.ALGOLIA_APPLICATION_ID as string,
+      process.env.ALGOLIA_ADMIN_API_KEY as string
+    );
+    const index = client.initIndex('items');
+    const record = { objectID: req.params.itemId, name, image_url }
+
+    await index.partialUpdateObject(record, { createIfNotExists: true, }).wait();
+
     res.status(201).json({ message: 'collection updated' })
   } catch (e) {
     console.log(e);
@@ -161,6 +169,13 @@ router.delete('/delete', [isItemAuthorAtLeast], async (req: Request, res = respo
   try {
     await itemsModel.destroy({ where: { id: req.body.itemId }
     });
+    const client = algoliasearch(
+      process.env.ALGOLIA_APPLICATION_ID as string,
+      process.env.ALGOLIA_ADMIN_API_KEY as string
+    );
+    const index = client.initIndex('items');
+
+    await index.deleteObject(req.body.itemId);
     res.status(200).send({ message: 'Success' });
   } catch (e) {
     console.error(e);

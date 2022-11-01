@@ -1,11 +1,13 @@
 import { Request, response, Router } from "express";
 import additionalFieldModel from "../dataLayer/additionalField";
 import collectionsModel from "../dataLayer/collection";
-import userModel from "../dataLayer/user"
+import userModel from "../dataLayer/user";
+import itemsModel from "../dataLayer/item"
 import authMiddlewere from "../middlewares/auth";
 import { Op, Sequelize } from 'sequelize';
 import isCollectionAuthorAtLeast from "../middlewares/isCollectionAuthorAtLeast";
 import sanitize from "sanitize-html";
+import algoliasearch from "algoliasearch";
 
 const router = Router();
 
@@ -145,9 +147,22 @@ router.get('/find/:author_id', async (req: Request, res = response) => {
 
 router.delete('/delete', [isCollectionAuthorAtLeast], async (req: Request, res = response) => {
     try {
+        const items = await itemsModel.findAll({
+            where: { collection_id: req.body.collectionId },
+            attributes: [ 'id' ]
+        })
         await collectionsModel.destroy({
             where: { id: req.body.collectionId }
         });
+        const client = algoliasearch(
+            process.env.ALGOLIA_APPLICATION_ID as string,
+            process.env.ALGOLIA_ADMIN_API_KEY as string
+        );
+        const index = client.initIndex('items');
+
+        await index.deleteObjects(items.map((item) => {
+            return item.id
+        }));
         res.status(200).send({ message: 'Success' });
     } catch (e) {
         console.error(e);

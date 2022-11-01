@@ -1,7 +1,9 @@
 import { Request, response, Router } from "express";
-import UserModel from '../dataLayer/user';
-import CollectionModel from '../dataLayer/collection'
+import usersModel from '../dataLayer/user';
+import collectionsModel from '../dataLayer/collection';
+import itemsModel from '../dataLayer/item';
 import isAdminMiddleware from "../middlewares/isAdmin";
+import algoliasearch from "algoliasearch";
 
 const router = Router();
 
@@ -9,10 +11,10 @@ router.get('/',
     [isAdminMiddleware],
     async (req: Request, res = response) => {
     try {
-        const users = await UserModel.findAll({
+        const users = await usersModel.findAll({
             attributes: { exclude: ['password', 'salt'] },
             include: [{
-                model: CollectionModel,
+                model: collectionsModel,
                 as: 'collections',
             }]
         })
@@ -27,7 +29,7 @@ router.post('/role-change',
     [isAdminMiddleware],
     async (req: Request, res = response) => {
         try {
-            await UserModel.update({ is_admin: req.body.isAdmin },
+            await usersModel.update({ is_admin: req.body.isAdmin },
                 { where: { id: req.body.userIds } });
             res.status(200).send({ message: 'Success'})
         } catch (e) {
@@ -38,7 +40,21 @@ router.post('/role-change',
 
 router.delete('/delete', [isAdminMiddleware], async (req: Request, res = response) => {
     try {
-        await UserModel.destroy({ where: { id: req.body.userIds } })
+        const items = await itemsModel.findAll({
+            where: { author_id: req.body.userIds },
+            attributes: ['id']
+        })
+        await usersModel.destroy({ where: { id: req.body.userIds } })
+        const client = algoliasearch(
+            process.env.ALGOLIA_APPLICATION_ID as string,
+            process.env.ALGOLIA_ADMIN_API_KEY as string
+        );
+        const index = client.initIndex('items');
+
+        await index.deleteObjects(items.map((item) => {
+            return item.id
+        }));
+        
         res.status(200).send({ message: 'Success'})
     } catch (e) {
         console.error(e);
