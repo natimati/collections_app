@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-const baseUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "";
+const baseUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "/";
 
 const api = ky.extend({
   prefixUrl: baseUrl,
