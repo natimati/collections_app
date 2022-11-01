@@ -3,16 +3,18 @@ import { Container, ImageContainer, Overlay, TextContainer } from "./style";
 import { Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 function LatestItems() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data: latestItems = [] } = useQuery(['latest'], () => {
     return getLatestItems();
   })
 
   return (
     <Container>
-      <Typography variant='h1'>Latest items</Typography>
+      <Typography variant='h1'>{t(`latest`)}</Typography>
       <Grid
         container
         rowSpacing={5}

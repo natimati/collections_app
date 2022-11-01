@@ -14,6 +14,7 @@ import { createCollection } from '../../api';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import ListOfTopics from './ListOfTopics';
+import { useTranslation } from 'react-i18next';
 
 interface Collection {
   name: string;
@@ -35,6 +36,7 @@ type FormFields = Pick<
 function CollectionCreator() {
   const navigate = useNavigate()
   const { user } = useContext(UserContext);
+  const { t } = useTranslation();
   const { mutateAsync, isLoading } = useMutation(
     (data: { userId: string, values: FormFields }) => {
       return createCollection({
@@ -73,7 +75,7 @@ function CollectionCreator() {
           additional_fields: data.additional_fields
         }
       });
-      toast.success('Collection created');
+      toast.success(t("collection-created"));
       return navigate("/");
     } catch (e) {
       toast.error('Something went wrong. Pls try again');
@@ -92,14 +94,14 @@ function CollectionCreator() {
           marginTop: '50px'
         }}
       >
-        Create new collection
+        {t("create-collection")}
       </Typography>
       <Container onSubmit={handleSubmit(onSubmit, onSubmitError)}>
         <TextField
           type='text'
           {...register('name', { required: true })}
           id='name'
-          label='Title'
+          label={t("title")}
           fullWidth
           error={!!errors.name}
           helperText={getCollectionNameError(errors)}
@@ -108,19 +110,10 @@ function CollectionCreator() {
           register={register}
           errors={errors}
         />
-        {/* <TextField
-          type='text'
-          {...register('topic', { required: true })}
-          id='topic'
-          label='Topic'
-          fullWidth
-          error={!!errors.topic}
-          helperText={getCollectionTopicError(errors)}
-        /> */}
         <Description
           theme="snow"
           value={values.description}
-          placeholder='Describe your collection'
+          placeholder={t("describe-collection")}
           onChange={handleRichDescriptionChange}
         />
         <TextField
@@ -136,7 +129,7 @@ function CollectionCreator() {
           id='image-url'
           {...register('image_url')}
           type='text'
-          placeholder="Add image url adress"
+          placeholder={t("add-image")}
         />
         {fields.map((field, index) => {
           return (
@@ -144,7 +137,7 @@ function CollectionCreator() {
               <TextField
                 type='text'
                 {...register(`additional_fields.${index}.name`, { required: true })}
-                label='Name'
+                label={t("name")}
                 id={`${field.id}-name`}
                 error={!!errors.name}
                 helperText={getAdditionalFieldNameError(errors)}
@@ -155,19 +148,19 @@ function CollectionCreator() {
               <Select
                 {...register(`additional_fields.${index}.type`, { required: true })}
                 id={`${field.id}-type`}
-                label='Type'
+                label={t("type")}
                 variant='outlined'
                 defaultValue={'number'}
                 sx={{
                   width: '30%',
                 }}
               >
-                <MenuItem value={'number'}>number</MenuItem>
-                <MenuItem value={'text'}>text</MenuItem>
-                <MenuItem value={'multiline_text'}>multiline text</MenuItem>
-                <MenuItem value={'boolean'}>boolean</MenuItem>
-                <MenuItem value={'date'}>date</MenuItem>
-                <MenuItem value={'rating'}>rating</MenuItem>
+                <MenuItem value={'number'}>{t("number")}</MenuItem>
+                <MenuItem value={'text'}>{t("text")}</MenuItem>
+                <MenuItem value={'multiline_text'}>{t("multiline-text")}</MenuItem>
+                <MenuItem value={'boolean'}>{t("boolean")}</MenuItem>
+                <MenuItem value={'date'}>{t("date")}</MenuItem>
+                <MenuItem value={'rating'}>{t("rating")}</MenuItem>
               </Select>
               <Fab
                 color="secondary"
@@ -188,7 +181,7 @@ function CollectionCreator() {
             }}
           >
             <AddIcon />
-            Add new filed
+            {t("add-new-filed")}
           </Button>
         )}
         <Button
@@ -198,12 +191,12 @@ function CollectionCreator() {
           sx={{
             margin: '10px',
             alignSelf: 'center',
-            width: '200px',
+            width: 'fit-content',
             height: '50px'
           }}
           disabled={isLoading}
         >
-          create
+          {t("create-collection-button")}
         </Button>
       </Container>
     </>

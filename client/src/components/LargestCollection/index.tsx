@@ -3,6 +3,7 @@ import { getLargestCollections } from '../../api';
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { Container, ImageContainer, Overlay, TextContainer } from './style';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 
 interface Collection {
@@ -18,6 +19,7 @@ interface Collection {
 
 function LargestCollections() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data: largestCollections = [], isLoading } = useQuery<Collection[]>(
     ['collections'], () => { return getLargestCollections() }
@@ -37,7 +39,7 @@ function LargestCollections() {
 
   return (
     <Container>
-      <Typography variant='h1'>Largest collections</Typography>
+      <Typography variant='h1'>{t(`largest`)}</Typography>
       <Grid
         container
         rowSpacing={5}

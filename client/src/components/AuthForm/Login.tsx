@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext.tsx';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 interface User {
   email: string;
@@ -17,6 +18,7 @@ type FormFields = Pick<User, "email" | "password">;
 
 function Login() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<FormFields>();
@@ -36,7 +38,7 @@ function Login() {
         password: data.password
       })
       setUserFromToken(loginData.token)
-      toast.success('You logged in successfully');
+      toast.success(t("succes-toast"));
       return navigate("/");
     } catch (e) {
       console.log(e);
@@ -48,14 +50,14 @@ function Login() {
   const getEmailError = () => {
     const error = errors.email;
     if (error?.type === 'required') {
-      return 'Please enter your email';
+      return t("email-error");
     }
   };
 
   const getPasswordError = () => {
     const error = errors.password;
     if (error?.type === 'required') {
-      return 'Password is required';
+      return t("password-error");
     }
   };
 
@@ -80,13 +82,13 @@ function Login() {
         {...register("password", { required: true })}
         type="password"
         id="standard-required"
-        label='Password'
+        label={t("password")}
         fullWidth
         error={!!errors.password}
         helperText={getPasswordError()}
       />
-      <Text>Do you have an account? Sign up <Link to='/register'><MaterialLink href='/register'>here.</MaterialLink></Link></Text>
-      <StyledButton disabled={isLoading} type='submit' variant="contained">Send</StyledButton>
+      <Text>{t("account-text")}<Link to='/register'><MaterialLink href='/register'>{t("here")}.</MaterialLink></Link></Text>
+      <StyledButton disabled={isLoading} type='submit' variant="contained">{t("send")}</StyledButton>
     </FormContainer>
   )
 };

@@ -15,11 +15,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { theme } from '../../style';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 function DropdownMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,7 +52,7 @@ function DropdownMenu() {
 
   const handleLogoutClick = () => {
     logout();
-    toast.success('Logged out successfully');
+    toast.success(t("logout-toast"));
   }
 
   return (
@@ -113,7 +115,7 @@ function DropdownMenu() {
               height: 40,
               fill: theme.palette.secondary.main
             }}
-          /> Your collections
+          /> {t("your-collections")}
         </MenuItem>
         {isAdmin && (
           <MenuItem onClick={() => { navigate('/admin') }}>
@@ -122,7 +124,7 @@ function DropdownMenu() {
               height: 40,
               fill: theme.palette.secondary.main
             }}
-            /> Admin page
+            /> {t("admin-page")}
           </MenuItem>
         )}
         <Divider />
@@ -136,7 +138,7 @@ function DropdownMenu() {
               }}
             />
           </ListItemIcon>
-          Create collection
+          {t("create-collection")}
         </MenuItem>
         {user ? (
           <MenuItem onClick={handleLogoutClick}>
@@ -149,7 +151,7 @@ function DropdownMenu() {
                 }}
               />
             </ListItemIcon>
-            Logout
+            {t("logout")}
           </MenuItem>
         ) : (
           <MenuItem onClick={handleLoginClick}>
@@ -162,7 +164,7 @@ function DropdownMenu() {
                 }}
               />
             </ListItemIcon>
-            Login
+              {t("login")}
           </MenuItem>
         )}
       </Menu>

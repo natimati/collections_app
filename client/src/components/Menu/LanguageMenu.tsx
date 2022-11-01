@@ -6,11 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
 import { theme } from '../../style';
 import ReactCountryFlag from "react-country-flag"
+import { useTranslation } from 'react-i18next';
 
 function LanguageMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currentLanguage, setCurrentLanguage] = useState('GB');
+  const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem('lang') || 'GB');
   const open = Boolean(anchorEl);
+  const { t, i18n } = useTranslation();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -19,10 +21,11 @@ function LanguageMenu() {
   };
 
   const handleLanguageChange = (countryCode: string) => {
-    setCurrentLanguage(countryCode)
+    setCurrentLanguage(countryCode);
+    localStorage.setItem('lang', countryCode)
+    i18n.changeLanguage(countryCode);
   }
   
-
   return (
     <>
       <Tooltip title="Language change">

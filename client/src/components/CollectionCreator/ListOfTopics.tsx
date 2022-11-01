@@ -1,7 +1,8 @@
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
-import { getCollectionTopicError } from './helpers';
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { FieldErrorsImpl, UseFormRegister } from "react-hook-form";
+import { getCollectionTopicError } from "./helpers";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   register: UseFormRegister<FormFields>;
@@ -27,28 +28,26 @@ type FormFields = Pick<
   }[]
 };
 
-const topicList = [
-  'books',
-  'alkohol',
-  'movies',
-  'greenery',
-  'vehicles',
-  'jewellery',
-  'outfit',
-  'memories',
-  'other'
-];
-
-
-
 function ListOfTopics(props: Props) {
-  return (
+  const { t } = useTranslation();
+  const topicList = [
+    t("books"),
+    t("alkohol"),
+    t("movies"),
+    t("greenery"),
+    t("vehicles"),
+    t("jewellery"),
+    t("outfit"),
+    t("memories"),
+    t("other")
+  ];
+    return (
     <TextField
       id="topic"
       select
       fullWidth
-      label="Select collection topic" 
-      {...props.register('topic', { required: true })}
+      label={t("select-topic")}
+      {...props.register("topic", { required: true })}
       error={!!props.errors.topic}
       helperText={getCollectionTopicError(props.errors)}
          >
