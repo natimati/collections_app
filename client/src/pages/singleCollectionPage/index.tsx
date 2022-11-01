@@ -81,7 +81,7 @@ function SingleCollectionPage() {
                 id={item.id}
                 image_url={item.image_url}
                 author_id={item.author_id}
-                tags={itemsMock[0].tags}
+                // tags={itemsMock[0].tags}
                 commentsCount={item.comments.length}
               />
             </Grid>

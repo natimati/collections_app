@@ -18,10 +18,10 @@ interface Props {
   name: string;
   image_url: string;
   author_id: string;
-  tags: {
-    id: string,
-    name: string
-  }[];
+  // tags: {
+  //   id: string,
+  //   name: string
+  // }[];
   commentsCount: number
 }
 
@@ -76,9 +76,9 @@ function SingleItem(props: Props) {
               whiteSpace: 'nowrap'
             }}
           >
-            {props.tags.map((tag) => (
+            {/* {props.tags.map((tag) => (
               <span key={tag.id}>#{tag.name}{' '}</span>
-            ))}
+            ))} */}
           </Typography>
           {user && (user.id === props.author_id || isAdmin) && (
             <IconContainer>

@@ -42,6 +42,7 @@ const gbTranslations = {
   "admin-page": "Admin page",
   "logout": "Logout",
   "login": "Login",
+  "have-account": "Do you have an account? Sign in ",
 };
 
 const plTranslations: typeof gbTranslations = {
@@ -85,6 +86,7 @@ const plTranslations: typeof gbTranslations = {
   "admin-page": "Strona admina",
   "logout": "Wyloguj się",
   "login": "Zaloguj się",
+  "have-account": "Do you have an account? Sign in",
 
 };
 

@@ -33,6 +33,7 @@ function SearchInput() {
         onChange={handleChange}
         onFocus={handleFocus}
         value={query}
+        autoComplete='off'
         inputProps={{ 'aria-label': 'search' }}
         InputProps={{
           startAdornment: (

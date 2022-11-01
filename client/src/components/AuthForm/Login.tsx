@@ -87,7 +87,12 @@ function Login() {
         error={!!errors.password}
         helperText={getPasswordError()}
       />
-      <Text>{t("account-text")}<Link to='/register'><MaterialLink href='/register'>{t("here")}.</MaterialLink></Link></Text>
+      <Text>
+        {t("account-text") + " "}
+        <Link to='/register'>
+          <MaterialLink href='/register'>{t("here")}.</MaterialLink>
+        </Link>
+      </Text>
       <StyledButton disabled={isLoading} type='submit' variant="contained">{t("send")}</StyledButton>
     </FormContainer>
   )
