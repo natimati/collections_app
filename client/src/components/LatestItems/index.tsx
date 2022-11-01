@@ -1,32 +1,14 @@
-import React, { useEffect, useState } from "react";
 import { getLatestItems } from "../../api"
 import { Container, ImageContainer, Overlay, TextContainer } from "./style";
 import { Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-type Item = {
-  id: string;
-  collection_id: string;
-  author_id: string;
-  name: string
-  image_url: string;
-  author: {
-    username: string
-  };
-  collection: {
-    name: string
-  };
-}
+import { useQuery } from "@tanstack/react-query";
 
 function LatestItems() {
-  const [latestItems, setLatestItems] = useState<Item[]>([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getLatestItems().then((data) => {
-      setLatestItems(data);
-    })
-  }, []);
+  const { data: latestItems = [] } = useQuery(['latest'], () => {
+    return getLatestItems();
+  })
 
   return (
     <Container>

@@ -1,17 +1,31 @@
+import ky from 'ky';
+
 const baseUrl = process.env.NODE_ENV === "development" ? "http://localhost:8080" : "";
 
-export function login({ email, password }: { email: string, password: string }) {
-  return fetch(baseUrl + '/api/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
+const api = ky.extend({
+  prefixUrl: baseUrl,
+  hooks: {
+    beforeRequest: [
+      request => {
+        request.headers.set('Authorization', localStorage.getItem("token") || "");
       }
-      return response.json();
-    })
+    ],
+    afterResponse: [
+      async (request, options, response) => {
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          document.location.href = "/login";
+        }
+      }
+    ]
+  }
+});
+
+export function login({ email, password }: { email: string, password: string }) {
+  return api.post('api/auth/login', {
+    json: { email, password },
+  })
+    .json<{ id: string; token: string }>()
     .then((data) => {
       localStorage.setItem("token", data.token);
       return data;
@@ -19,144 +33,70 @@ export function login({ email, password }: { email: string, password: string }) 
 };
 
 export function register({ username, email, password }: { username: string, email: string, password: string }) {
-  return fetch(baseUrl + '/api/auth/register', {
-    method: 'POST',
-    body: JSON.stringify({
+  return api.post('api/auth/register', {
+    json: {
       username,
       email,
       password
-    }),
-    headers: { 'Content-Type': 'application/json' }
+    }
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+    .json<{ message: string; data: { id: string, username: string, email: string } }>()
 };
 
-export function getAllUsers(): Promise<{
-  id: string;
-  username: string;
-  email: string;
-  is_admin: boolean;
-  registration_time: string;
-  last_login_time: string;
-  collections: {}[]
-}[]> {
-  return fetch(baseUrl + "/api/users", {
-    method: 'GET',
-    headers: { "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 401) {
-          window.location.href = "/login";
-          localStorage.removeItem("token");
-        }
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+export function getAllUsers() {
+  return api.get("api/users").json<{
+    id: string;
+    username: string;
+    email: string;
+    is_admin: boolean;
+    registration_time: string;
+    last_login_time: string;
+    collections: {}[]
+  }[]>()
 };
 
 export function changeUserRole(isAdmin: boolean, userIds: string[]) {
-  return fetch(baseUrl + '/api/users/role-change', {
-    method: 'POST',
-    body: JSON.stringify({ isAdmin, userIds }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+  return api.post('api/users/role-change', { json: { isAdmin, userIds } }).json<{ message: string }>()
 }
 
 export function deleteUsers(userIds: string[]) {
-  return fetch(baseUrl + "/api/users/delete", {
-    method: 'DELETE',
-    body: JSON.stringify({ userIds }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-    });
+  return api.delete('api/users/delete', { json: { userIds } }).json<{ message: string }>()
 };
 
 export function syncSearchResults() {
-  return fetch(baseUrl + '/api/search/sync', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+  return api.post('api/search/sync').json<{ message: string }>();
 };
 
-export function getItemsByCollectionId(collection_id: string): Promise<{
-  id: string,
-  collection_id: string,
-  author_id: string,
-  name: string,
-  image_url: string,
-}[]> {
-  return fetch(baseUrl + '/api/items/collection/' + collection_id, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+export function getItemsByCollectionId(collection_id: string) {
+  return api.get(`api/items/collection/${collection_id}`).json<{
+    id: string,
+    collection_id: string,
+    author_id: string,
+    name: string,
+    image_url: string,
+  }[]>()
 }
 
 export function getCollectionById(collectionId: string) {
-  return fetch(baseUrl + '/api/collections/' + collectionId, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+  return api.get(`api/collections/${collectionId}`).json<{
+    id: string;
+    author_id: string;
+    name: string;
+    topic: string;
+    description: string;
+    image_url: string;
+    created_at: string;
+    additional_fields: {
+      id: string;
+      name: string;
+      type: string;
+      collection_id: string;
+    }[],
+    author: {
+      id: string;
+      username: string;
+    }
+  }>();
 };
 
 export function createCollection({
@@ -169,29 +109,16 @@ export function createCollection({
   image_url?: string,
   additional_fields: { name: string, type: string }[]
 }) {
-
-  return fetch(baseUrl + '/api/collections/create', {
-    method: 'POST',
-    body: JSON.stringify({
+  return api.post('api/collections/create', {
+    json: {
       author_id,
       name,
       topic,
       description,
       image_url,
       additional_fields
-    }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+    }
+  }).json<{ message: string }>();
 };
 
 export function updateCollection({
@@ -204,103 +131,63 @@ export function updateCollection({
   image_url?: string,
   additional_fields?: { name: string, type: string }[]
 }) {
-  return fetch(baseUrl + '/api/collections/update/' + id, {
-    method: 'POST',
-    body: JSON.stringify({
+  return api.post('api/collections/update/' + id, {
+    json: {
       id,
       name,
       topic,
       description,
       image_url,
       additional_fields
-    }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+    }
+  }).json<{ message: string }>()
 };
 
 export function deleteCollection(collectionId: string) {
-  return fetch(baseUrl + '/api/collections/delete', {
-    method: 'DELETE',
-    body: JSON.stringify({ collectionId }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+  return api.delete('api/collections/delete', { json: { collectionId } }).json<{ message: string }>();
 };
 
-export function getUserCollections(author_id: string): Promise<{
-  id: string,
-  author_id: string,
-  name: string,
-  topic: string,
-  image_url: string,
-}[]> {
-  return fetch(baseUrl + '/api/collections/find/' + author_id, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+export function getUserCollections(author_id: string) {
+  return api.get('api/collections/find/' + author_id).json<{
+    id: string,
+    author_id: string,
+    name: string,
+    topic: string,
+    image_url: string,
+  }[]>()
+
 };
 
 export function getLargestCollections() {
-  return fetch(baseUrl + '/api/collections/largest', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+  return api.get('api/collections/largest').json<{
+    id: string;
+    name: string;
+    topic: string;
+    image_url: string;
+    itemsCount: number;
+    author: {
+      id: string;
+      username: string;
+    }
+  }[]>();
 };
 
 export function getLatestItems() {
-  return fetch(baseUrl + '/api/items/latest', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+  return api.get('api/items/latest').json<{
+    id: string;
+    collection_id: string;
+    author_id: string;
+    name: string;
+    image_url: string;
+    collection: {
+      id: string;
+      name: string;
+    },
+    author: {
+      id: string;
+      username: string;
+    }
+  }[]>();
 };
 
 export function createItem({
@@ -316,28 +203,15 @@ export function createItem({
     value: string,
   }[]
 }) {
-
-  return fetch(baseUrl + '/api/items/create', {
-    method: 'POST',
-    body: JSON.stringify({
+  return api.post('api/items/create', {
+    json: {
       collection_id,
       author_id,
       name,
       image_url,
       item_properties
-    }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+    }
+  }).json<{ message: string; }>()
 };
 
 export function updateItem({
@@ -350,91 +224,54 @@ export function updateItem({
   image_url?: string,
   item_properties?: { value: string }[]
 }) {
-  return fetch(baseUrl + '/api/items/update/' + id, {
-    method: 'POST',
-    body: JSON.stringify({
+  return api.post(`api/items/update/${id}`, {
+    json: {
       id,
       name,
       collection_id,
       author_id,
       image_url,
       item_properties,
-    }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+    }
+  }).json<{
+    message: string
+  }>()
 };
 
 export function deleteItem(itemId: string) {
-  return fetch(baseUrl + '/api/items/delete', {
-    method: 'DELETE',
-    body: JSON.stringify({ itemId }),
-    headers: { 'Content-Type': 'application/json', "Authorization": localStorage.getItem("token") || "" }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
-      }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e)
-      throw e;
-    });
+  return api.delete('api/items/delete', { json: { itemId } }).json<{ message: string }>()
 };
 
-export function getItemById(itemId: string): Promise<{
-  id: string;
-  collection_id: string;
-  author_id: string;
-  name: string;
-  image_url: string;
-  item_properties: {
-    additional_field: {
-      name: string;
-      type: string;
-    }
-    additional_field_id: string;
-    value: string;
+export function getItemById(itemId: string) {
+  return api.get(`api/items/${itemId}`).json<{
     id: string;
-  }[];
-  author: {
-    id: string;
-    username: string;
-  }
-  collection: {
-    id: string;
-    name: string,
-    additional_fields: {
-      id: string;
-      name: string;
-      type: string;
-    }[]
-  }
-  created_at: string;
-  updated_at: string;
-}> {
-  return fetch(baseUrl + '/api/items/' + itemId, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP status ' + response.status)
+    collection_id: string;
+    author_id: string;
+    name: string;
+    image_url: string;
+    item_properties: {
+      additional_field: {
+        name: string;
+        type: string;
       }
-      return response.json();
-    })
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    })
+      additional_field_id: string;
+      value: string;
+      id: string;
+    }[];
+    author: {
+      id: string;
+      username: string;
+    }
+    collection: {
+      id: string;
+      name: string,
+      additional_fields: {
+        id: string;
+        name: string;
+        type: string;
+      }[]
+    }
+    created_at: string;
+    updated_at: string;
+  }>()
 };

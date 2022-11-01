@@ -48,15 +48,15 @@ function CollectionEditor() {
 
   const { mutateAsync, isLoading: isEditing } = useMutation(
     (data: { collectionId: string, values: FormFields }) => {
-    return updateCollection({
-      id: data.collectionId,
-      name: data.values.name,
-      topic: data.values.topic,
-      description: data.values.description,
-      image_url: data.values.image_url,
-      additional_fields: data.values.additional_fields
+      return updateCollection({
+        id: data.collectionId,
+        name: data.values.name,
+        topic: data.values.topic,
+        description: data.values.description,
+        image_url: data.values.image_url,
+        additional_fields: data.values.additional_fields
+      })
     })
-  })
 
   const { fields, append, remove, replace } = useFieldArray<FormFields>({ control, name: "additional_fields" });
 
@@ -87,10 +87,10 @@ function CollectionEditor() {
     try {
       await mutateAsync({
         collectionId: params.collectionId, values: {
-        name: data.name,
-        topic: data.topic,
-        description: data.description,
-        image_url: data.image_url,
+          name: data.name,
+          topic: data.topic,
+          description: data.description,
+          image_url: data.image_url,
           additional_fields: data.additional_fields
         }
       });
@@ -110,6 +110,10 @@ function CollectionEditor() {
         <CircularProgress />
       </Box>
     )
+  }
+
+  if (!collection) {
+    return null;
   }
 
   return (
